@@ -1,7 +1,7 @@
 // ============================================================
 // MANAGER.JS
 // QUẢN LÝ BÁO CÁO NGÀY
-// BẢN HOÀN CHỈNH + EXCEL ĐẸP
+// FULL CODE + EXCEL ĐẸP + TÔ MÀU TIÊU ĐỀ
 // ============================================================
 
 (() => {
@@ -128,7 +128,6 @@
   const submittedUserCount =
     document.getElementById("submittedUserCount");
 
-
   // ==========================================================
   // KHỞI ĐỘNG
   // ==========================================================
@@ -168,7 +167,6 @@
         }
       );
 
-
       // ------------------------------------------------------
       // LOGOUT
       // ------------------------------------------------------
@@ -182,7 +180,6 @@
         "click",
         logout
       );
-
 
       // ------------------------------------------------------
       // FILTER
@@ -199,7 +196,6 @@
         }
       );
 
-
       filterDate?.addEventListener(
         "change",
         () => {
@@ -210,7 +206,6 @@
 
         }
       );
-
 
       filterUser?.addEventListener(
         "keydown",
@@ -227,7 +222,6 @@
         }
       );
 
-
       // ------------------------------------------------------
       // REFRESH
       // ------------------------------------------------------
@@ -243,7 +237,6 @@
         }
       );
 
-
       // ------------------------------------------------------
       // EXCEL
       // ------------------------------------------------------
@@ -252,7 +245,6 @@
         "click",
         exportExcel
       );
-
 
       // ------------------------------------------------------
       // MENU
@@ -273,7 +265,6 @@
         closeMenu
       );
 
-
       menuReportsBtn?.addEventListener(
         "click",
         () => {
@@ -292,7 +283,6 @@
         }
       );
 
-
       // ------------------------------------------------------
       // CÁN BỘ ĐÃ NHẬP
       // ------------------------------------------------------
@@ -302,7 +292,6 @@
         showSubmittedUsers
       );
 
-
       // ------------------------------------------------------
       // HIỆN MENU
       // ------------------------------------------------------
@@ -310,7 +299,6 @@
       if (menuBtn) {
         menuBtn.style.display = "block";
       }
-
 
       // ------------------------------------------------------
       // KIỂM TRA SESSION
@@ -320,7 +308,6 @@
 
     }
   );
-
 
   // ==========================================================
   // KIỂM TRA SESSION
@@ -335,7 +322,6 @@
         error
       } = await db.auth.getSession();
 
-
       if (error) {
 
         console.error(
@@ -347,7 +333,6 @@
 
         return;
       }
-
 
       if (data?.session) {
 
@@ -374,7 +359,6 @@
 
   }
 
-
   // ==========================================================
   // HIỆN LOGIN
   // ==========================================================
@@ -390,7 +374,6 @@
     }
 
   }
-
 
   // ==========================================================
   // HIỆN MANAGER
@@ -412,7 +395,6 @@
 
   }
 
-
   // ==========================================================
   // ĐĂNG NHẬP
   // ==========================================================
@@ -424,7 +406,6 @@
 
     const password =
       passwordInput?.value || "";
-
 
     if (!email || !password) {
 
@@ -438,7 +419,6 @@
       return;
     }
 
-
     if (loginBtn) {
 
       loginBtn.disabled = true;
@@ -448,14 +428,12 @@
 
     }
 
-
     if (loginMessage) {
 
       loginMessage.textContent =
         "⏳ Đang kiểm tra tài khoản...";
 
     }
-
 
     try {
 
@@ -470,14 +448,12 @@
 
       });
 
-
       if (error) {
 
         console.error(
           "Supabase login error:",
           error
         );
-
 
         if (loginMessage) {
 
@@ -489,7 +465,6 @@
 
         return;
       }
-
 
       if (!data?.session) {
 
@@ -503,9 +478,6 @@
         return;
       }
 
-
-      // Đăng nhập thành công
-
       showManager();
 
       currentPage = 1;
@@ -518,7 +490,6 @@
         "Login error:",
         error
       );
-
 
       if (loginMessage) {
 
@@ -542,7 +513,6 @@
 
   }
 
-
   // ==========================================================
   // ĐĂNG XUẤT
   // ==========================================================
@@ -553,43 +523,35 @@
 
       await db.auth.signOut();
 
-
       allData = [];
 
       filteredData = [];
 
       currentPage = 1;
 
-
       if (tableBody) {
         tableBody.innerHTML = "";
       }
-
 
       if (pagination) {
         pagination.innerHTML = "";
       }
 
-
       if (totalReports) {
         totalReports.textContent = "0";
       }
-
 
       if (totalAmount) {
         totalAmount.textContent = "0 đ";
       }
 
-
       if (submittedUserCount) {
         submittedUserCount.textContent = "0";
       }
 
-
       closeMenu();
 
       showLogin();
-
 
     } catch (error) {
 
@@ -601,7 +563,6 @@
     }
 
   }
-
 
   // ==========================================================
   // TẢI DỮ LIỆU
@@ -615,7 +576,6 @@
         "⏳ Đang tải dữ liệu...";
 
     }
-
 
     try {
 
@@ -632,14 +592,12 @@
           }
         );
 
-
       if (error) {
 
         console.error(
           "Load data error:",
           error
         );
-
 
         if (managerMessage) {
 
@@ -652,18 +610,14 @@
         return;
       }
 
-
       allData =
         Array.isArray(data)
           ? data
           : [];
 
-
       currentPage = 1;
 
-
       applyFilter();
-
 
       if (managerMessage) {
 
@@ -679,7 +633,6 @@
         error
       );
 
-
       if (managerMessage) {
 
         managerMessage.textContent =
@@ -690,7 +643,6 @@
     }
 
   }
-
 
   // ==========================================================
   // LỌC DỮ LIỆU
@@ -703,10 +655,8 @@
         .trim()
         .toLowerCase();
 
-
     const dateKeyword =
       filterDate?.value || "";
-
 
     filteredData =
       allData.filter(
@@ -717,12 +667,10 @@
               row.user_name || ""
             ).toLowerCase();
 
-
           const reportDate =
             String(
               row.field_date || ""
             ).substring(0, 10);
-
 
           const matchUser =
             !userKeyword ||
@@ -730,11 +678,9 @@
               userKeyword
             );
 
-
           const matchDate =
             !dateKeyword ||
             reportDate === dateKeyword;
-
 
           return (
             matchUser &&
@@ -744,13 +690,11 @@
         }
       );
 
-
     updateSubmittedUserCount();
 
     render();
 
   }
-
 
   // ==========================================================
   // ĐẾM CÁN BỘ
@@ -761,7 +705,6 @@
     const users =
       new Set();
 
-
     filteredData.forEach(
       (row) => {
 
@@ -770,14 +713,12 @@
             row.user_name || ""
           ).trim();
 
-
         if (name) {
           users.add(name);
         }
 
       }
     );
-
 
     if (submittedUserCount) {
 
@@ -787,7 +728,6 @@
     }
 
   }
-
 
   // ==========================================================
   // RENDER TABLE
@@ -802,22 +742,20 @@
 
     }
 
-
     const total =
       filteredData.reduce(
         (sum, row) => {
 
-          const amount =
-            Number(
+          return (
+            sum +
+            parseAmount(
               row.expected_amount
-            ) || 0;
-
-          return sum + amount;
+            )
+          );
 
         },
         0
       );
-
 
     if (totalAmount) {
 
@@ -829,14 +767,11 @@
 
     }
 
-
     if (!tableBody) {
       return;
     }
 
-
     tableBody.innerHTML = "";
-
 
     if (filteredData.length === 0) {
 
@@ -855,15 +790,12 @@
         </tr>
       `;
 
-
       if (pagination) {
         pagination.innerHTML = "";
       }
 
-
       return;
     }
-
 
     const totalPages =
       Math.ceil(
@@ -871,27 +803,22 @@
         PAGE_SIZE
       );
 
-
     if (currentPage > totalPages) {
       currentPage = totalPages;
     }
-
 
     const start =
       (currentPage - 1) *
       PAGE_SIZE;
 
-
     const end =
       start + PAGE_SIZE;
-
 
     const pageItems =
       filteredData.slice(
         start,
         end
       );
-
 
     pageItems.forEach(
       (row) => {
@@ -900,7 +827,6 @@
           document.createElement(
             "tr"
           );
-
 
         tr.innerHTML = `
           <td>
@@ -953,10 +879,8 @@
           </td>
 
           <td>
-            ${(
-              Number(
-                row.expected_amount
-              ) || 0
+            ${parseAmount(
+              row.expected_amount
             ).toLocaleString(
               "vi-VN"
             )}
@@ -1001,12 +925,12 @@
           </td>
         `;
 
-
-        tableBody.appendChild(tr);
+        tableBody.appendChild(
+          tr
+        );
 
       }
     );
-
 
     // --------------------------------------------------------
     // NÚT SỬA
@@ -1034,7 +958,6 @@
         }
       );
 
-
     // --------------------------------------------------------
     // NÚT XÓA
     // --------------------------------------------------------
@@ -1061,11 +984,9 @@
         }
       );
 
-
     renderPagination();
 
   }
-
 
   // ==========================================================
   // PHÂN TRANG
@@ -1077,18 +998,13 @@
       return;
     }
 
-
     pagination.innerHTML = "";
-
 
     const totalPages =
       Math.ceil(
         filteredData.length /
         PAGE_SIZE
       );
-
-
-    // Giữ khu vực phân trang kể cả chỉ có 1 trang
 
     if (totalPages <= 1) {
 
@@ -1116,7 +1032,6 @@
       return;
     }
 
-
     // --------------------------------------------------------
     // NÚT TRƯỚC
     // --------------------------------------------------------
@@ -1130,7 +1045,6 @@
 
     prev.disabled =
       currentPage === 1;
-
 
     prev.addEventListener(
       "click",
@@ -1152,11 +1066,9 @@
       }
     );
 
-
     pagination.appendChild(
       prev
     );
-
 
     // --------------------------------------------------------
     // TRANG
@@ -1168,13 +1080,11 @@
         currentPage - 2
       );
 
-
     let endPage =
       Math.min(
         totalPages,
         currentPage + 2
       );
-
 
     if (currentPage <= 3) {
 
@@ -1187,7 +1097,6 @@
         );
 
     }
-
 
     if (
       currentPage >=
@@ -1204,28 +1113,15 @@
 
     }
 
-
-    // --------------------------------------------------------
-    // TRANG ĐẦU
-    // --------------------------------------------------------
-
     if (startPage > 1) {
 
       addPageButton(1);
 
-
       if (startPage > 2) {
-
         addDots();
-
       }
 
     }
-
-
-    // --------------------------------------------------------
-    // CÁC TRANG
-    // --------------------------------------------------------
 
     for (
       let i = startPage;
@@ -1236,11 +1132,6 @@
       addPageButton(i);
 
     }
-
-
-    // --------------------------------------------------------
-    // TRANG CUỐI
-    // --------------------------------------------------------
 
     if (endPage < totalPages) {
 
@@ -1259,7 +1150,6 @@
 
     }
 
-
     // --------------------------------------------------------
     // NÚT SAU
     // --------------------------------------------------------
@@ -1273,7 +1163,6 @@
 
     next.disabled =
       currentPage === totalPages;
-
 
     next.addEventListener(
       "click",
@@ -1298,11 +1187,9 @@
       }
     );
 
-
     pagination.appendChild(
       next
     );
-
 
     // --------------------------------------------------------
     // HÀM TẠO NÚT TRANG
@@ -1315,9 +1202,7 @@
           "button"
         );
 
-
       btn.textContent = page;
-
 
       if (
         page ===
@@ -1329,7 +1214,6 @@
         );
 
       }
-
 
       btn.addEventListener(
         "click",
@@ -1347,13 +1231,11 @@
         }
       );
 
-
       pagination.appendChild(
         btn
       );
 
     }
-
 
     // --------------------------------------------------------
     // DẤU ...
@@ -1379,7 +1261,6 @@
 
   }
 
-
   // ==========================================================
   // SỬA BÁO CÁO
   // ==========================================================
@@ -1393,7 +1274,6 @@
           String(id)
       );
 
-
     if (!row) {
 
       alert(
@@ -1403,11 +1283,9 @@
       return;
     }
 
-
     createEditModal(row);
 
   }
-
 
   // ==========================================================
   // TẠO MODAL SỬA
@@ -1417,16 +1295,13 @@
 
     removeEditModal();
 
-
     const overlay =
       document.createElement(
         "div"
       );
 
-
     overlay.id =
       "editReportModal";
-
 
     overlay.style.cssText = `
       position:fixed;
@@ -1439,12 +1314,10 @@
       padding:15px;
     `;
 
-
     const modal =
       document.createElement(
         "div"
       );
-
 
     modal.style.cssText = `
       width:100%;
@@ -1457,7 +1330,6 @@
       box-shadow:0 20px 60px rgba(0,0,0,.35);
     `;
 
-
     modal.innerHTML = `
       <h2
         style="
@@ -1468,7 +1340,6 @@
         ✏️ SỬA BÁO CÁO
       </h2>
 
-
       <div
         style="
           display:grid;
@@ -1477,7 +1348,6 @@
       >
 
         <label>
-
           <b>Cán bộ</b>
 
           <input
@@ -1493,12 +1363,9 @@
               margin-top:5px;
             "
           >
-
         </label>
 
-
         <label>
-
           <b>Ngày field</b>
 
           <input
@@ -1516,12 +1383,9 @@
               margin-top:5px;
             "
           >
-
         </label>
 
-
         <label>
-
           <b>Số CIF</b>
 
           <input
@@ -1537,12 +1401,9 @@
               margin-top:5px;
             "
           >
-
         </label>
 
-
         <label>
-
           <b>Tên khách hàng</b>
 
           <input
@@ -1558,12 +1419,9 @@
               margin-top:5px;
             "
           >
-
         </label>
 
-
         <label>
-
           <b>Kết quả</b>
 
           <select
@@ -1575,7 +1433,6 @@
               margin-top:5px;
             "
           >
-
             <option value="Sống">
               Sống
             </option>
@@ -1583,14 +1440,10 @@
             <option value="Chết">
               Chết
             </option>
-
           </select>
-
         </label>
 
-
         <label>
-
           <b>Kết nối</b>
 
           <input
@@ -1606,12 +1459,9 @@
               margin-top:5px;
             "
           >
-
         </label>
 
-
         <label>
-
           <b>Kết quả chi tiết</b>
 
           <textarea
@@ -1626,19 +1476,18 @@
           >${escapeHtml(
             row.detail
           )}</textarea>
-
         </label>
 
-
         <label>
-
           <b>Dự thu</b>
 
           <input
             id="editExpectedAmount"
             type="number"
             value="${escapeAttr(
-              row.expected_amount
+              parseAmount(
+                row.expected_amount
+              )
             )}"
             style="
               width:100%;
@@ -1647,12 +1496,9 @@
               margin-top:5px;
             "
           >
-
         </label>
 
-
         <label>
-
           <b>
             Hướng tác động tiếp theo
           </b>
@@ -1669,11 +1515,9 @@
           >${escapeHtml(
             row.next_action
           )}</textarea>
-
         </label>
 
       </div>
-
 
       <div
         style="
@@ -1699,7 +1543,6 @@
           HỦY
         </button>
 
-
         <button
           id="saveEditBtn"
           type="button"
@@ -1718,7 +1561,6 @@
 
       </div>
 
-
       <div
         id="editMessage"
         style="
@@ -1729,23 +1571,18 @@
       ></div>
     `;
 
-
-    overlay.appendChild(modal);
+    overlay.appendChild(
+      modal
+    );
 
     document.body.appendChild(
       overlay
     );
 
-
-    // --------------------------------------------------------
-    // SET RESULT
-    // --------------------------------------------------------
-
     const resultSelect =
       document.getElementById(
         "editResult"
       );
-
 
     if (resultSelect) {
 
@@ -1753,11 +1590,6 @@
         row.result || "Sống";
 
     }
-
-
-    // --------------------------------------------------------
-    // HỦY
-    // --------------------------------------------------------
 
     document
       .getElementById(
@@ -1767,11 +1599,6 @@
         "click",
         removeEditModal
       );
-
-
-    // --------------------------------------------------------
-    // LƯU
-    // --------------------------------------------------------
 
     document
       .getElementById(
@@ -1784,11 +1611,6 @@
             row.id
           )
       );
-
-
-    // --------------------------------------------------------
-    // CLICK RA NGOÀI MODAL
-    // --------------------------------------------------------
 
     overlay.addEventListener(
       "click",
@@ -1807,7 +1629,6 @@
 
   }
 
-
   // ==========================================================
   // LƯU SỬA
   // ==========================================================
@@ -1819,68 +1640,57 @@
         "saveEditBtn"
       );
 
-
     const editMessage =
       document.getElementById(
         "editMessage"
       );
-
 
     const user_name =
       document.getElementById(
         "editUserName"
       )?.value.trim() || "";
 
-
     const field_date =
       document.getElementById(
         "editFieldDate"
       )?.value || null;
-
 
     const cif =
       document.getElementById(
         "editCif"
       )?.value.trim() || "";
 
-
     const customer_name =
       document.getElementById(
         "editCustomerName"
       )?.value.trim() || "";
-
 
     const result =
       document.getElementById(
         "editResult"
       )?.value || "";
 
-
     const connection =
       document.getElementById(
         "editConnection"
       )?.value.trim() || "";
-
 
     const detail =
       document.getElementById(
         "editDetail"
       )?.value.trim() || "";
 
-
     const expected_amount =
-      Number(
+      parseAmount(
         document.getElementById(
           "editExpectedAmount"
         )?.value
-      ) || 0;
-
+      );
 
     const next_action =
       document.getElementById(
         "editNextAction"
       )?.value.trim() || "";
-
 
     // --------------------------------------------------------
     // VALIDATE
@@ -1898,7 +1708,6 @@
       return;
     }
 
-
     if (!cif) {
 
       if (editMessage) {
@@ -1911,7 +1720,6 @@
       return;
     }
 
-
     if (saveBtn) {
 
       saveBtn.disabled = true;
@@ -1921,14 +1729,12 @@
 
     }
 
-
     if (editMessage) {
 
       editMessage.textContent =
         "⏳ Đang cập nhật...";
 
     }
-
 
     try {
 
@@ -1962,14 +1768,12 @@
           id
         );
 
-
       if (error) {
 
         console.error(
           "Update error:",
           error
         );
-
 
         if (editMessage) {
 
@@ -1982,12 +1786,9 @@
         return;
       }
 
-
       removeEditModal();
 
-
       await loadData();
-
 
       if (managerMessage) {
 
@@ -2002,7 +1803,6 @@
         "saveEditReport:",
         error
       );
-
 
       if (editMessage) {
 
@@ -2026,7 +1826,6 @@
 
   }
 
-
   // ==========================================================
   // XÓA BÁO CÁO
   // ==========================================================
@@ -2040,7 +1839,6 @@
           String(id)
       );
 
-
     if (!row) {
 
       alert(
@@ -2050,23 +1848,19 @@
       return;
     }
 
-
     const customer =
       row.customer_name ||
       row.cif ||
       "báo cáo này";
-
 
     const confirmed =
       confirm(
         `⚠️ Bạn có chắc muốn xóa báo cáo của "${customer}"?\n\nHành động này không thể hoàn tác.`
       );
 
-
     if (!confirmed) {
       return;
     }
-
 
     if (managerMessage) {
 
@@ -2074,7 +1868,6 @@
         "⏳ Đang xóa báo cáo...";
 
     }
-
 
     try {
 
@@ -2088,14 +1881,12 @@
           id
         );
 
-
       if (error) {
 
         console.error(
           "Delete error:",
           error
         );
-
 
         if (managerMessage) {
 
@@ -2108,9 +1899,7 @@
         return;
       }
 
-
       await loadData();
-
 
       if (managerMessage) {
 
@@ -2126,7 +1915,6 @@
         error
       );
 
-
       if (managerMessage) {
 
         managerMessage.textContent =
@@ -2138,7 +1926,6 @@
 
   }
 
-
   // ==========================================================
   // CÁN BỘ ĐÃ NHẬP BÁO CÁO
   // ==========================================================
@@ -2147,10 +1934,8 @@
 
     removeSubmittedUserModal();
 
-
     const usersMap =
       new Map();
-
 
     filteredData.forEach(
       (row) => {
@@ -2160,11 +1945,9 @@
             row.user_name || ""
           ).trim();
 
-
         if (!name) {
           return;
         }
-
 
         if (!usersMap.has(name)) {
 
@@ -2175,7 +1958,6 @@
 
         }
 
-
         usersMap.set(
           name,
           usersMap.get(name) + 1
@@ -2183,7 +1965,6 @@
 
       }
     );
-
 
     const users =
       Array.from(
@@ -2196,30 +1977,24 @@
           )
       );
 
-
     const overlay =
       document.createElement(
         "div"
       );
 
-
     overlay.id =
       "submittedUserModal";
 
-
     overlay.className =
       "user-modal-overlay";
-
 
     const modal =
       document.createElement(
         "div"
       );
 
-
     modal.className =
       "user-modal";
-
 
     modal.innerHTML = `
       <div
@@ -2243,7 +2018,6 @@
 
         </h2>
 
-
         <button
           class="user-modal-close"
           id="closeSubmittedUsers"
@@ -2253,7 +2027,6 @@
         </button>
 
       </div>
-
 
       <div
         class="user-modal-body"
@@ -2300,7 +2073,6 @@
                         ${index + 1}
                       </div>
 
-
                       <div
                         style="
                           flex:1;
@@ -2313,7 +2085,6 @@
                           )}
                         </div>
 
-
                         <div
                           style="
                             font-size:13px;
@@ -2325,7 +2096,6 @@
                         </div>
 
                       </div>
-
 
                       <div
                         style="
@@ -2345,20 +2115,13 @@
       </div>
     `;
 
-
     overlay.appendChild(
       modal
     );
 
-
     document.body.appendChild(
       overlay
     );
-
-
-    // --------------------------------------------------------
-    // CLOSE
-    // --------------------------------------------------------
 
     document
       .getElementById(
@@ -2368,7 +2131,6 @@
         "click",
         removeSubmittedUserModal
       );
-
 
     overlay.addEventListener(
       "click",
@@ -2385,11 +2147,6 @@
       }
     );
 
-
-    // --------------------------------------------------------
-    // CLICK CÁN BỘ
-    // --------------------------------------------------------
-
     modal
       .querySelectorAll(
         ".submitted-user-item"
@@ -2405,7 +2162,6 @@
                 item.dataset.user ||
                 "";
 
-
               if (filterUser) {
 
                 filterUser.value =
@@ -2413,15 +2169,11 @@
 
               }
 
-
               currentPage = 1;
-
 
               applyFilter();
 
-
               removeSubmittedUserModal();
-
 
               if (tableBody) {
 
@@ -2440,7 +2192,6 @@
 
   }
 
-
   // ==========================================================
   // XÓA MODAL CÁN BỘ
   // ==========================================================
@@ -2454,7 +2205,6 @@
       ?.remove();
 
   }
-
 
   // ==========================================================
   // MENU
@@ -2470,7 +2220,6 @@
 
     }
 
-
     if (sideMenu) {
 
       sideMenu.classList.add(
@@ -2480,7 +2229,6 @@
     }
 
   }
-
 
   function closeMenu() {
 
@@ -2492,7 +2240,6 @@
 
     }
 
-
     if (sideMenu) {
 
       sideMenu.classList.remove(
@@ -2503,10 +2250,10 @@
 
   }
 
-
   // ==========================================================
   // ==========================================================
-  // XUẤT EXCEL - BẢN NÂNG CẤP
+  // XUẤT EXCEL
+  // FULL + TÔ MÀU TIÊU ĐỀ
   // ==========================================================
   // ==========================================================
 
@@ -2522,12 +2269,11 @@
     ) {
 
       alert(
-        "❌ Chưa tải được thư viện Excel.\n\nHãy kiểm tra manager.html đã dùng xlsx-js-style chưa."
+        "❌ Chưa tải được thư viện Excel.\n\nHãy kiểm tra manager.html đang dùng xlsx-js-style."
       );
 
       return;
     }
-
 
     // --------------------------------------------------------
     // KIỂM TRA DỮ LIỆU
@@ -2545,7 +2291,6 @@
       return;
     }
 
-
     // --------------------------------------------------------
     // TRẠNG THÁI NÚT
     // --------------------------------------------------------
@@ -2553,7 +2298,6 @@
     const originalText =
       exportBtn?.textContent ||
       "📥 XUẤT EXCEL";
-
 
     if (exportBtn) {
 
@@ -2564,7 +2308,6 @@
 
     }
 
-
     try {
 
       // ======================================================
@@ -2574,12 +2317,10 @@
       const exportDate =
         new Date();
 
-
       const exportDateText =
         formatDateTime(
           exportDate
         );
-
 
       const total =
         filteredData.reduce(
@@ -2587,10 +2328,8 @@
 
             return (
               sum +
-              (
-                Number(
-                  row.expected_amount
-                ) || 0
+              parseAmount(
+                row.expected_amount
               )
             );
 
@@ -2598,14 +2337,12 @@
           0
         );
 
-
       // ======================================================
       // SHEET 1
       // BÁO CÁO NGÀY
       // ======================================================
 
       const sheetData = [];
-
 
       // ------------------------------------------------------
       // TIÊU ĐỀ
@@ -2615,12 +2352,10 @@
         "BÁO CÁO NGÀY"
       ]);
 
-
       sheetData.push([
         "Ngày xuất:",
         exportDateText
       ]);
-
 
       // ------------------------------------------------------
       // BỘ LỌC
@@ -2630,7 +2365,6 @@
         filterUser?.value?.trim() ||
         "Tất cả cán bộ";
 
-
       const dateFilterText =
         filterDate?.value
           ? formatDate(
@@ -2638,37 +2372,31 @@
             )
           : "Tất cả ngày";
 
-
       sheetData.push([
         "Bộ lọc cán bộ:",
         userFilterText
       ]);
-
 
       sheetData.push([
         "Bộ lọc ngày:",
         dateFilterText
       ]);
 
-
       sheetData.push([
         "Tổng số báo cáo:",
         filteredData.length
       ]);
-
 
       sheetData.push([
         "Tổng dự thu:",
         total
       ]);
 
-
       // ------------------------------------------------------
       // DÒNG TRỐNG
       // ------------------------------------------------------
 
       sheetData.push([]);
-
 
       // ------------------------------------------------------
       // HEADER
@@ -2686,7 +2414,6 @@
         "Dự thu",
         "Hướng tác động tiếp theo"
       ]);
-
 
       // ======================================================
       // DỮ LIỆU
@@ -2715,9 +2442,9 @@
 
             row.detail || "",
 
-            Number(
+            parseAmount(
               row.expected_amount
-            ) || 0,
+            ),
 
             row.next_action || ""
 
@@ -2726,14 +2453,12 @@
         }
       );
 
-
       // ======================================================
       // DÒNG TỔNG
       // ======================================================
 
       const totalRowIndex =
         sheetData.length;
-
 
       sheetData.push([
 
@@ -2759,7 +2484,6 @@
 
       ]);
 
-
       // ======================================================
       // TẠO WORKSHEET
       // ======================================================
@@ -2768,7 +2492,6 @@
         XLSX.utils.aoa_to_sheet(
           sheetData
         );
-
 
       // ======================================================
       // MERGE TIÊU ĐỀ
@@ -2789,7 +2512,6 @@
         }
 
       ];
-
 
       // ======================================================
       // ĐỘ RỘNG CỘT
@@ -2839,110 +2561,295 @@
 
       ];
 
-
       // ======================================================
-      // STYLE
+      // STYLE TIÊU ĐỀ CHÍNH
       // ======================================================
 
       const titleStyle = {
 
         font: {
+
           bold: true,
-          sz: 18
+
+          sz: 18,
+
+          color: {
+            rgb: "FFFFFF"
+          }
+
+        },
+
+        fill: {
+
+          patternType: "solid",
+
+          fgColor: {
+            rgb: "1F4E78"
+          }
+
         },
 
         alignment: {
+
           horizontal: "center",
+
           vertical: "center"
+
+        },
+
+        border: {
+
+          top: {
+            style: "thin",
+            color: {
+              rgb: "FFFFFF"
+            }
+          },
+
+          bottom: {
+            style: "thin",
+            color: {
+              rgb: "FFFFFF"
+            }
+          },
+
+          left: {
+            style: "thin",
+            color: {
+              rgb: "FFFFFF"
+            }
+          },
+
+          right: {
+            style: "thin",
+            color: {
+              rgb: "FFFFFF"
+            }
+          }
+
         }
 
       };
 
+      // ======================================================
+      // STYLE NHÃN THÔNG TIN
+      // ======================================================
 
       const infoLabelStyle = {
 
         font: {
-          bold: true
+
+          bold: true,
+
+          color: {
+            rgb: "1F1F1F"
+          }
+
         },
 
         alignment: {
+
           vertical: "center"
+
         }
 
       };
 
+      // ======================================================
+      // STYLE HEADER BẢNG
+      // ======================================================
+      //
+      // ĐÂY LÀ PHẦN TÔ MÀU:
+      //
+      // STT
+      // Cán bộ
+      // Ngày field
+      // Số CIF
+      // Tên khách hàng
+      // Kết quả
+      // Kết nối
+      // Kết quả chi tiết
+      // Dự thu
+      // Hướng tác động tiếp theo
+      //
+      // ======================================================
 
       const headerStyle = {
 
+        // ------------------------------
+        // CHỮ TRẮNG
+        // ------------------------------
+
         font: {
+
           bold: true,
-          sz: 11
+
+          sz: 11,
+
+          color: {
+            rgb: "FFFFFF"
+          }
+
         },
 
-        alignment: {
-          horizontal: "center",
-          vertical: "center",
-          wrapText: true
+        // ------------------------------
+        // NỀN XANH
+        // ------------------------------
+
+        fill: {
+
+          patternType: "solid",
+
+          fgColor: {
+            rgb: "1F4E78"
+          }
+
         },
+
+        // ------------------------------
+        // CĂN GIỮA
+        // ------------------------------
+
+        alignment: {
+
+          horizontal: "center",
+
+          vertical: "center",
+
+          wrapText: true
+
+        },
+
+        // ------------------------------
+        // VIỀN TRẮNG
+        // ------------------------------
 
         border: {
 
           top: {
-            style: "thin"
+
+            style: "thin",
+
+            color: {
+              rgb: "FFFFFF"
+            }
+
           },
 
           bottom: {
-            style: "thin"
+
+            style: "thin",
+
+            color: {
+              rgb: "FFFFFF"
+            }
+
           },
 
           left: {
-            style: "thin"
+
+            style: "thin",
+
+            color: {
+              rgb: "FFFFFF"
+            }
+
           },
 
           right: {
-            style: "thin"
+
+            style: "thin",
+
+            color: {
+              rgb: "FFFFFF"
+            }
+
           }
 
         }
 
       };
 
+      // ======================================================
+      // STYLE DÒNG TỔNG
+      // ======================================================
 
       const totalStyle = {
 
         font: {
-          bold: true
+
+          bold: true,
+
+          color: {
+            rgb: "1F1F1F"
+          }
+
+        },
+
+        fill: {
+
+          patternType: "solid",
+
+          fgColor: {
+            rgb: "D9EAF7"
+          }
+
         },
 
         alignment: {
+
           vertical: "center"
+
         },
 
         border: {
 
           top: {
-            style: "thin"
+
+            style: "thin",
+
+            color: {
+              rgb: "7F7F7F"
+            }
+
           },
 
           bottom: {
-            style: "thin"
+
+            style: "thin",
+
+            color: {
+              rgb: "7F7F7F"
+            }
+
           },
 
           left: {
-            style: "thin"
+
+            style: "thin",
+
+            color: {
+              rgb: "7F7F7F"
+            }
+
           },
 
           right: {
-            style: "thin"
+
+            style: "thin",
+
+            color: {
+              rgb: "7F7F7F"
+            }
+
           }
 
         }
 
       };
 
-
       // ======================================================
-      // TITLE
+      // STYLE TITLE
       // ======================================================
 
       if (ws["A1"]) {
@@ -2952,9 +2859,18 @@
 
       }
 
+      // ======================================================
+      // CHIỀU CAO TITLE
+      // ======================================================
+
+      ws["!rows"] = [];
+
+      ws["!rows"][0] = {
+        hpt: 30
+      };
 
       // ======================================================
-      // INFO
+      // STYLE INFO
       // ======================================================
 
       const infoRows = [
@@ -2964,7 +2880,6 @@
         4,
         5
       ];
-
 
       infoRows.forEach(
         (rowIndex) => {
@@ -2977,7 +2892,6 @@
               })
             ];
 
-
           if (cell) {
 
             cell.s =
@@ -2988,12 +2902,10 @@
         }
       );
 
-
       // ======================================================
-      // HEADER
+      // HEADER BẢNG
       //
-      // Sheet row 8
-      // Excel index = 7
+      // r: 7 = dòng Excel số 8
       // ======================================================
 
       for (
@@ -3010,7 +2922,6 @@
             })
           ];
 
-
         if (cell) {
 
           cell.s =
@@ -3020,6 +2931,13 @@
 
       }
 
+      // ------------------------------------------------------
+      // CHIỀU CAO HEADER
+      // ------------------------------------------------------
+
+      ws["!rows"][7] = {
+        hpt: 32
+      };
 
       // ======================================================
       // STYLE DATA
@@ -3031,7 +2949,6 @@
         firstDataRow +
         filteredData.length -
         1;
-
 
       for (
         let rowIndex =
@@ -3054,11 +2971,9 @@
               })
             ];
 
-
           if (!cell) {
             continue;
           }
-
 
           cell.s = {
 
@@ -3070,12 +2985,63 @@
                 col === 7 ||
                 col === 9
 
+            },
+
+            border: {
+
+              top: {
+                style: "thin",
+                color: {
+                  rgb: "D9D9D9"
+                }
+              },
+
+              bottom: {
+                style: "thin",
+                color: {
+                  rgb: "D9D9D9"
+                }
+              },
+
+              left: {
+                style: "thin",
+                color: {
+                  rgb: "D9D9D9"
+                }
+              },
+
+              right: {
+                style: "thin",
+                color: {
+                  rgb: "D9D9D9"
+                }
+              }
+
             }
 
           };
 
+          // --------------------------------------------------
+          // STT
+          // --------------------------------------------------
 
-          // Ngày field
+          if (col === 0) {
+
+            cell.s.alignment = {
+
+              horizontal:
+                "center",
+
+              vertical:
+                "center"
+
+            };
+
+          }
+
+          // --------------------------------------------------
+          // NGÀY FIELD
+          // --------------------------------------------------
 
           if (col === 2) {
 
@@ -3094,8 +3060,9 @@
 
           }
 
-
-          // Dự thu
+          // --------------------------------------------------
+          // DỰ THU
+          // --------------------------------------------------
 
           if (col === 8) {
 
@@ -3114,35 +3081,13 @@
 
           }
 
-
-          // STT
-
-          if (col === 0) {
-
-            cell.s.alignment = {
-
-              horizontal:
-                "center",
-
-              vertical:
-                "center"
-
-            };
-
-          }
-
         }
 
       }
 
-
       // ======================================================
       // STYLE TOTAL
       // ======================================================
-
-      const totalExcelRow =
-        totalRowIndex;
-
 
       for (
         let col = 0;
@@ -3153,11 +3098,10 @@
         const cell =
           ws[
             XLSX.utils.encode_cell({
-              r: totalExcelRow,
+              r: totalRowIndex,
               c: col
             })
           ];
-
 
         if (cell) {
 
@@ -3168,15 +3112,13 @@
 
       }
 
-
       const totalAmountCell =
         ws[
           XLSX.utils.encode_cell({
-            r: totalExcelRow,
+            r: totalRowIndex,
             c: 8
           })
         ];
-
 
       if (totalAmountCell) {
 
@@ -3195,7 +3137,6 @@
 
       }
 
-
       // ======================================================
       // FILTER
       // ======================================================
@@ -3206,7 +3147,6 @@
           `A8:J${lastDataRow + 1}`
 
       };
-
 
       // ======================================================
       // FREEZE HEADER
@@ -3219,7 +3159,6 @@
         ySplit: 8
 
       };
-
 
       // ======================================================
       // PAGE SETUP
@@ -3237,7 +3176,6 @@
           0
 
       };
-
 
       // ======================================================
       // SHEET 2
@@ -3277,14 +3215,12 @@
 
       ];
 
-
-      // ------------------------------------------------------
+      // ======================================================
       // THỐNG KÊ CÁN BỘ
-      // ------------------------------------------------------
+      // ======================================================
 
       const userStats =
         new Map();
-
 
       filteredData.forEach(
         (row) => {
@@ -3295,12 +3231,10 @@
             ).trim() ||
             "Chưa nhập";
 
-
           const amount =
-            Number(
+            parseAmount(
               row.expected_amount
-            ) || 0;
-
+            );
 
           if (!userStats.has(user)) {
 
@@ -3314,12 +3248,10 @@
 
           }
 
-
           const item =
             userStats.get(
               user
             );
-
 
           item.count++;
 
@@ -3328,7 +3260,6 @@
 
         }
       );
-
 
       const sortedUsers =
         Array.from(
@@ -3340,7 +3271,6 @@
               "vi"
             )
         );
-
 
       sortedUsers.forEach(
         ([user, stats]) => {
@@ -3358,16 +3288,14 @@
         }
       );
 
-
       const wsSummary =
         XLSX.utils.aoa_to_sheet(
           summaryData
         );
 
-
-      // ------------------------------------------------------
+      // ======================================================
       // MERGE TITLE
-      // ------------------------------------------------------
+      // ======================================================
 
       wsSummary["!merges"] = [
 
@@ -3385,10 +3313,9 @@
 
       ];
 
-
-      // ------------------------------------------------------
+      // ======================================================
       // WIDTH
-      // ------------------------------------------------------
+      // ======================================================
 
       wsSummary["!cols"] = [
 
@@ -3406,10 +3333,9 @@
 
       ];
 
-
-      // ------------------------------------------------------
-      // STYLE SUMMARY
-      // ------------------------------------------------------
+      // ======================================================
+      // STYLE SUMMARY TITLE
+      // ======================================================
 
       if (wsSummary["A1"]) {
 
@@ -3418,6 +3344,9 @@
 
       }
 
+      // ======================================================
+      // SUMMARY HEADER 1
+      // ======================================================
 
       for (
         let col = 0;
@@ -3433,7 +3362,6 @@
             })
           ];
 
-
         if (cell) {
 
           cell.s =
@@ -3443,6 +3371,9 @@
 
       }
 
+      // ======================================================
+      // SUMMARY HEADER 2
+      // ======================================================
 
       for (
         let col = 0;
@@ -3458,7 +3389,6 @@
             })
           ];
 
-
         if (cell) {
 
           cell.s =
@@ -3468,10 +3398,9 @@
 
       }
 
-
-      // ------------------------------------------------------
+      // ======================================================
       // FORMAT SUMMARY MONEY
-      // ------------------------------------------------------
+      // ======================================================
 
       for (
         let rowIndex = 7;
@@ -3488,7 +3417,6 @@
             })
           ];
 
-
         if (cell) {
 
           cell.z =
@@ -3498,8 +3426,9 @@
 
       }
 
-
-      // Tổng dự thu
+      // ======================================================
+      // TỔNG DỰ THU SUMMARY
+      // ======================================================
 
       if (wsSummary["B5"]) {
 
@@ -3508,7 +3437,6 @@
 
       }
 
-
       // ======================================================
       // WORKBOOK
       // ======================================================
@@ -3516,13 +3444,11 @@
       const wb =
         XLSX.utils.book_new();
 
-
       XLSX.utils.book_append_sheet(
         wb,
         ws,
         "BaoCaoNgay"
       );
-
 
       XLSX.utils.book_append_sheet(
         wb,
@@ -3530,14 +3456,12 @@
         "TongQuan"
       );
 
-
       // ======================================================
       // TÊN FILE
       // ======================================================
 
       const now =
         new Date();
-
 
       const date =
         now.getFullYear() +
@@ -3556,10 +3480,8 @@
           "0"
         );
 
-
       const fileName =
         `Bao_Cao_Ngay_${date}.xlsx`;
-
 
       // ======================================================
       // GHI FILE
@@ -3569,7 +3491,6 @@
         wb,
         fileName
       );
-
 
       // ======================================================
       // THÔNG BÁO
@@ -3588,7 +3509,6 @@
         "Export Excel error:",
         error
       );
-
 
       alert(
         "❌ Không thể xuất Excel.\n\n" +
@@ -3614,7 +3534,6 @@
 
   }
 
-
   // ==========================================================
   // FORMAT DATE HIỂN THỊ
   // ==========================================================
@@ -3625,15 +3544,12 @@
       return "";
     }
 
-
     const dateString =
       String(value)
         .substring(0, 10);
 
-
     const parts =
       dateString.split("-");
-
 
     if (
       parts.length === 3
@@ -3647,7 +3563,6 @@
 
       const day =
         parts[2];
-
 
       if (
         year &&
@@ -3663,11 +3578,9 @@
 
     }
 
-
     return dateString;
 
   }
-
 
   // ==========================================================
   // FORMAT DATETIME
@@ -3681,12 +3594,10 @@
       return "";
     }
 
-
     const date =
       value instanceof Date
         ? value
         : new Date(value);
-
 
     if (
       Number.isNaN(
@@ -3698,7 +3609,6 @@
 
     }
 
-
     const day =
       String(
         date.getDate()
@@ -3706,7 +3616,6 @@
         2,
         "0"
       );
-
 
     const month =
       String(
@@ -3716,10 +3625,8 @@
         "0"
       );
 
-
     const year =
       date.getFullYear();
-
 
     const hours =
       String(
@@ -3729,7 +3636,6 @@
         "0"
       );
 
-
     const minutes =
       String(
         date.getMinutes()
@@ -3738,13 +3644,11 @@
         "0"
       );
 
-
     return (
       `${day}/${month}/${year} ${hours}:${minutes}`
     );
 
   }
-
 
   // ==========================================================
   // FORMAT DATE CHO INPUT DATE
@@ -3758,7 +3662,6 @@
       return "";
     }
 
-
     return String(value)
       .substring(
         0,
@@ -3766,7 +3669,6 @@
       );
 
   }
-
 
   // ==========================================================
   // CHUYỂN NGÀY -> DATE CHO EXCEL
@@ -3780,7 +3682,6 @@
       return null;
     }
 
-
     const dateString =
       String(value)
         .substring(
@@ -3788,10 +3689,8 @@
           10
         );
 
-
     const parts =
       dateString.split("-");
-
 
     if (
       parts.length !== 3
@@ -3801,24 +3700,20 @@
 
     }
 
-
     const year =
       Number(
         parts[0]
       );
-
 
     const month =
       Number(
         parts[1]
       );
 
-
     const day =
       Number(
         parts[2]
       );
-
 
     if (
       !year ||
@@ -3830,7 +3725,6 @@
 
     }
 
-
     return new Date(
       year,
       month - 1,
@@ -3839,6 +3733,83 @@
 
   }
 
+  // ==========================================================
+  // XỬ LÝ SỐ TIỀN
+  // ==========================================================
+
+  function parseAmount(
+    value
+  ) {
+
+    if (
+      value === null ||
+      value === undefined ||
+      value === ""
+    ) {
+
+      return 0;
+
+    }
+
+    if (
+      typeof value === "number"
+    ) {
+
+      return Number.isFinite(
+        value
+      )
+        ? value
+        : 0;
+
+    }
+
+    let text =
+      String(value)
+        .trim();
+
+    if (!text) {
+      return 0;
+    }
+
+    // Loại bỏ ký hiệu tiền
+    text =
+      text
+        .replace(
+          /đ/gi,
+          ""
+        )
+        .trim();
+
+    // Trường hợp nhập:
+    // 25,000,000
+    // 25.000.000
+    // 25000000
+
+    text =
+      text
+        .replace(
+          /,/g,
+          ""
+        )
+        .replace(
+          /\./g,
+          ""
+        )
+        .replace(
+          /\s/g,
+          ""
+        );
+
+    const number =
+      Number(text);
+
+    return Number.isFinite(
+      number
+    )
+      ? number
+      : 0;
+
+  }
 
   // ==========================================================
   // ESCAPE HTML
@@ -3856,7 +3827,6 @@
       return "";
 
     }
-
 
     return String(value)
 
@@ -3887,7 +3857,6 @@
 
   }
 
-
   // ==========================================================
   // ESCAPE ATTRIBUTE
   // ==========================================================
@@ -3904,7 +3873,6 @@
       return "";
 
     }
-
 
     return String(value)
 
@@ -3929,7 +3897,6 @@
       );
 
   }
-
 
   // ==========================================================
   // REMOVE EDIT MODAL
