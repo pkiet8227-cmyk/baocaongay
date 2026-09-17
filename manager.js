@@ -1,7 +1,7 @@
 // ============================================================
 // MANAGER.JS
 // QUẢN LÝ BÁO CÁO NGÀY
-// BẢN HOÀN CHỈNH
+// BẢN HOÀN CHỈNH + EXCEL ĐẸP
 // ============================================================
 
 (() => {
@@ -23,6 +23,14 @@
 
   if (!SUPABASE_URL_VALUE || !SUPABASE_KEY_VALUE) {
     alert("❌ Chưa cấu hình Supabase trong config.js.");
+    return;
+  }
+
+  if (
+    typeof supabase === "undefined" ||
+    typeof supabase.createClient !== "function"
+  ) {
+    alert("❌ Chưa tải được thư viện Supabase.");
     return;
   }
 
@@ -120,123 +128,199 @@
   const submittedUserCount =
     document.getElementById("submittedUserCount");
 
+
   // ==========================================================
   // KHỞI ĐỘNG
   // ==========================================================
 
-  document.addEventListener("DOMContentLoaded", async () => {
+  document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
 
-    // Login
-    loginBtn?.addEventListener("click", login);
+      // ------------------------------------------------------
+      // LOGIN
+      // ------------------------------------------------------
 
-    passwordInput?.addEventListener(
-      "keydown",
-      (e) => {
-        if (e.key === "Enter") {
-          login();
+      loginBtn?.addEventListener(
+        "click",
+        login
+      );
+
+      passwordInput?.addEventListener(
+        "keydown",
+        (e) => {
+
+          if (e.key === "Enter") {
+            login();
+          }
+
         }
-      }
-    );
+      );
 
-    emailInput?.addEventListener(
-      "keydown",
-      (e) => {
-        if (e.key === "Enter") {
-          login();
+      emailInput?.addEventListener(
+        "keydown",
+        (e) => {
+
+          if (e.key === "Enter") {
+            login();
+          }
+
         }
-      }
-    );
+      );
 
-    // Logout
-    logoutBtn?.addEventListener("click", logout);
-    menuLogoutBtn?.addEventListener("click", logout);
 
-    // Filter
-    filterBtn?.addEventListener(
-      "click",
-      () => {
-        currentPage = 1;
-        applyFilter();
-      }
-    );
+      // ------------------------------------------------------
+      // LOGOUT
+      // ------------------------------------------------------
 
-    filterDate?.addEventListener(
-      "change",
-      () => {
-        currentPage = 1;
-        applyFilter();
-      }
-    );
+      logoutBtn?.addEventListener(
+        "click",
+        logout
+      );
 
-    filterUser?.addEventListener(
-      "keydown",
-      (e) => {
-        if (e.key === "Enter") {
+      menuLogoutBtn?.addEventListener(
+        "click",
+        logout
+      );
+
+
+      // ------------------------------------------------------
+      // FILTER
+      // ------------------------------------------------------
+
+      filterBtn?.addEventListener(
+        "click",
+        () => {
+
           currentPage = 1;
+
           applyFilter();
+
         }
-      }
-    );
+      );
 
-    // Refresh
-    refreshBtn?.addEventListener(
-      "click",
-      async () => {
-        currentPage = 1;
-        await loadData();
-      }
-    );
 
-    // Excel
-    exportBtn?.addEventListener(
-      "click",
-      exportExcel
-    );
+      filterDate?.addEventListener(
+        "change",
+        () => {
 
-    // Menu
-    menuBtn?.addEventListener(
-      "click",
-      openMenu
-    );
+          currentPage = 1;
 
-    sideMenuClose?.addEventListener(
-      "click",
-      closeMenu
-    );
+          applyFilter();
 
-    sideMenuOverlay?.addEventListener(
-      "click",
-      closeMenu
-    );
-
-    menuReportsBtn?.addEventListener(
-      "click",
-      () => {
-        closeMenu();
-
-        if (managerBox) {
-          managerBox.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-          });
         }
+      );
+
+
+      filterUser?.addEventListener(
+        "keydown",
+        (e) => {
+
+          if (e.key === "Enter") {
+
+            currentPage = 1;
+
+            applyFilter();
+
+          }
+
+        }
+      );
+
+
+      // ------------------------------------------------------
+      // REFRESH
+      // ------------------------------------------------------
+
+      refreshBtn?.addEventListener(
+        "click",
+        async () => {
+
+          currentPage = 1;
+
+          await loadData();
+
+        }
+      );
+
+
+      // ------------------------------------------------------
+      // EXCEL
+      // ------------------------------------------------------
+
+      exportBtn?.addEventListener(
+        "click",
+        exportExcel
+      );
+
+
+      // ------------------------------------------------------
+      // MENU
+      // ------------------------------------------------------
+
+      menuBtn?.addEventListener(
+        "click",
+        openMenu
+      );
+
+      sideMenuClose?.addEventListener(
+        "click",
+        closeMenu
+      );
+
+      sideMenuOverlay?.addEventListener(
+        "click",
+        closeMenu
+      );
+
+
+      menuReportsBtn?.addEventListener(
+        "click",
+        () => {
+
+          closeMenu();
+
+          if (managerBox) {
+
+            managerBox.scrollIntoView({
+              behavior: "smooth",
+              block: "start"
+            });
+
+          }
+
+        }
+      );
+
+
+      // ------------------------------------------------------
+      // CÁN BỘ ĐÃ NHẬP
+      // ------------------------------------------------------
+
+      showSubmittedUsersBtn?.addEventListener(
+        "click",
+        showSubmittedUsers
+      );
+
+
+      // ------------------------------------------------------
+      // HIỆN MENU
+      // ------------------------------------------------------
+
+      if (menuBtn) {
+        menuBtn.style.display = "block";
       }
-    );
 
-    // Cán bộ đã nhập
-    showSubmittedUsersBtn?.addEventListener(
-      "click",
-      showSubmittedUsers
-    );
 
-    // Hiện nút menu
-    if (menuBtn) {
-      menuBtn.style.display = "block";
+      // ------------------------------------------------------
+      // KIỂM TRA SESSION
+      // ------------------------------------------------------
+
+      await checkSession();
+
     }
+  );
 
-    // Kiểm tra session
-    await checkSession();
-  });
 
   // ==========================================================
   // KIỂM TRA SESSION
@@ -251,10 +335,19 @@
         error
       } = await db.auth.getSession();
 
+
       if (error) {
+
+        console.error(
+          "Session error:",
+          error
+        );
+
         showLogin();
+
         return;
       }
+
 
       if (data?.session) {
 
@@ -276,8 +369,11 @@
       );
 
       showLogin();
+
     }
+
   }
+
 
   // ==========================================================
   // HIỆN LOGIN
@@ -292,7 +388,9 @@
     if (managerBox) {
       managerBox.style.display = "none";
     }
+
   }
+
 
   // ==========================================================
   // HIỆN MANAGER
@@ -311,7 +409,9 @@
     if (loginMessage) {
       loginMessage.textContent = "";
     }
+
   }
+
 
   // ==========================================================
   // ĐĂNG NHẬP
@@ -325,15 +425,19 @@
     const password =
       passwordInput?.value || "";
 
+
     if (!email || !password) {
 
       if (loginMessage) {
+
         loginMessage.textContent =
           "❌ Vui lòng nhập Gmail và mật khẩu.";
+
       }
 
       return;
     }
+
 
     if (loginBtn) {
 
@@ -341,12 +445,17 @@
 
       loginBtn.textContent =
         "⏳ ĐANG ĐĂNG NHẬP...";
+
     }
 
+
     if (loginMessage) {
+
       loginMessage.textContent =
         "⏳ Đang kiểm tra tài khoản...";
+
     }
+
 
     try {
 
@@ -354,9 +463,13 @@
         data,
         error
       } = await db.auth.signInWithPassword({
+
         email: email,
+
         password: password
+
       });
+
 
       if (error) {
 
@@ -365,26 +478,34 @@
           error
         );
 
+
         if (loginMessage) {
+
           loginMessage.textContent =
             "❌ Đăng nhập thất bại: " +
             error.message;
+
         }
 
         return;
       }
+
 
       if (!data?.session) {
 
         if (loginMessage) {
+
           loginMessage.textContent =
             "❌ Không tạo được phiên đăng nhập.";
+
         }
 
         return;
       }
 
+
       // Đăng nhập thành công
+
       showManager();
 
       currentPage = 1;
@@ -398,9 +519,12 @@
         error
       );
 
+
       if (loginMessage) {
+
         loginMessage.textContent =
           "❌ Lỗi hệ thống khi đăng nhập.";
+
       }
 
     } finally {
@@ -411,9 +535,13 @@
 
         loginBtn.textContent =
           "🔐 ĐĂNG NHẬP";
+
       }
+
     }
+
   }
+
 
   // ==========================================================
   // ĐĂNG XUẤT
@@ -425,33 +553,43 @@
 
       await db.auth.signOut();
 
+
       allData = [];
+
       filteredData = [];
+
       currentPage = 1;
+
 
       if (tableBody) {
         tableBody.innerHTML = "";
       }
 
+
       if (pagination) {
         pagination.innerHTML = "";
       }
+
 
       if (totalReports) {
         totalReports.textContent = "0";
       }
 
+
       if (totalAmount) {
         totalAmount.textContent = "0 đ";
       }
+
 
       if (submittedUserCount) {
         submittedUserCount.textContent = "0";
       }
 
+
       closeMenu();
 
       showLogin();
+
 
     } catch (error) {
 
@@ -459,8 +597,11 @@
         "Logout:",
         error
       );
+
     }
+
   }
+
 
   // ==========================================================
   // TẢI DỮ LIỆU
@@ -469,9 +610,12 @@
   async function loadData() {
 
     if (managerMessage) {
+
       managerMessage.textContent =
         "⏳ Đang tải dữ liệu...";
+
     }
+
 
     try {
 
@@ -488,6 +632,7 @@
           }
         );
 
+
       if (error) {
 
         console.error(
@@ -495,26 +640,36 @@
           error
         );
 
+
         if (managerMessage) {
+
           managerMessage.textContent =
             "❌ Lỗi tải dữ liệu: " +
             error.message;
+
         }
 
         return;
       }
 
-      allData = Array.isArray(data)
-        ? data
-        : [];
+
+      allData =
+        Array.isArray(data)
+          ? data
+          : [];
+
 
       currentPage = 1;
 
+
       applyFilter();
 
+
       if (managerMessage) {
+
         managerMessage.textContent =
           `✅ Đã tải ${allData.length} báo cáo.`;
+
       }
 
     } catch (error) {
@@ -524,15 +679,21 @@
         error
       );
 
+
       if (managerMessage) {
+
         managerMessage.textContent =
           "❌ Không thể tải dữ liệu.";
+
       }
+
     }
+
   }
 
+
   // ==========================================================
-  // LỌC
+  // LỌC DỮ LIỆU
   // ==========================================================
 
   function applyFilter() {
@@ -542,40 +703,54 @@
         .trim()
         .toLowerCase();
 
+
     const dateKeyword =
       filterDate?.value || "";
 
+
     filteredData =
-      allData.filter((row) => {
+      allData.filter(
+        (row) => {
 
-        const userName =
-          String(
-            row.user_name || ""
-          ).toLowerCase();
+          const userName =
+            String(
+              row.user_name || ""
+            ).toLowerCase();
 
-        // Luôn lấy ngày gốc YYYY-MM-DD
-        // để bộ lọc không bị ảnh hưởng bởi
-        // định dạng hiển thị DD/MM/YYYY.
-        const reportDate =
-          String(
-            row.field_date || ""
-          ).substring(0, 10);
 
-        const matchUser =
-          !userKeyword ||
-          userName.includes(userKeyword);
+          const reportDate =
+            String(
+              row.field_date || ""
+            ).substring(0, 10);
 
-        const matchDate =
-          !dateKeyword ||
-          reportDate === dateKeyword;
 
-        return matchUser && matchDate;
-      });
+          const matchUser =
+            !userKeyword ||
+            userName.includes(
+              userKeyword
+            );
+
+
+          const matchDate =
+            !dateKeyword ||
+            reportDate === dateKeyword;
+
+
+          return (
+            matchUser &&
+            matchDate
+          );
+
+        }
+      );
+
 
     updateSubmittedUserCount();
 
     render();
+
   }
+
 
   // ==========================================================
   // ĐẾM CÁN BỘ
@@ -586,6 +761,7 @@
     const users =
       new Set();
 
+
     filteredData.forEach(
       (row) => {
 
@@ -594,17 +770,24 @@
             row.user_name || ""
           ).trim();
 
+
         if (name) {
           users.add(name);
         }
+
       }
     );
 
+
     if (submittedUserCount) {
+
       submittedUserCount.textContent =
         users.size;
+
     }
+
   }
+
 
   // ==========================================================
   // RENDER TABLE
@@ -613,9 +796,12 @@
   function render() {
 
     if (totalReports) {
+
       totalReports.textContent =
         filteredData.length;
+
     }
+
 
     const total =
       filteredData.reduce(
@@ -632,39 +818,52 @@
         0
       );
 
+
     if (totalAmount) {
+
       totalAmount.textContent =
-        total.toLocaleString("vi-VN") +
+        total.toLocaleString(
+          "vi-VN"
+        ) +
         " đ";
+
     }
+
 
     if (!tableBody) {
       return;
     }
 
+
     tableBody.innerHTML = "";
+
 
     if (filteredData.length === 0) {
 
       tableBody.innerHTML = `
         <tr>
-          <td colspan="10"
-              style="
-                text-align:center;
-                padding:25px;
-                font-weight:bold;
-              ">
+          <td
+            colspan="10"
+            style="
+              text-align:center;
+              padding:25px;
+              font-weight:bold;
+            "
+          >
             Không tìm thấy dữ liệu.
           </td>
         </tr>
       `;
 
+
       if (pagination) {
         pagination.innerHTML = "";
       }
 
+
       return;
     }
+
 
     const totalPages =
       Math.ceil(
@@ -672,16 +871,20 @@
         PAGE_SIZE
       );
 
+
     if (currentPage > totalPages) {
       currentPage = totalPages;
     }
+
 
     const start =
       (currentPage - 1) *
       PAGE_SIZE;
 
+
     const end =
       start + PAGE_SIZE;
+
 
     const pageItems =
       filteredData.slice(
@@ -689,38 +892,64 @@
         end
       );
 
+
     pageItems.forEach(
       (row) => {
 
         const tr =
-          document.createElement("tr");
+          document.createElement(
+            "tr"
+          );
+
 
         tr.innerHTML = `
-          <td>${escapeHtml(row.user_name)}</td>
+          <td>
+            ${escapeHtml(
+              row.user_name
+            )}
+          </td>
 
-          <td>${escapeHtml(
-            formatDate(row.field_date)
-          )}</td>
+          <td>
+            ${escapeHtml(
+              formatDate(
+                row.field_date
+              )
+            )}
+          </td>
 
-          <td>${escapeHtml(row.cif)}</td>
+          <td>
+            ${escapeHtml(
+              row.cif
+            )}
+          </td>
 
-          <td>${escapeHtml(
-            row.customer_name
-          )}</td>
+          <td>
+            ${escapeHtml(
+              row.customer_name
+            )}
+          </td>
 
-          <td>${escapeHtml(
-            row.result
-          )}</td>
+          <td>
+            ${escapeHtml(
+              row.result
+            )}
+          </td>
 
-          <td>${escapeHtml(
-            row.connection
-          )}</td>
+          <td>
+            ${escapeHtml(
+              row.connection
+            )}
+          </td>
 
-          <td style="
-            white-space:normal;
-            min-width:220px;
-          ">
-            ${escapeHtml(row.detail)}
+          <td
+            style="
+              white-space:normal;
+              min-width:220px;
+            "
+          >
+            ${escapeHtml(
+              row.detail
+            )}
           </td>
 
           <td>
@@ -728,24 +957,32 @@
               Number(
                 row.expected_amount
               ) || 0
-            ).toLocaleString("vi-VN")} đ
+            ).toLocaleString(
+              "vi-VN"
+            )}
+            đ
           </td>
 
-          <td style="
-            white-space:normal;
-            min-width:220px;
-          ">
+          <td
+            style="
+              white-space:normal;
+              min-width:220px;
+            "
+          >
             ${escapeHtml(
               row.next_action
             )}
           </td>
 
           <td>
+
             <button
               class="edit-btn"
               type="button"
               data-action="edit"
-              data-id="${escapeHtml(row.id)}"
+              data-id="${escapeAttr(
+                row.id
+              )}"
             >
               ✏️ Sửa
             </button>
@@ -754,57 +991,81 @@
               class="delete-btn"
               type="button"
               data-action="delete"
-              data-id="${escapeHtml(row.id)}"
+              data-id="${escapeAttr(
+                row.id
+              )}"
             >
               🗑️ Xóa
             </button>
+
           </td>
         `;
 
+
         tableBody.appendChild(tr);
+
       }
     );
 
-    // Gắn nút sửa
+
+    // --------------------------------------------------------
+    // NÚT SỬA
+    // --------------------------------------------------------
+
     tableBody
       .querySelectorAll(
         '[data-action="edit"]'
       )
-      .forEach((btn) => {
+      .forEach(
+        (btn) => {
 
-        btn.addEventListener(
-          "click",
-          () => {
+          btn.addEventListener(
+            "click",
+            () => {
 
-            const id =
-              btn.dataset.id;
+              const id =
+                btn.dataset.id;
 
-            editReport(id);
-          }
-        );
-      });
+              editReport(id);
 
-    // Gắn nút xóa
+            }
+          );
+
+        }
+      );
+
+
+    // --------------------------------------------------------
+    // NÚT XÓA
+    // --------------------------------------------------------
+
     tableBody
       .querySelectorAll(
         '[data-action="delete"]'
       )
-      .forEach((btn) => {
+      .forEach(
+        (btn) => {
 
-        btn.addEventListener(
-          "click",
-          () => {
+          btn.addEventListener(
+            "click",
+            () => {
 
-            const id =
-              btn.dataset.id;
+              const id =
+                btn.dataset.id;
 
-            deleteReport(id);
-          }
-        );
-      });
+              deleteReport(id);
+
+            }
+          );
+
+        }
+      );
+
 
     renderPagination();
+
   }
+
 
   // ==========================================================
   // PHÂN TRANG
@@ -816,7 +1077,9 @@
       return;
     }
 
+
     pagination.innerHTML = "";
+
 
     const totalPages =
       Math.ceil(
@@ -824,18 +1087,50 @@
         PAGE_SIZE
       );
 
+
+    // Giữ khu vực phân trang kể cả chỉ có 1 trang
+
     if (totalPages <= 1) {
+
+      if (filteredData.length > 0) {
+
+        const page =
+          document.createElement(
+            "button"
+          );
+
+        page.textContent = "1";
+
+        page.classList.add(
+          "active"
+        );
+
+        page.disabled = true;
+
+        pagination.appendChild(
+          page
+        );
+
+      }
+
       return;
     }
 
-    // Nút trước
+
+    // --------------------------------------------------------
+    // NÚT TRƯỚC
+    // --------------------------------------------------------
+
     const prev =
-      document.createElement("button");
+      document.createElement(
+        "button"
+      );
 
     prev.textContent = "‹";
 
     prev.disabled =
       currentPage === 1;
+
 
     prev.addEventListener(
       "click",
@@ -851,24 +1146,35 @@
             top: 0,
             behavior: "smooth"
           });
+
         }
+
       }
     );
 
-    pagination.appendChild(prev);
 
-    // Hiển thị trang
+    pagination.appendChild(
+      prev
+    );
+
+
+    // --------------------------------------------------------
+    // TRANG
+    // --------------------------------------------------------
+
     let startPage =
       Math.max(
         1,
         currentPage - 2
       );
 
+
     let endPage =
       Math.min(
         totalPages,
         currentPage + 2
       );
+
 
     if (currentPage <= 3) {
 
@@ -879,9 +1185,14 @@
           totalPages,
           5
         );
+
     }
 
-    if (currentPage >= totalPages - 2) {
+
+    if (
+      currentPage >=
+      totalPages - 2
+    ) {
 
       startPage =
         Math.max(
@@ -890,26 +1201,31 @@
         );
 
       endPage = totalPages;
+
     }
 
-    // Trang đầu + ...
+
+    // --------------------------------------------------------
+    // TRANG ĐẦU
+    // --------------------------------------------------------
+
     if (startPage > 1) {
 
       addPageButton(1);
 
+
       if (startPage > 2) {
 
-        const dots =
-          document.createElement("span");
+        addDots();
 
-        dots.textContent = "...";
-
-        dots.style.padding =
-          "0 5px";
-
-        pagination.appendChild(dots);
       }
+
     }
+
+
+    // --------------------------------------------------------
+    // CÁC TRANG
+    // --------------------------------------------------------
 
     for (
       let i = startPage;
@@ -918,35 +1234,46 @@
     ) {
 
       addPageButton(i);
+
     }
 
-    // ... + trang cuối
+
+    // --------------------------------------------------------
+    // TRANG CUỐI
+    // --------------------------------------------------------
+
     if (endPage < totalPages) {
 
-      if (endPage < totalPages - 1) {
+      if (
+        endPage <
+        totalPages - 1
+      ) {
 
-        const dots =
-          document.createElement("span");
+        addDots();
 
-        dots.textContent = "...";
-
-        dots.style.padding =
-          "0 5px";
-
-        pagination.appendChild(dots);
       }
 
-      addPageButton(totalPages);
+      addPageButton(
+        totalPages
+      );
+
     }
 
-    // Nút sau
+
+    // --------------------------------------------------------
+    // NÚT SAU
+    // --------------------------------------------------------
+
     const next =
-      document.createElement("button");
+      document.createElement(
+        "button"
+      );
 
     next.textContent = "›";
 
     next.disabled =
       currentPage === totalPages;
+
 
     next.addEventListener(
       "click",
@@ -965,22 +1292,44 @@
             top: 0,
             behavior: "smooth"
           });
+
         }
+
       }
     );
 
-    pagination.appendChild(next);
+
+    pagination.appendChild(
+      next
+    );
+
+
+    // --------------------------------------------------------
+    // HÀM TẠO NÚT TRANG
+    // --------------------------------------------------------
 
     function addPageButton(page) {
 
       const btn =
-        document.createElement("button");
+        document.createElement(
+          "button"
+        );
+
 
       btn.textContent = page;
 
-      if (page === currentPage) {
-        btn.classList.add("active");
+
+      if (
+        page ===
+        currentPage
+      ) {
+
+        btn.classList.add(
+          "active"
+        );
+
       }
+
 
       btn.addEventListener(
         "click",
@@ -994,12 +1343,42 @@
             top: 0,
             behavior: "smooth"
           });
+
         }
       );
 
-      pagination.appendChild(btn);
+
+      pagination.appendChild(
+        btn
+      );
+
     }
+
+
+    // --------------------------------------------------------
+    // DẤU ...
+    // --------------------------------------------------------
+
+    function addDots() {
+
+      const dots =
+        document.createElement(
+          "span"
+        );
+
+      dots.textContent = "...";
+
+      dots.style.padding =
+        "0 5px";
+
+      pagination.appendChild(
+        dots
+      );
+
+    }
+
   }
+
 
   // ==========================================================
   // SỬA BÁO CÁO
@@ -1014,6 +1393,7 @@
           String(id)
       );
 
+
     if (!row) {
 
       alert(
@@ -1023,8 +1403,11 @@
       return;
     }
 
+
     createEditModal(row);
+
   }
+
 
   // ==========================================================
   // TẠO MODAL SỬA
@@ -1034,11 +1417,16 @@
 
     removeEditModal();
 
+
     const overlay =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
+
 
     overlay.id =
       "editReportModal";
+
 
     overlay.style.cssText = `
       position:fixed;
@@ -1051,8 +1439,12 @@
       padding:15px;
     `;
 
+
     const modal =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
+
 
     modal.style.cssText = `
       width:100%;
@@ -1065,112 +1457,231 @@
       box-shadow:0 20px 60px rgba(0,0,0,.35);
     `;
 
+
     modal.innerHTML = `
-      <h2 style="
-        margin-top:0;
-        margin-bottom:18px;
-      ">
+      <h2
+        style="
+          margin-top:0;
+          margin-bottom:18px;
+        "
+      >
         ✏️ SỬA BÁO CÁO
       </h2>
 
-      <div style="display:grid;gap:12px;">
+
+      <div
+        style="
+          display:grid;
+          gap:12px;
+        "
+      >
 
         <label>
+
           <b>Cán bộ</b>
+
           <input
             id="editUserName"
             type="text"
-            value="${escapeAttr(row.user_name)}"
-            style="width:100%;box-sizing:border-box;padding:11px;margin-top:5px;"
+            value="${escapeAttr(
+              row.user_name
+            )}"
+            style="
+              width:100%;
+              box-sizing:border-box;
+              padding:11px;
+              margin-top:5px;
+            "
           >
+
         </label>
 
+
         <label>
+
           <b>Ngày field</b>
+
           <input
             id="editFieldDate"
             type="date"
-            value="${escapeAttr(formatDateForInput(row.field_date))}"
-            style="width:100%;box-sizing:border-box;padding:11px;margin-top:5px;"
+            value="${escapeAttr(
+              formatDateForInput(
+                row.field_date
+              )
+            )}"
+            style="
+              width:100%;
+              box-sizing:border-box;
+              padding:11px;
+              margin-top:5px;
+            "
           >
+
         </label>
 
+
         <label>
+
           <b>Số CIF</b>
+
           <input
             id="editCif"
             type="text"
-            value="${escapeAttr(row.cif)}"
-            style="width:100%;box-sizing:border-box;padding:11px;margin-top:5px;"
+            value="${escapeAttr(
+              row.cif
+            )}"
+            style="
+              width:100%;
+              box-sizing:border-box;
+              padding:11px;
+              margin-top:5px;
+            "
           >
+
         </label>
 
+
         <label>
+
           <b>Tên khách hàng</b>
+
           <input
             id="editCustomerName"
             type="text"
-            value="${escapeAttr(row.customer_name)}"
-            style="width:100%;box-sizing:border-box;padding:11px;margin-top:5px;"
+            value="${escapeAttr(
+              row.customer_name
+            )}"
+            style="
+              width:100%;
+              box-sizing:border-box;
+              padding:11px;
+              margin-top:5px;
+            "
           >
+
         </label>
 
+
         <label>
+
           <b>Kết quả</b>
+
           <select
             id="editResult"
-            style="width:100%;box-sizing:border-box;padding:11px;margin-top:5px;"
+            style="
+              width:100%;
+              box-sizing:border-box;
+              padding:11px;
+              margin-top:5px;
+            "
           >
-            <option value="Sống">Sống</option>
-            <option value="Chết">Chết</option>
+
+            <option value="Sống">
+              Sống
+            </option>
+
+            <option value="Chết">
+              Chết
+            </option>
+
           </select>
+
         </label>
 
+
         <label>
+
           <b>Kết nối</b>
+
           <input
             id="editConnection"
             type="text"
-            value="${escapeAttr(row.connection)}"
-            style="width:100%;box-sizing:border-box;padding:11px;margin-top:5px;"
+            value="${escapeAttr(
+              row.connection
+            )}"
+            style="
+              width:100%;
+              box-sizing:border-box;
+              padding:11px;
+              margin-top:5px;
+            "
           >
+
         </label>
 
+
         <label>
+
           <b>Kết quả chi tiết</b>
+
           <textarea
             id="editDetail"
             rows="4"
-            style="width:100%;box-sizing:border-box;padding:11px;margin-top:5px;"
-          >${escapeHtml(row.detail)}</textarea>
+            style="
+              width:100%;
+              box-sizing:border-box;
+              padding:11px;
+              margin-top:5px;
+            "
+          >${escapeHtml(
+            row.detail
+          )}</textarea>
+
         </label>
 
+
         <label>
+
           <b>Dự thu</b>
+
           <input
             id="editExpectedAmount"
             type="number"
-            value="${escapeAttr(row.expected_amount)}"
-            style="width:100%;box-sizing:border-box;padding:11px;margin-top:5px;"
+            value="${escapeAttr(
+              row.expected_amount
+            )}"
+            style="
+              width:100%;
+              box-sizing:border-box;
+              padding:11px;
+              margin-top:5px;
+            "
           >
+
         </label>
 
+
         <label>
-          <b>Hướng tác động tiếp theo</b>
+
+          <b>
+            Hướng tác động tiếp theo
+          </b>
+
           <textarea
             id="editNextAction"
             rows="4"
-            style="width:100%;box-sizing:border-box;padding:11px;margin-top:5px;"
-          >${escapeHtml(row.next_action)}</textarea>
+            style="
+              width:100%;
+              box-sizing:border-box;
+              padding:11px;
+              margin-top:5px;
+            "
+          >${escapeHtml(
+            row.next_action
+          )}</textarea>
+
         </label>
 
       </div>
 
-      <div style="
-        display:flex;
-        gap:10px;
-        margin-top:20px;
-      ">
+
+      <div
+        style="
+          display:flex;
+          gap:10px;
+          margin-top:20px;
+        "
+      >
 
         <button
           id="cancelEditBtn"
@@ -1187,6 +1698,7 @@
         >
           HỦY
         </button>
+
 
         <button
           id="saveEditBtn"
@@ -1206,6 +1718,7 @@
 
       </div>
 
+
       <div
         id="editMessage"
         style="
@@ -1216,21 +1729,35 @@
       ></div>
     `;
 
+
     overlay.appendChild(modal);
 
-    document.body.appendChild(overlay);
+    document.body.appendChild(
+      overlay
+    );
 
-    // Set selected result
+
+    // --------------------------------------------------------
+    // SET RESULT
+    // --------------------------------------------------------
+
     const resultSelect =
       document.getElementById(
         "editResult"
       );
 
+
     if (resultSelect) {
 
       resultSelect.value =
         row.result || "Sống";
+
     }
+
+
+    // --------------------------------------------------------
+    // HỦY
+    // --------------------------------------------------------
 
     document
       .getElementById(
@@ -1241,25 +1768,45 @@
         removeEditModal
       );
 
+
+    // --------------------------------------------------------
+    // LƯU
+    // --------------------------------------------------------
+
     document
       .getElementById(
         "saveEditBtn"
       )
       ?.addEventListener(
         "click",
-        () => saveEditReport(row.id)
+        () =>
+          saveEditReport(
+            row.id
+          )
       );
+
+
+    // --------------------------------------------------------
+    // CLICK RA NGOÀI MODAL
+    // --------------------------------------------------------
 
     overlay.addEventListener(
       "click",
       (e) => {
 
-        if (e.target === overlay) {
+        if (
+          e.target === overlay
+        ) {
+
           removeEditModal();
+
         }
+
       }
     );
+
   }
+
 
   // ==========================================================
   // LƯU SỬA
@@ -1272,46 +1819,54 @@
         "saveEditBtn"
       );
 
+
     const editMessage =
       document.getElementById(
         "editMessage"
       );
+
 
     const user_name =
       document.getElementById(
         "editUserName"
       )?.value.trim() || "";
 
-    // Input type="date" luôn trả về YYYY-MM-DD
+
     const field_date =
       document.getElementById(
         "editFieldDate"
       )?.value || null;
+
 
     const cif =
       document.getElementById(
         "editCif"
       )?.value.trim() || "";
 
+
     const customer_name =
       document.getElementById(
         "editCustomerName"
       )?.value.trim() || "";
+
 
     const result =
       document.getElementById(
         "editResult"
       )?.value || "";
 
+
     const connection =
       document.getElementById(
         "editConnection"
       )?.value.trim() || "";
 
+
     const detail =
       document.getElementById(
         "editDetail"
       )?.value.trim() || "";
+
 
     const expected_amount =
       Number(
@@ -1320,30 +1875,42 @@
         )?.value
       ) || 0;
 
+
     const next_action =
       document.getElementById(
         "editNextAction"
       )?.value.trim() || "";
 
+
+    // --------------------------------------------------------
+    // VALIDATE
+    // --------------------------------------------------------
+
     if (!user_name) {
 
       if (editMessage) {
+
         editMessage.textContent =
           "❌ Vui lòng nhập tên cán bộ.";
+
       }
 
       return;
     }
+
 
     if (!cif) {
 
       if (editMessage) {
+
         editMessage.textContent =
           "❌ Vui lòng nhập số CIF.";
+
       }
 
       return;
     }
+
 
     if (saveBtn) {
 
@@ -1351,12 +1918,17 @@
 
       saveBtn.textContent =
         "⏳ ĐANG LƯU...";
+
     }
 
+
     if (editMessage) {
+
       editMessage.textContent =
         "⏳ Đang cập nhật...";
+
     }
+
 
     try {
 
@@ -1365,17 +1937,31 @@
       } = await db
         .from("bao_cao_ngay")
         .update({
+
           user_name,
+
           field_date,
+
           cif,
+
           customer_name,
+
           result,
+
           connection,
+
           detail,
+
           expected_amount,
+
           next_action
+
         })
-        .eq("id", id);
+        .eq(
+          "id",
+          id
+        );
+
 
       if (error) {
 
@@ -1384,22 +1970,30 @@
           error
         );
 
+
         if (editMessage) {
+
           editMessage.textContent =
             "❌ Lỗi cập nhật: " +
             error.message;
+
         }
 
         return;
       }
 
+
       removeEditModal();
+
 
       await loadData();
 
+
       if (managerMessage) {
+
         managerMessage.textContent =
           "✅ Đã sửa báo cáo thành công.";
+
       }
 
     } catch (error) {
@@ -1409,9 +2003,12 @@
         error
       );
 
+
       if (editMessage) {
+
         editMessage.textContent =
           "❌ Không thể cập nhật báo cáo.";
+
       }
 
     } finally {
@@ -1422,9 +2019,13 @@
 
         saveBtn.textContent =
           "💾 LƯU THAY ĐỔI";
+
       }
+
     }
+
   }
+
 
   // ==========================================================
   // XÓA BÁO CÁO
@@ -1439,6 +2040,7 @@
           String(id)
       );
 
+
     if (!row) {
 
       alert(
@@ -1448,24 +2050,31 @@
       return;
     }
 
+
     const customer =
       row.customer_name ||
       row.cif ||
       "báo cáo này";
+
 
     const confirmed =
       confirm(
         `⚠️ Bạn có chắc muốn xóa báo cáo của "${customer}"?\n\nHành động này không thể hoàn tác.`
       );
 
+
     if (!confirmed) {
       return;
     }
 
+
     if (managerMessage) {
+
       managerMessage.textContent =
         "⏳ Đang xóa báo cáo...";
+
     }
+
 
     try {
 
@@ -1474,7 +2083,11 @@
       } = await db
         .from("bao_cao_ngay")
         .delete()
-        .eq("id", id);
+        .eq(
+          "id",
+          id
+        );
+
 
       if (error) {
 
@@ -1483,20 +2096,27 @@
           error
         );
 
+
         if (managerMessage) {
+
           managerMessage.textContent =
             "❌ Không thể xóa: " +
             error.message;
+
         }
 
         return;
       }
 
+
       await loadData();
 
+
       if (managerMessage) {
+
         managerMessage.textContent =
           "✅ Đã xóa báo cáo thành công.";
+
       }
 
     } catch (error) {
@@ -1506,12 +2126,18 @@
         error
       );
 
+
       if (managerMessage) {
+
         managerMessage.textContent =
           "❌ Lỗi khi xóa báo cáo.";
+
       }
+
     }
+
   }
+
 
   // ==========================================================
   // CÁN BỘ ĐÃ NHẬP BÁO CÁO
@@ -1521,8 +2147,10 @@
 
     removeSubmittedUserModal();
 
+
     const usersMap =
       new Map();
+
 
     filteredData.forEach(
       (row) => {
@@ -1532,20 +2160,30 @@
             row.user_name || ""
           ).trim();
 
+
         if (!name) {
           return;
         }
 
+
         if (!usersMap.has(name)) {
-          usersMap.set(name, 0);
+
+          usersMap.set(
+            name,
+            0
+          );
+
         }
+
 
         usersMap.set(
           name,
           usersMap.get(name) + 1
         );
+
       }
     );
+
 
     const users =
       Array.from(
@@ -1558,33 +2196,53 @@
           )
       );
 
+
     const overlay =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
+
 
     overlay.id =
       "submittedUserModal";
 
+
     overlay.className =
       "user-modal-overlay";
 
+
     const modal =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
+
 
     modal.className =
       "user-modal";
 
+
     modal.innerHTML = `
-      <div class="user-modal-header">
+      <div
+        class="user-modal-header"
+      >
+
         <h2>
+
           👥 CÁN BỘ ĐÃ NHẬP BÁO CÁO
+
           <br>
-          <span style="
-            color:#2563eb;
-            font-size:16px;
-          ">
+
+          <span
+            style="
+              color:#2563eb;
+              font-size:16px;
+            "
+          >
             ${users.length} cán bộ
           </span>
+
         </h2>
+
 
         <button
           class="user-modal-close"
@@ -1593,54 +2251,92 @@
         >
           ×
         </button>
+
       </div>
 
-      <div class="user-modal-body">
+
+      <div
+        class="user-modal-body"
+      >
 
         ${
           users.length === 0
+
             ? `
-              <div style="
-                text-align:center;
-                padding:30px 10px;
-                color:#64748b;
-                font-weight:bold;
-              ">
+
+              <div
+                style="
+                  text-align:center;
+                  padding:30px 10px;
+                  color:#64748b;
+                  font-weight:bold;
+                "
+              >
                 Chưa có cán bộ nào nhập báo cáo.
               </div>
+
             `
+
             : users
                 .map(
-                  ([name, count], index) => `
+                  (
+                    [name, count],
+                    index
+                  ) => `
+
                     <div
                       class="submitted-user-item"
-                      data-user="${escapeAttr(name)}"
-                      style="cursor:pointer;"
+                      data-user="${escapeAttr(
+                        name
+                      )}"
+                      style="
+                        cursor:pointer;
+                      "
                     >
-                      <div class="submitted-user-number">
+
+                      <div
+                        class="submitted-user-number"
+                      >
                         ${index + 1}
                       </div>
 
-                      <div style="flex:1;">
+
+                      <div
+                        style="
+                          flex:1;
+                        "
+                      >
+
                         <div>
-                          ${escapeHtml(name)}
+                          ${escapeHtml(
+                            name
+                          )}
                         </div>
 
-                        <div style="
-                          font-size:13px;
-                          color:#64748b;
-                          margin-top:3px;
-                        ">
+
+                        <div
+                          style="
+                            font-size:13px;
+                            color:#64748b;
+                            margin-top:3px;
+                          "
+                        >
                           ${count} báo cáo
                         </div>
+
                       </div>
 
-                      <div style="
-                        font-size:20px;
-                      ">
+
+                      <div
+                        style="
+                          font-size:20px;
+                        "
+                      >
                         ›
                       </div>
+
                     </div>
+
                   `
                 )
                 .join("")
@@ -1649,9 +2345,20 @@
       </div>
     `;
 
-    overlay.appendChild(modal);
 
-    document.body.appendChild(overlay);
+    overlay.appendChild(
+      modal
+    );
+
+
+    document.body.appendChild(
+      overlay
+    );
+
+
+    // --------------------------------------------------------
+    // CLOSE
+    // --------------------------------------------------------
 
     document
       .getElementById(
@@ -1662,17 +2369,27 @@
         removeSubmittedUserModal
       );
 
+
     overlay.addEventListener(
       "click",
       (e) => {
 
-        if (e.target === overlay) {
+        if (
+          e.target === overlay
+        ) {
+
           removeSubmittedUserModal();
+
         }
+
       }
     );
 
-    // Bấm vào cán bộ -> tự lọc dữ liệu của cán bộ đó
+
+    // --------------------------------------------------------
+    // CLICK CÁN BỘ
+    // --------------------------------------------------------
+
     modal
       .querySelectorAll(
         ".submitted-user-item"
@@ -1685,30 +2402,48 @@
             () => {
 
               const user =
-                item.dataset.user || "";
+                item.dataset.user ||
+                "";
+
 
               if (filterUser) {
+
                 filterUser.value =
                   user;
+
               }
+
 
               currentPage = 1;
 
+
               applyFilter();
+
 
               removeSubmittedUserModal();
 
+
               if (tableBody) {
+
                 tableBody.scrollIntoView({
                   behavior: "smooth",
                   block: "start"
                 });
+
               }
+
             }
           );
+
         }
       );
+
   }
+
+
+  // ==========================================================
+  // XÓA MODAL CÁN BỘ
+  // ==========================================================
 
   function removeSubmittedUserModal() {
 
@@ -1717,7 +2452,9 @@
         "submittedUserModal"
       )
       ?.remove();
+
   }
+
 
   // ==========================================================
   // MENU
@@ -1726,30 +2463,58 @@
   function openMenu() {
 
     if (sideMenuOverlay) {
-      sideMenuOverlay.classList.add("open");
+
+      sideMenuOverlay.classList.add(
+        "open"
+      );
+
     }
 
+
     if (sideMenu) {
-      sideMenu.classList.add("open");
+
+      sideMenu.classList.add(
+        "open"
+      );
+
     }
+
   }
+
 
   function closeMenu() {
 
     if (sideMenuOverlay) {
-      sideMenuOverlay.classList.remove("open");
+
+      sideMenuOverlay.classList.remove(
+        "open"
+      );
+
     }
+
 
     if (sideMenu) {
-      sideMenu.classList.remove("open");
+
+      sideMenu.classList.remove(
+        "open"
+      );
+
     }
+
   }
 
+
   // ==========================================================
-  // XUẤT EXCEL
+  // ==========================================================
+  // XUẤT EXCEL - BẢN NÂNG CẤP
+  // ==========================================================
   // ==========================================================
 
   function exportExcel() {
+
+    // --------------------------------------------------------
+    // KIỂM TRA THƯ VIỆN
+    // --------------------------------------------------------
 
     if (
       typeof XLSX ===
@@ -1757,11 +2522,16 @@
     ) {
 
       alert(
-        "❌ Chưa tải được thư viện Excel."
+        "❌ Chưa tải được thư viện Excel.\n\nHãy kiểm tra manager.html đã dùng xlsx-js-style chưa."
       );
 
       return;
     }
+
+
+    // --------------------------------------------------------
+    // KIỂM TRA DỮ LIỆU
+    // --------------------------------------------------------
 
     if (
       !filteredData ||
@@ -1775,179 +2545,1078 @@
       return;
     }
 
-    // ========================================================
-    // TẠO DỮ LIỆU EXCEL
-    //
-    // Quan trọng:
-    // "Ngày field" được chuyển thành Date thật.
-    // Sau đó đặt format Excel là dd/mm/yyyy.
-    // ========================================================
 
-    const exportData =
-      filteredData.map(
-        (row, index) => ({
-          "STT":
+    // --------------------------------------------------------
+    // TRẠNG THÁI NÚT
+    // --------------------------------------------------------
+
+    const originalText =
+      exportBtn?.textContent ||
+      "📥 XUẤT EXCEL";
+
+
+    if (exportBtn) {
+
+      exportBtn.disabled = true;
+
+      exportBtn.textContent =
+        "⏳ ĐANG TẠO EXCEL...";
+
+    }
+
+
+    try {
+
+      // ======================================================
+      // THÔNG TIN
+      // ======================================================
+
+      const exportDate =
+        new Date();
+
+
+      const exportDateText =
+        formatDateTime(
+          exportDate
+        );
+
+
+      const total =
+        filteredData.reduce(
+          (sum, row) => {
+
+            return (
+              sum +
+              (
+                Number(
+                  row.expected_amount
+                ) || 0
+              )
+            );
+
+          },
+          0
+        );
+
+
+      // ======================================================
+      // SHEET 1
+      // BÁO CÁO NGÀY
+      // ======================================================
+
+      const sheetData = [];
+
+
+      // ------------------------------------------------------
+      // TIÊU ĐỀ
+      // ------------------------------------------------------
+
+      sheetData.push([
+        "BÁO CÁO NGÀY"
+      ]);
+
+
+      sheetData.push([
+        "Ngày xuất:",
+        exportDateText
+      ]);
+
+
+      // ------------------------------------------------------
+      // BỘ LỌC
+      // ------------------------------------------------------
+
+      const userFilterText =
+        filterUser?.value?.trim() ||
+        "Tất cả cán bộ";
+
+
+      const dateFilterText =
+        filterDate?.value
+          ? formatDate(
+              filterDate.value
+            )
+          : "Tất cả ngày";
+
+
+      sheetData.push([
+        "Bộ lọc cán bộ:",
+        userFilterText
+      ]);
+
+
+      sheetData.push([
+        "Bộ lọc ngày:",
+        dateFilterText
+      ]);
+
+
+      sheetData.push([
+        "Tổng số báo cáo:",
+        filteredData.length
+      ]);
+
+
+      sheetData.push([
+        "Tổng dự thu:",
+        total
+      ]);
+
+
+      // ------------------------------------------------------
+      // DÒNG TRỐNG
+      // ------------------------------------------------------
+
+      sheetData.push([]);
+
+
+      // ------------------------------------------------------
+      // HEADER
+      // ------------------------------------------------------
+
+      sheetData.push([
+        "STT",
+        "Cán bộ",
+        "Ngày field",
+        "Số CIF",
+        "Tên khách hàng",
+        "Kết quả",
+        "Kết nối",
+        "Kết quả chi tiết",
+        "Dự thu",
+        "Hướng tác động tiếp theo"
+      ]);
+
+
+      // ======================================================
+      // DỮ LIỆU
+      // ======================================================
+
+      filteredData.forEach(
+        (row, index) => {
+
+          sheetData.push([
+
             index + 1,
 
-          "Cán bộ":
             row.user_name || "",
 
-          "Ngày field":
-            toExcelDate(row.field_date),
+            toExcelDate(
+              row.field_date
+            ),
 
-          "Số CIF":
             row.cif || "",
 
-          "Tên khách hàng":
             row.customer_name || "",
 
-          "Kết quả":
             row.result || "",
 
-          "Kết nối":
             row.connection || "",
 
-          "Kết quả chi tiết":
             row.detail || "",
 
-          "Dự thu":
             Number(
               row.expected_amount
             ) || 0,
 
-          "Hướng tác động tiếp theo":
             row.next_action || ""
-        })
+
+          ]);
+
+        }
       );
 
-    const ws =
-      XLSX.utils.json_to_sheet(
-        exportData
-      );
 
-    // ========================================================
-    // ĐỊNH DẠNG CỘT NGÀY
-    //
-    // Cột C = Ngày field
-    // Dòng 1 = tiêu đề
-    // Dòng 2 trở đi = dữ liệu
-    // ========================================================
+      // ======================================================
+      // DÒNG TỔNG
+      // ======================================================
 
-    for (
-      let rowIndex = 2;
-      rowIndex <= filteredData.length + 1;
-      rowIndex++
-    ) {
+      const totalRowIndex =
+        sheetData.length;
 
-      const cell =
-        ws[`C${rowIndex}`];
 
-      if (cell) {
+      sheetData.push([
 
-        cell.z =
-          "dd/mm/yyyy";
+        "",
+
+        "",
+
+        "",
+
+        "",
+
+        "",
+
+        "",
+
+        "",
+
+        "TỔNG DỰ THU",
+
+        total,
+
+        ""
+
+      ]);
+
+
+      // ======================================================
+      // TẠO WORKSHEET
+      // ======================================================
+
+      const ws =
+        XLSX.utils.aoa_to_sheet(
+          sheetData
+        );
+
+
+      // ======================================================
+      // MERGE TIÊU ĐỀ
+      // ======================================================
+
+      ws["!merges"] = [
+
+        {
+          s: {
+            r: 0,
+            c: 0
+          },
+
+          e: {
+            r: 0,
+            c: 9
+          }
+        }
+
+      ];
+
+
+      // ======================================================
+      // ĐỘ RỘNG CỘT
+      // ======================================================
+
+      ws["!cols"] = [
+
+        {
+          wch: 7
+        },
+
+        {
+          wch: 20
+        },
+
+        {
+          wch: 15
+        },
+
+        {
+          wch: 16
+        },
+
+        {
+          wch: 28
+        },
+
+        {
+          wch: 15
+        },
+
+        {
+          wch: 25
+        },
+
+        {
+          wch: 50
+        },
+
+        {
+          wch: 20
+        },
+
+        {
+          wch: 50
+        }
+
+      ];
+
+
+      // ======================================================
+      // STYLE
+      // ======================================================
+
+      const titleStyle = {
+
+        font: {
+          bold: true,
+          sz: 18
+        },
+
+        alignment: {
+          horizontal: "center",
+          vertical: "center"
+        }
+
+      };
+
+
+      const infoLabelStyle = {
+
+        font: {
+          bold: true
+        },
+
+        alignment: {
+          vertical: "center"
+        }
+
+      };
+
+
+      const headerStyle = {
+
+        font: {
+          bold: true,
+          sz: 11
+        },
+
+        alignment: {
+          horizontal: "center",
+          vertical: "center",
+          wrapText: true
+        },
+
+        border: {
+
+          top: {
+            style: "thin"
+          },
+
+          bottom: {
+            style: "thin"
+          },
+
+          left: {
+            style: "thin"
+          },
+
+          right: {
+            style: "thin"
+          }
+
+        }
+
+      };
+
+
+      const totalStyle = {
+
+        font: {
+          bold: true
+        },
+
+        alignment: {
+          vertical: "center"
+        },
+
+        border: {
+
+          top: {
+            style: "thin"
+          },
+
+          bottom: {
+            style: "thin"
+          },
+
+          left: {
+            style: "thin"
+          },
+
+          right: {
+            style: "thin"
+          }
+
+        }
+
+      };
+
+
+      // ======================================================
+      // TITLE
+      // ======================================================
+
+      if (ws["A1"]) {
+
+        ws["A1"].s =
+          titleStyle;
+
       }
-    }
 
-    // ========================================================
-    // ĐỊNH DẠNG DỰ THU
-    //
-    // Cột I = Dự thu
-    // ========================================================
 
-    for (
-      let rowIndex = 2;
-      rowIndex <= filteredData.length + 1;
-      rowIndex++
-    ) {
+      // ======================================================
+      // INFO
+      // ======================================================
 
-      const cell =
-        ws[`I${rowIndex}`];
+      const infoRows = [
+        1,
+        2,
+        3,
+        4,
+        5
+      ];
 
-      if (
-        cell &&
-        typeof cell.v === "number"
+
+      infoRows.forEach(
+        (rowIndex) => {
+
+          const cell =
+            ws[
+              XLSX.utils.encode_cell({
+                r: rowIndex,
+                c: 0
+              })
+            ];
+
+
+          if (cell) {
+
+            cell.s =
+              infoLabelStyle;
+
+          }
+
+        }
+      );
+
+
+      // ======================================================
+      // HEADER
+      //
+      // Sheet row 8
+      // Excel index = 7
+      // ======================================================
+
+      for (
+        let col = 0;
+        col < 10;
+        col++
       ) {
 
-        cell.z =
+        const cell =
+          ws[
+            XLSX.utils.encode_cell({
+              r: 7,
+              c: col
+            })
+          ];
+
+
+        if (cell) {
+
+          cell.s =
+            headerStyle;
+
+        }
+
+      }
+
+
+      // ======================================================
+      // STYLE DATA
+      // ======================================================
+
+      const firstDataRow = 8;
+
+      const lastDataRow =
+        firstDataRow +
+        filteredData.length -
+        1;
+
+
+      for (
+        let rowIndex =
+          firstDataRow;
+        rowIndex <= lastDataRow;
+        rowIndex++
+      ) {
+
+        for (
+          let col = 0;
+          col < 10;
+          col++
+        ) {
+
+          const cell =
+            ws[
+              XLSX.utils.encode_cell({
+                r: rowIndex,
+                c: col
+              })
+            ];
+
+
+          if (!cell) {
+            continue;
+          }
+
+
+          cell.s = {
+
+            alignment: {
+
+              vertical: "top",
+
+              wrapText:
+                col === 7 ||
+                col === 9
+
+            }
+
+          };
+
+
+          // Ngày field
+
+          if (col === 2) {
+
+            cell.z =
+              "dd/mm/yyyy";
+
+            cell.s.alignment = {
+
+              horizontal:
+                "center",
+
+              vertical:
+                "center"
+
+            };
+
+          }
+
+
+          // Dự thu
+
+          if (col === 8) {
+
+            cell.z =
+              '#,##0" đ"';
+
+            cell.s.alignment = {
+
+              horizontal:
+                "right",
+
+              vertical:
+                "center"
+
+            };
+
+          }
+
+
+          // STT
+
+          if (col === 0) {
+
+            cell.s.alignment = {
+
+              horizontal:
+                "center",
+
+              vertical:
+                "center"
+
+            };
+
+          }
+
+        }
+
+      }
+
+
+      // ======================================================
+      // STYLE TOTAL
+      // ======================================================
+
+      const totalExcelRow =
+        totalRowIndex;
+
+
+      for (
+        let col = 0;
+        col < 10;
+        col++
+      ) {
+
+        const cell =
+          ws[
+            XLSX.utils.encode_cell({
+              r: totalExcelRow,
+              c: col
+            })
+          ];
+
+
+        if (cell) {
+
+          cell.s =
+            totalStyle;
+
+        }
+
+      }
+
+
+      const totalAmountCell =
+        ws[
+          XLSX.utils.encode_cell({
+            r: totalExcelRow,
+            c: 8
+          })
+        ];
+
+
+      if (totalAmountCell) {
+
+        totalAmountCell.z =
           '#,##0" đ"';
+
+        totalAmountCell.s.alignment = {
+
+          horizontal:
+            "right",
+
+          vertical:
+            "center"
+
+        };
+
       }
+
+
+      // ======================================================
+      // FILTER
+      // ======================================================
+
+      ws["!autofilter"] = {
+
+        ref:
+          `A8:J${lastDataRow + 1}`
+
+      };
+
+
+      // ======================================================
+      // FREEZE HEADER
+      // ======================================================
+
+      ws["!freeze"] = {
+
+        xSplit: 0,
+
+        ySplit: 8
+
+      };
+
+
+      // ======================================================
+      // PAGE SETUP
+      // ======================================================
+
+      ws["!pageSetup"] = {
+
+        orientation:
+          "landscape",
+
+        fitToWidth:
+          1,
+
+        fitToHeight:
+          0
+
+      };
+
+
+      // ======================================================
+      // SHEET 2
+      // TỔNG QUAN
+      // ======================================================
+
+      const summaryData = [
+
+        [
+          "TỔNG QUAN BÁO CÁO NGÀY"
+        ],
+
+        [],
+
+        [
+          "Chỉ tiêu",
+          "Giá trị"
+        ],
+
+        [
+          "Tổng số báo cáo",
+          filteredData.length
+        ],
+
+        [
+          "Tổng dự thu",
+          total
+        ],
+
+        [],
+
+        [
+          "Cán bộ",
+          "Số báo cáo",
+          "Tổng dự thu"
+        ]
+
+      ];
+
+
+      // ------------------------------------------------------
+      // THỐNG KÊ CÁN BỘ
+      // ------------------------------------------------------
+
+      const userStats =
+        new Map();
+
+
+      filteredData.forEach(
+        (row) => {
+
+          const user =
+            String(
+              row.user_name || ""
+            ).trim() ||
+            "Chưa nhập";
+
+
+          const amount =
+            Number(
+              row.expected_amount
+            ) || 0;
+
+
+          if (!userStats.has(user)) {
+
+            userStats.set(
+              user,
+              {
+                count: 0,
+                amount: 0
+              }
+            );
+
+          }
+
+
+          const item =
+            userStats.get(
+              user
+            );
+
+
+          item.count++;
+
+          item.amount +=
+            amount;
+
+        }
+      );
+
+
+      const sortedUsers =
+        Array.from(
+          userStats.entries()
+        ).sort(
+          (a, b) =>
+            a[0].localeCompare(
+              b[0],
+              "vi"
+            )
+        );
+
+
+      sortedUsers.forEach(
+        ([user, stats]) => {
+
+          summaryData.push([
+
+            user,
+
+            stats.count,
+
+            stats.amount
+
+          ]);
+
+        }
+      );
+
+
+      const wsSummary =
+        XLSX.utils.aoa_to_sheet(
+          summaryData
+        );
+
+
+      // ------------------------------------------------------
+      // MERGE TITLE
+      // ------------------------------------------------------
+
+      wsSummary["!merges"] = [
+
+        {
+          s: {
+            r: 0,
+            c: 0
+          },
+
+          e: {
+            r: 0,
+            c: 2
+          }
+        }
+
+      ];
+
+
+      // ------------------------------------------------------
+      // WIDTH
+      // ------------------------------------------------------
+
+      wsSummary["!cols"] = [
+
+        {
+          wch: 30
+        },
+
+        {
+          wch: 18
+        },
+
+        {
+          wch: 22
+        }
+
+      ];
+
+
+      // ------------------------------------------------------
+      // STYLE SUMMARY
+      // ------------------------------------------------------
+
+      if (wsSummary["A1"]) {
+
+        wsSummary["A1"].s =
+          titleStyle;
+
+      }
+
+
+      for (
+        let col = 0;
+        col < 2;
+        col++
+      ) {
+
+        const cell =
+          wsSummary[
+            XLSX.utils.encode_cell({
+              r: 2,
+              c: col
+            })
+          ];
+
+
+        if (cell) {
+
+          cell.s =
+            headerStyle;
+
+        }
+
+      }
+
+
+      for (
+        let col = 0;
+        col < 3;
+        col++
+      ) {
+
+        const cell =
+          wsSummary[
+            XLSX.utils.encode_cell({
+              r: 6,
+              c: col
+            })
+          ];
+
+
+        if (cell) {
+
+          cell.s =
+            headerStyle;
+
+        }
+
+      }
+
+
+      // ------------------------------------------------------
+      // FORMAT SUMMARY MONEY
+      // ------------------------------------------------------
+
+      for (
+        let rowIndex = 7;
+        rowIndex <
+        summaryData.length;
+        rowIndex++
+      ) {
+
+        const cell =
+          wsSummary[
+            XLSX.utils.encode_cell({
+              r: rowIndex,
+              c: 2
+            })
+          ];
+
+
+        if (cell) {
+
+          cell.z =
+            '#,##0" đ"';
+
+        }
+
+      }
+
+
+      // Tổng dự thu
+
+      if (wsSummary["B5"]) {
+
+        wsSummary["B5"].z =
+          '#,##0" đ"';
+
+      }
+
+
+      // ======================================================
+      // WORKBOOK
+      // ======================================================
+
+      const wb =
+        XLSX.utils.book_new();
+
+
+      XLSX.utils.book_append_sheet(
+        wb,
+        ws,
+        "BaoCaoNgay"
+      );
+
+
+      XLSX.utils.book_append_sheet(
+        wb,
+        wsSummary,
+        "TongQuan"
+      );
+
+
+      // ======================================================
+      // TÊN FILE
+      // ======================================================
+
+      const now =
+        new Date();
+
+
+      const date =
+        now.getFullYear() +
+        "-" +
+        String(
+          now.getMonth() + 1
+        ).padStart(
+          2,
+          "0"
+        ) +
+        "-" +
+        String(
+          now.getDate()
+        ).padStart(
+          2,
+          "0"
+        );
+
+
+      const fileName =
+        `Bao_Cao_Ngay_${date}.xlsx`;
+
+
+      // ======================================================
+      // GHI FILE
+      // ======================================================
+
+      XLSX.writeFile(
+        wb,
+        fileName
+      );
+
+
+      // ======================================================
+      // THÔNG BÁO
+      // ======================================================
+
+      if (managerMessage) {
+
+        managerMessage.textContent =
+          `✅ Đã xuất ${filteredData.length} báo cáo ra Excel.`;
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Export Excel error:",
+        error
+      );
+
+
+      alert(
+        "❌ Không thể xuất Excel.\n\n" +
+        (
+          error?.message ||
+          "Lỗi không xác định."
+        )
+      );
+
+    } finally {
+
+      if (exportBtn) {
+
+        exportBtn.disabled =
+          false;
+
+        exportBtn.textContent =
+          originalText;
+
+      }
+
     }
 
-    // ========================================================
-    // ĐỘ RỘNG CỘT
-    // ========================================================
-
-    ws["!cols"] = [
-      { wch: 6 },
-      { wch: 20 },
-      { wch: 14 },
-      { wch: 15 },
-      { wch: 25 },
-      { wch: 15 },
-      { wch: 22 },
-      { wch: 45 },
-      { wch: 18 },
-      { wch: 45 }
-    ];
-
-    // ========================================================
-    // TẠO WORKBOOK
-    // ========================================================
-
-    const wb =
-      XLSX.utils.book_new();
-
-    XLSX.utils.book_append_sheet(
-      wb,
-      ws,
-      "BaoCaoNgay"
-    );
-
-    // ========================================================
-    // TÊN FILE
-    // ========================================================
-
-    const now =
-      new Date();
-
-    const date =
-      now.getFullYear() +
-      "-" +
-      String(
-        now.getMonth() + 1
-      ).padStart(2, "0") +
-      "-" +
-      String(
-        now.getDate()
-      ).padStart(2, "0");
-
-    // ========================================================
-    // XUẤT FILE
-    // ========================================================
-
-    XLSX.writeFile(
-      wb,
-      `Bao_Cao_Ngay_${date}.xlsx`,
-      {
-        cellDates: true
-      }
-    );
-
-    if (managerMessage) {
-      managerMessage.textContent =
-        `✅ Đã xuất ${filteredData.length} báo cáo ra Excel.`;
-    }
   }
+
 
   // ==========================================================
   // FORMAT DATE HIỂN THỊ
-  //
-  // Supabase:
-  // YYYY-MM-DD
-  //
-  // Giao diện:
-  // DD/MM/YYYY
   // ==========================================================
 
   function formatDate(value) {
@@ -1956,14 +3625,19 @@
       return "";
     }
 
+
     const dateString =
       String(value)
         .substring(0, 10);
 
+
     const parts =
       dateString.split("-");
 
-    if (parts.length === 3) {
+
+    if (
+      parts.length === 3
+    ) {
 
       const year =
         parts[0];
@@ -1974,6 +3648,7 @@
       const day =
         parts[2];
 
+
       if (
         year &&
         month &&
@@ -1983,69 +3658,167 @@
         return (
           `${day}/${month}/${year}`
         );
+
       }
+
     }
 
+
     return dateString;
+
   }
 
+
   // ==========================================================
-  // FORMAT DATE CHO INPUT TYPE="DATE"
-  //
-  // input type="date" bắt buộc:
-  // YYYY-MM-DD
-  //
-  // KHÔNG dùng formatDate() ở đây.
+  // FORMAT DATETIME
   // ==========================================================
 
-  function formatDateForInput(value) {
+  function formatDateTime(
+    value
+  ) {
 
     if (!value) {
       return "";
     }
 
-    return String(value)
-      .substring(0, 10);
+
+    const date =
+      value instanceof Date
+        ? value
+        : new Date(value);
+
+
+    if (
+      Number.isNaN(
+        date.getTime()
+      )
+    ) {
+
+      return "";
+
+    }
+
+
+    const day =
+      String(
+        date.getDate()
+      ).padStart(
+        2,
+        "0"
+      );
+
+
+    const month =
+      String(
+        date.getMonth() + 1
+      ).padStart(
+        2,
+        "0"
+      );
+
+
+    const year =
+      date.getFullYear();
+
+
+    const hours =
+      String(
+        date.getHours()
+      ).padStart(
+        2,
+        "0"
+      );
+
+
+    const minutes =
+      String(
+        date.getMinutes()
+      ).padStart(
+        2,
+        "0"
+      );
+
+
+    return (
+      `${day}/${month}/${year} ${hours}:${minutes}`
+    );
+
   }
 
+
   // ==========================================================
-  // CHUYỂN NGÀY SUPABASE -> DATE CHO EXCEL
-  //
-  // Ví dụ:
-  // 2026-09-11
-  //
-  // thành:
-  // Date(2026, 8, 11)
-  //
-  // Dùng local date để tránh lỗi lệch ngày
-  // do timezone.
+  // FORMAT DATE CHO INPUT DATE
   // ==========================================================
 
-  function toExcelDate(value) {
+  function formatDateForInput(
+    value
+  ) {
+
+    if (!value) {
+      return "";
+    }
+
+
+    return String(value)
+      .substring(
+        0,
+        10
+      );
+
+  }
+
+
+  // ==========================================================
+  // CHUYỂN NGÀY -> DATE CHO EXCEL
+  // ==========================================================
+
+  function toExcelDate(
+    value
+  ) {
 
     if (!value) {
       return null;
     }
 
+
     const dateString =
       String(value)
-        .substring(0, 10);
+        .substring(
+          0,
+          10
+        );
+
 
     const parts =
       dateString.split("-");
 
-    if (parts.length !== 3) {
+
+    if (
+      parts.length !== 3
+    ) {
+
       return null;
+
     }
 
+
     const year =
-      Number(parts[0]);
+      Number(
+        parts[0]
+      );
+
 
     const month =
-      Number(parts[1]);
+      Number(
+        parts[1]
+      );
+
 
     const day =
-      Number(parts[2]);
+      Number(
+        parts[2]
+      );
+
 
     if (
       !year ||
@@ -2054,82 +3827,109 @@
     ) {
 
       return null;
+
     }
+
 
     return new Date(
       year,
       month - 1,
       day
     );
+
   }
+
 
   // ==========================================================
   // ESCAPE HTML
   // ==========================================================
 
-  function escapeHtml(value) {
+  function escapeHtml(
+    value
+  ) {
 
     if (
       value === null ||
       value === undefined
     ) {
+
       return "";
+
     }
 
+
     return String(value)
+
       .replace(
         /&/g,
         "&amp;"
       )
+
       .replace(
         /</g,
         "&lt;"
       )
+
       .replace(
         />/g,
         "&gt;"
       )
+
       .replace(
         /"/g,
         "&quot;"
       )
+
       .replace(
         /'/g,
         "&#039;"
       );
+
   }
+
 
   // ==========================================================
   // ESCAPE ATTRIBUTE
   // ==========================================================
 
-  function escapeAttr(value) {
+  function escapeAttr(
+    value
+  ) {
 
     if (
       value === null ||
       value === undefined
     ) {
+
       return "";
+
     }
 
+
     return String(value)
+
       .replace(
         /&/g,
         "&amp;"
       )
+
       .replace(
         /"/g,
         "&quot;"
       )
+
       .replace(
         /</g,
         "&lt;"
       )
+
       .replace(
         />/g,
         "&gt;"
       );
+
   }
+
 
   // ==========================================================
   // REMOVE EDIT MODAL
@@ -2142,6 +3942,7 @@
         "editReportModal"
       )
       ?.remove();
+
   }
 
 })();
