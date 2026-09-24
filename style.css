@@ -1,69 +1,129 @@
+/* =========================================================
+
+   RESET
+
+========================================================= */
+
 * {
+
   box-sizing: border-box;
+
 }
 
 html,
+
 body {
+
   margin: 0;
+
   padding: 0;
+
   min-height: 100%;
+
 }
 
 body {
+
   font-family:
+
     -apple-system,
+
     BlinkMacSystemFont,
+
     "Segoe UI",
+
     Arial,
+
     sans-serif;
 
   background:
+
     linear-gradient(
+
       160deg,
+
       #eef2ff 0%,
+
       #fdf2f8 45%,
+
       #ecfeff 100%
+
     );
 
   color: #172033;
+
 }
 
+/* =========================================================
+
+   NỀN
+
+========================================================= */
+
 .top-bg {
+
   position: fixed;
 
   top: -100px;
+
   left: -80px;
 
   width: 260px;
+
   height: 260px;
 
   border-radius: 50%;
 
   background:
+
     linear-gradient(
+
       135deg,
+
       #6366f1,
+
       #a855f7
+
     );
 
   opacity: .18;
 
   pointer-events: none;
+
 }
 
+/* =========================================================
+
+   CONTAINER
+
+========================================================= */
+
 .container {
+
   width: 100%;
+
   max-width: 620px;
 
   margin: auto;
 
   padding:
+
     20px
+
     16px
+
     30px;
+
 }
 
+/* =========================================================
+
+   CARD
+
+========================================================= */
+
 .card {
+
   position: relative;
 
   background: rgba(255,255,255,.96);
@@ -71,18 +131,31 @@ body {
   border-radius: 28px;
 
   padding:
+
     22px
+
     18px
+
     24px;
 
   box-shadow:
+
     0 15px 45px rgba(79,70,229,.13);
 
   border:
+
     1px solid rgba(255,255,255,.8);
+
 }
 
+/* =========================================================
+
+   HEADER
+
+========================================================= */
+
 .header {
+
   display: flex;
 
   align-items: center;
@@ -94,11 +167,15 @@ body {
   padding-bottom: 20px;
 
   border-bottom:
+
     1px solid #edf0f7;
+
 }
 
 .logo {
+
   width: 58px;
+
   height: 58px;
 
   flex-shrink: 0;
@@ -106,6 +183,7 @@ body {
   display: flex;
 
   align-items: center;
+
   justify-content: center;
 
   border-radius: 18px;
@@ -113,17 +191,25 @@ body {
   font-size: 29px;
 
   background:
+
     linear-gradient(
+
       135deg,
+
       #6366f1,
+
       #a855f7
+
     );
 
   box-shadow:
+
     0 8px 20px rgba(99,102,241,.25);
+
 }
 
 h1 {
+
   margin: 0;
 
   font-size: 20px;
@@ -131,24 +217,39 @@ h1 {
   font-weight: 800;
 
   letter-spacing: -.3px;
+
 }
 
 .header p {
+
   margin: 5px 0 0;
 
   color: #7c8498;
 
   font-size: 14px;
+
 }
 
+/* =========================================================
+
+   TIÊU ĐỀ SECTION
+
+========================================================= */
+
 .section-title {
+
   margin:
+
     4px
+
     0
+
     13px;
 
   padding:
+
     10px
+
     13px;
 
   border-radius: 12px;
@@ -162,27 +263,43 @@ h1 {
   font-weight: 800;
 
   letter-spacing: .2px;
+
 }
 
 .detail-title {
+
   background: #ecfeff;
 
   color: #0891b2;
 
   margin-top: 23px;
+
 }
 
+/* =========================================================
+
+   FIELD
+
+========================================================= */
+
 .field {
+
   margin-bottom: 16px;
+
 }
 
 label {
+
   display: block;
 
   margin:
+
     0
+
     0
+
     7px
+
     3px;
 
   font-size: 14px;
@@ -190,18 +307,31 @@ label {
   font-weight: 700;
 
   color: #374151;
+
 }
 
 label span {
+
   color: #ef4444;
+
 }
 
+/* =========================================================
+
+   INPUT / SELECT / TEXTAREA
+
+========================================================= */
+
 input,
+
 textarea,
+
 select {
+
   width: 100%;
 
   border:
+
     2px solid #edf0f5;
 
   background: #f8fafc;
@@ -209,7 +339,9 @@ select {
   border-radius: 15px;
 
   padding:
+
     14px
+
     15px;
 
   font-size: 16px;
@@ -221,42 +353,65 @@ select {
   transition: .2s ease;
 
   font-family: inherit;
+
 }
 
 input,
+
 select {
+
   height: 52px;
+
 }
 
 textarea {
+
   min-height: 105px;
 
   resize: vertical;
+
 }
 
 input:focus,
+
 textarea:focus,
+
 select:focus {
+
   background: #fff;
 
   border-color: #818cf8;
 
   box-shadow:
+
     0 0 0 4px rgba(99,102,241,.10);
+
 }
 
 input::placeholder,
+
 textarea::placeholder {
+
   color: #a1a8b7;
+
 }
 
 select {
+
   appearance: auto;
 
   cursor: pointer;
+
 }
 
+/* =========================================================
+
+   MONEY BOX
+
+========================================================= */
+
 .money-box {
+
   padding: 16px;
 
   margin-bottom: 16px;
@@ -264,21 +419,31 @@ select {
   border-radius: 19px;
 
   background:
+
     linear-gradient(
+
       135deg,
+
       #fff7ed,
+
       #fff1f2
+
     );
 
   border:
+
     1px solid #fed7aa;
+
 }
 
 .money-box label {
+
   color: #9a3412;
+
 }
 
 .money-input {
+
   display: flex;
 
   align-items: center;
@@ -286,14 +451,17 @@ select {
   background: #fff;
 
   border:
+
     2px solid #fdba74;
 
   border-radius: 15px;
 
   overflow: hidden;
+
 }
 
 .money-input input {
+
   height: 58px;
 
   border: 0;
@@ -309,25 +477,39 @@ select {
   color: #ea580c;
 
   padding-right: 5px;
+
 }
 
 .money-input input:focus {
+
   border: 0;
 
   box-shadow: none;
+
 }
 
 .money-input b {
+
   padding:
+
     0
+
     14px;
 
   color: #ea580c;
 
   font-size: 13px;
+
 }
 
+/* =========================================================
+
+   BUTTON MẶC ĐỊNH
+
+========================================================= */
+
 button {
+
   width: 100%;
 
   height: 56px;
@@ -339,10 +521,15 @@ button {
   border-radius: 17px;
 
   background:
+
     linear-gradient(
+
       135deg,
+
       #4f46e5,
+
       #9333ea
+
     );
 
   color: white;
@@ -354,30 +541,47 @@ button {
   letter-spacing: .2px;
 
   box-shadow:
+
     0 10px 25px rgba(99,102,241,.30);
 
   cursor: pointer;
 
   transition:
+
     transform .15s ease,
+
     opacity .15s ease;
+
 }
 
 button:active {
+
   transform: scale(.98);
+
 }
 
 button:disabled {
+
   opacity: .65;
 
   cursor: not-allowed;
+
 }
 
 button span {
+
   margin-right: 6px;
+
 }
 
+/* =========================================================
+
+   MESSAGE
+
+========================================================= */
+
 #message {
+
   min-height: 22px;
 
   margin-top: 14px;
@@ -387,9 +591,17 @@ button span {
   font-size: 14px;
 
   font-weight: 700;
+
 }
 
+/* =========================================================
+
+   FOOTER
+
+========================================================= */
+
 .footer {
+
   text-align: center;
 
   color: #8991a3;
@@ -397,142 +609,801 @@ button span {
   font-size: 12px;
 
   margin:
+
     14px
+
     0
+
     0;
+
 }
+
+/* =========================================================
+
+   MANAGER - KHU VỰC NÚT THAO TÁC
+
+========================================================= */
+
+.action-buttons {
+
+  display: flex !important;
+
+  align-items: center !important;
+
+  justify-content: center !important;
+
+  gap: 6px !important;
+
+  white-space: nowrap !important;
+
+}
+
+/* =========================================================
+
+   NÚT SỬA
+
+========================================================= */
+
+.edit-btn {
+
+  width: 72px !important;
+
+  min-width: 72px !important;
+
+  max-width: 72px !important;
+
+  height: 36px !important;
+
+  min-height: 36px !important;
+
+  margin: 0 !important;
+
+  padding:
+
+    0
+
+    6px !important;
+
+  border: 0 !important;
+
+  border-radius: 9px !important;
+
+  background: #2563eb !important;
+
+  color: white !important;
+
+  font-size: 12px !important;
+
+  font-weight: 800 !important;
+
+  box-shadow:
+
+    0 4px 10px
+
+    rgba(37,99,235,.18) !important;
+
+  cursor: pointer !important;
+
+  display: inline-flex !important;
+
+  align-items: center !important;
+
+  justify-content: center !important;
+
+  white-space: nowrap !important;
+
+}
+
+.edit-btn:hover {
+
+  background: #1d4ed8 !important;
+
+}
+
+/* =========================================================
+
+   NÚT XÓA
+
+========================================================= */
+
+.delete-btn {
+
+  width: 72px !important;
+
+  min-width: 72px !important;
+
+  max-width: 72px !important;
+
+  height: 36px !important;
+
+  min-height: 36px !important;
+
+  margin: 0 !important;
+
+  padding:
+
+    0
+
+    6px !important;
+
+  border: 0 !important;
+
+  border-radius: 9px !important;
+
+  background: #dc2626 !important;
+
+  color: white !important;
+
+  font-size: 12px !important;
+
+  font-weight: 800 !important;
+
+  box-shadow:
+
+    0 4px 10px
+
+    rgba(220,38,38,.18) !important;
+
+  cursor: pointer !important;
+
+  display: inline-flex !important;
+
+  align-items: center !important;
+
+  justify-content: center !important;
+
+  white-space: nowrap !important;
+
+}
+
+.delete-btn:hover {
+
+  background: #b91c1c !important;
+
+}
+
+/* =========================================================
+
+   HIỆU ỨNG BẤM NÚT
+
+========================================================= */
+
+.action-buttons button:active,
+
+.edit-btn:active,
+
+.delete-btn:active {
+
+  transform: scale(.95) !important;
+
+}
+
+/* =========================================================
+
+   MANAGER - NÚT LỌC / LÀM MỚI / EXCEL
+
+========================================================= */
+
+#filterBtn,
+
+#refreshBtn,
+
+#exportBtn {
+
+  width: auto !important;
+
+  min-width: 0 !important;
+
+  height: 44px !important;
+
+  min-height: 44px !important;
+
+  margin-top: 0 !important;
+
+  padding:
+
+    0
+
+    15px !important;
+
+  border-radius: 11px !important;
+
+  font-size: 13px !important;
+
+  font-weight: 800 !important;
+
+  white-space: nowrap !important;
+
+  display: inline-flex !important;
+
+  align-items: center !important;
+
+  justify-content: center !important;
+
+  box-shadow:
+
+    0 5px 13px
+
+    rgba(79,70,229,.16) !important;
+
+}
+
+/* =========================================================
+
+   NÚT LỌC
+
+========================================================= */
+
+#filterBtn {
+
+  background:
+
+    linear-gradient(
+
+      135deg,
+
+      #64748b,
+
+      #475569
+
+    ) !important;
+
+}
+
+/* =========================================================
+
+   NÚT LÀM MỚI
+
+========================================================= */
+
+#refreshBtn {
+
+  background:
+
+    linear-gradient(
+
+      135deg,
+
+      #16a34a,
+
+      #22c55e
+
+    ) !important;
+
+}
+
+/* =========================================================
+
+   NÚT XUẤT EXCEL
+
+========================================================= */
+
+#exportBtn {
+
+  background:
+
+    linear-gradient(
+
+      135deg,
+
+      #4f46e5,
+
+      #9333ea
+
+    ) !important;
+
+}
+
+/* =========================================================
+
+   NÚT CÁN BỘ ĐÃ NHẬP BÁO CÁO
+
+========================================================= */
+
+#staffCountBtn,
+
+#countStaffBtn,
+
+.staff-count-btn {
+
+  width: 100% !important;
+
+  height: 48px !important;
+
+  min-height: 48px !important;
+
+  margin-top: 8px !important;
+
+  border-radius: 13px !important;
+
+  font-size: 14px !important;
+
+  font-weight: 800 !important;
+
+  background:
+
+    linear-gradient(
+
+      135deg,
+
+      #64748b,
+
+      #475569
+
+    ) !important;
+
+  color: #ffffff !important;
+
+  box-shadow:
+
+    0 7px 16px
+
+    rgba(71,85,105,.18) !important;
+
+}
+
+/* =========================================================
+
+   MANAGER - KHU VỰC LỌC
+
+========================================================= */
+
+/*
+
+   Hỗ trợ nhiều class có thể đang được dùng
+
+   trong manager.html.
+
+*/
+
+.filter-actions,
+
+.filter-buttons,
+
+.manager-actions,
+
+.action-row {
+
+  display: flex !important;
+
+  align-items: center !important;
+
+  flex-wrap: wrap !important;
+
+  gap: 8px !important;
+
+}
+
+/* Nếu nhóm nút là div chứa trực tiếp 3 nút */
+
+.filter-actions #filterBtn,
+
+.filter-actions #refreshBtn,
+
+.filter-actions #exportBtn,
+
+.filter-buttons #filterBtn,
+
+.filter-buttons #refreshBtn,
+
+.filter-buttons #exportBtn,
+
+.manager-actions #filterBtn,
+
+.manager-actions #refreshBtn,
+
+.manager-actions #exportBtn,
+
+.action-row #filterBtn,
+
+.action-row #refreshBtn,
+
+.action-row #exportBtn {
+
+  flex: 0 0 auto !important;
+
+}
+
+/* =========================================================
+
+   BẢNG QUẢN LÝ
+
+========================================================= */
+
+table {
+
+  width: 100%;
+
+  border-collapse: collapse;
+
+  border-spacing: 0;
+
+}
+
+th {
+
+  font-weight: 800;
+
+}
+
+th,
+
+td {
+
+  padding:
+
+    10px
+
+    9px;
+
+  vertical-align: middle;
+
+}
+
+/* =========================================================
+
+   CỘT THAO TÁC
+
+========================================================= */
+
+th:last-child,
+
+td:last-child {
+
+  text-align: center;
+
+}
+
+/* =========================================================
+
+   MOBILE
+
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .container {
+
+    padding:
+
+      10px
+
+      8px
+
+      22px;
+
+  }
+
+  .card {
+
+    border-radius: 22px;
+
+    padding:
+
+      17px
+
+      12px
+
+      20px;
+
+  }
+
+  /* -------------------------------------------------------
+
+     NÚT SỬA + XÓA
+
+  ------------------------------------------------------- */
+
+  .action-buttons {
+
+    flex-direction: row !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    gap: 5px !important;
+
+  }
+
+  .edit-btn,
+
+  .delete-btn {
+
+    width: 68px !important;
+
+    min-width: 68px !important;
+
+    max-width: 68px !important;
+
+    height: 34px !important;
+
+    min-height: 34px !important;
+
+    padding:
+
+      0
+
+      4px !important;
+
+    border-radius: 8px !important;
+
+    font-size: 11px !important;
+
+    box-shadow: none !important;
+
+  }
+
+  /* -------------------------------------------------------
+
+     NÚT LỌC / LÀM MỚI / EXCEL
+
+  ------------------------------------------------------- */
+
+  #filterBtn,
+
+  #refreshBtn,
+
+  #exportBtn {
+
+    height: 42px !important;
+
+    min-height: 42px !important;
+
+    padding:
+
+      0
+
+      11px !important;
+
+    border-radius: 10px !important;
+
+    font-size: 11px !important;
+
+    box-shadow:
+
+      0 4px 10px
+
+      rgba(0,0,0,.08) !important;
+
+  }
+
+  /* -------------------------------------------------------
+
+     NHÓM NÚT
+
+  ------------------------------------------------------- */
+
+  .filter-actions,
+
+  .filter-buttons,
+
+  .manager-actions,
+
+  .action-row {
+
+    gap: 6px !important;
+
+    flex-wrap: wrap !important;
+
+  }
+
+  /* -------------------------------------------------------
+
+     NÚT CÁN BỘ
+
+  ------------------------------------------------------- */
+
+  #staffCountBtn,
+
+  #countStaffBtn,
+
+  .staff-count-btn {
+
+    height: 44px !important;
+
+    min-height: 44px !important;
+
+    border-radius: 11px !important;
+
+    font-size: 12px !important;
+
+    margin-top: 7px !important;
+
+  }
+
+  /* -------------------------------------------------------
+
+     BẢNG
+
+  ------------------------------------------------------- */
+
+  th,
+
+  td {
+
+    padding:
+
+      8px
+
+      7px;
+
+  }
+
+}
+
+/* =========================================================
+
+   IPHONE NHỎ
+
+========================================================= */
 
 @media (max-width: 420px) {
 
   .container {
+
     padding:
-      12px
-      10px
-      25px;
+
+      8px
+
+      6px
+
+      20px;
+
   }
 
   .card {
-    border-radius: 24px;
+
+    border-radius: 20px;
 
     padding:
-      19px
+
       15px
-      21px;
+
+      10px
+
+      18px;
+
   }
 
   .logo {
-    width: 52px;
-    height: 52px;
 
-    border-radius: 16px;
+    width: 50px;
 
-    font-size: 25px;
+    height: 50px;
+
+    border-radius: 15px;
+
+    font-size: 24px;
+
   }
 
   h1 {
+
     font-size: 18px;
+
   }
 
   input,
+
   select {
+
     height: 50px;
+
   }
 
   .money-input input {
+
     font-size: 21px;
+
   }
-}
-/* ========================================
-   MANAGER - NÚT THAO TÁC
-======================================== */
 
-.action-buttons {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.edit-btn {
-  width: auto;
-  min-width: 75px;
-  height: 42px;
-
-  margin-top: 0;
-
-  padding: 0 10px;
-
-  border: 0;
-  border-radius: 9px;
-
-  background: #2563eb;
-
-  color: white;
-
-  font-size: 14px;
-  font-weight: 800;
-
-  box-shadow:
-    0 5px 12px rgba(37, 99, 235, .20);
-
-  cursor: pointer;
-}
-
-.edit-btn:hover {
-  background: #1d4ed8;
-}
-
-.delete-btn {
-  width: auto;
-  min-width: 75px;
-  height: 42px;
-
-  margin-top: 0;
-
-  padding: 0 10px;
-
-  border: 0;
-  border-radius: 9px;
-
-  background: #dc2626;
-
-  color: white;
-
-  font-size: 14px;
-  font-weight: 800;
-
-  box-shadow:
-    0 5px 12px rgba(220, 38, 38, .20);
-
-  cursor: pointer;
-}
-
-.delete-btn:hover {
-  background: #b91c1c;
-}
-
-.action-buttons button:active {
-  transform: scale(.96);
-}
-
-
-/* ========================================
-   MOBILE - MANAGER
-======================================== */
-
-@media (max-width: 600px) {
-
-  .action-buttons {
-    flex-direction: column;
-    gap: 6px;
-  }
+  /* Nút thao tác cực gọn */
 
   .edit-btn,
-  .delete-btn {
-    width: 75px;
-    min-width: 75px;
-    height: 40px;
 
-    font-size: 13px;
+  .delete-btn {
+
+    width: 64px !important;
+
+    min-width: 64px !important;
+
+    max-width: 64px !important;
+
+    height: 33px !important;
+
+    min-height: 33px !important;
+
+    font-size: 10.5px !important;
+
+  }
+
+  .action-buttons {
+
+    gap: 4px !important;
+
+  }
+
+  /* Nút phía trên */
+
+  #filterBtn,
+
+  #refreshBtn,
+
+  #exportBtn {
+
+    height: 40px !important;
+
+    min-height: 40px !important;
+
+    padding:
+
+      0
+
+      9px !important;
+
+    font-size: 10.5px !important;
+
+    border-radius: 9px !important;
+
+  }
+
+  #staffCountBtn,
+
+  #countStaffBtn,
+
+  .staff-count-btn {
+
+    height: 42px !important;
+
+    min-height: 42px !important;
+
+    font-size: 11px !important;
+
+  }
+
+}
+
+/* =========================================================
+
+   IPHONE RẤT HẸP
+
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .edit-btn,
+
+  .delete-btn {
+
+    width: 60px !important;
+
+    min-width: 60px !important;
+
+    max-width: 60px !important;
+
+    height: 32px !important;
+
+    min-height: 32px !important;
+
+    font-size: 10px !important;
+
+  }
+
+  #filterBtn,
+
+  #refreshBtn,
+
+  #exportBtn {
+
+    padding:
+
+      0
+
+      7px !important;
+
+    font-size: 10px !important;
+
   }
 
 }
