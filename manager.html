@@ -1,75 +1,144 @@
 <!doctype html>
+
 <html lang="vi">
 
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Quản Lý Báo Cáo Ngày</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-  <link rel="stylesheet" href="style.css">
+  <title>
+    Quản Lý Báo Cáo Ngày
+  </title>
+
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
 
   <style>
 
-    /* =====================================================
-       MANAGER
-    ===================================================== */
+    /* ========================================================
+       RESET
+    ======================================================== */
 
-    .manager-card {
-      max-width: 1250px;
-      margin: auto;
+    * {
+      box-sizing: border-box;
     }
 
-    /* =====================================================
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+
+    body.menu-open {
+      overflow: hidden;
+    }
+
+
+    /* ========================================================
        HEADER
-    ===================================================== */
+    ======================================================== */
 
     .manager-header {
-      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+
+    .header {
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
+
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+
+    .header p {
+      margin: 4px 0 0;
+      opacity: 0.7;
+    }
+
+
+    .logo {
+      font-size: 36px;
+    }
+
+
+    /* ========================================================
+       MENU BUTTON
+    ======================================================== */
+
     .menu-button {
-      width: 48px;
-      height: 48px;
-      flex-shrink: 0;
+      width: 46px;
+      height: 46px;
 
       border: 0;
       border-radius: 12px;
 
-      background: #2563eb;
+      background: #111827;
       color: white;
 
-      font-size: 25px;
-      font-weight: 900;
+      font-size: 23px;
 
       cursor: pointer;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .menu-button:active {
-      transform: scale(.96);
+
+    .menu-button:hover {
+      opacity: 0.85;
     }
 
-    /* =====================================================
+
+    /* ========================================================
        SIDE MENU
-    ===================================================== */
+    ======================================================== */
 
     .side-menu-overlay {
       position: fixed;
       inset: 0;
 
-      background: rgba(0,0,0,.45);
+      background: rgba(0,0,0,0.45);
 
-      z-index: 99998;
+      opacity: 0;
+      visibility: hidden;
 
-      display: none;
+      transition: 0.25s;
+
+      z-index: 9998;
     }
 
-    .side-menu-overlay.open {
-      display: block;
+
+    .side-menu-overlay.show {
+      opacity: 1;
+      visibility: visible;
     }
+
 
     .side-menu {
       position: fixed;
@@ -77,74 +146,131 @@
       top: 0;
       left: 0;
 
-      width: min(320px, 85vw);
-      height: 100%;
+      width: 310px;
+      max-width: 85vw;
+      height: 100vh;
 
       background: white;
 
-      z-index: 99999;
-
-      box-shadow: 10px 0 40px rgba(0,0,0,.25);
-
       transform: translateX(-100%);
-      transition: transform .25s ease;
 
-      overflow-y: auto;
+      transition: 0.3s;
+
+      z-index: 9999;
+
+      box-shadow:
+        8px 0 30px rgba(0,0,0,0.18);
+
+      padding: 20px;
     }
+
 
     .side-menu.open {
       transform: translateX(0);
     }
 
+
     .side-menu-header {
-      padding: 20px;
-
-      background: #2563eb;
-      color: white;
-
       display: flex;
       justify-content: space-between;
       align-items: center;
+
+      margin-bottom: 25px;
     }
+
 
     .side-menu-header h2 {
       margin: 0;
       font-size: 20px;
     }
 
+
     .side-menu-close {
-      width: 40px;
-      height: 40px;
+      border: 0;
+      background: transparent;
+
+      font-size: 25px;
+
+      cursor: pointer;
+    }
+
+
+    .side-menu button {
+      width: 100%;
+
+      padding: 14px;
+
+      margin-bottom: 10px;
 
       border: 0;
       border-radius: 10px;
 
-      background: rgba(255,255,255,.2);
-      color: white;
+      text-align: left;
 
-      font-size: 25px;
+      font-size: 15px;
+      font-weight: 700;
+
       cursor: pointer;
     }
 
-    .side-menu-list {
-      padding: 12px;
+
+    #menuReportsBtn {
+      background: #eef2ff;
+      color: #3730a3;
     }
 
-    .side-menu-item {
-      width: 100%;
-      min-height: 52px;
 
-      margin-bottom: 8px;
+    #menuLogoutBtn {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+
+    /* ========================================================
+       LOGIN
+    ======================================================== */
+
+    #loginBox {
+      max-width: 480px;
+      margin: 20px auto;
+    }
+
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+
+    .login-form label {
+      font-weight: 700;
+    }
+
+
+    .login-form input {
+      width: 100%;
+
+      padding: 13px 14px;
+
+      border: 1px solid #d1d5db;
+
+      border-radius: 10px;
+
+      font-size: 16px;
+    }
+
+
+    #loginBtn {
+      width: 100%;
+
+      padding: 13px;
 
       border: 0;
-      border-radius: 12px;
+      border-radius: 10px;
 
-      background: #f1f5f9;
-      color: #1e293b;
-
-      text-align: left;
-
-      padding: 12px 15px;
+      background: #2563eb;
+      color: white;
 
       font-size: 16px;
       font-weight: 800;
@@ -152,563 +278,764 @@
       cursor: pointer;
     }
 
-    .side-menu-item:hover {
-      background: #e2e8f0;
+
+    #loginBtn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
-    .side-menu-item:active {
-      transform: scale(.98);
+
+    #loginMessage {
+      margin-top: 12px;
+      font-weight: 700;
     }
 
-    /* =====================================================
+
+    /* ========================================================
        STATS
-    ===================================================== */
+    ======================================================== */
 
     .stats {
       display: grid;
 
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
 
-      gap: 12px;
+      gap: 15px;
 
-      margin: 20px 0;
+      margin-bottom: 22px;
     }
 
-    .stat {
-      background: #f1f5f9;
 
-      padding: 16px;
+    .stat-box {
+      padding: 20px;
 
-      border-radius: 15px;
+      border-radius: 14px;
 
-      text-align: center;
+      background: #f8fafc;
+
+      border: 1px solid #e5e7eb;
     }
+
 
     .stat-title {
-      color: #64748b;
+      font-size: 14px;
+      opacity: 0.7;
+      margin-bottom: 6px;
+    }
+
+
+    .stat-value {
+      font-size: 25px;
+      font-weight: 900;
+    }
+
+
+    /* ========================================================
+       SECTION TITLE
+    ======================================================== */
+
+    .section-title {
+      margin: 18px 0 10px;
+
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+
+    /* ========================================================
+       FILTER
+    ======================================================== */
+
+    .filters {
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 10px;
+
+      align-items: center;
+
+      margin-bottom: 20px;
+    }
+
+
+    .filters label {
+      font-weight: 700;
+    }
+
+
+    .filters input {
+      min-height: 42px;
+
+      padding: 9px 11px;
+
+      border:
+        1px solid #d1d5db;
+
+      border-radius: 9px;
 
       font-size: 14px;
     }
 
-    .stat-value {
-      font-size: 22px;
+
+    .filters button {
+      min-height: 42px;
+
+      padding:
+        9px 14px;
+
+      border: 0;
+
+      border-radius: 9px;
 
       font-weight: 800;
 
-      margin-top: 6px;
+      cursor: pointer;
     }
 
-    /* =====================================================
-       FILTER
-    ===================================================== */
 
-    .filters {
-      display: grid;
-      gap: 10px;
+    .filters button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
     }
 
-    /* =====================================================
+
+    /* ========================================================
+       BUTTON COLORS
+    ======================================================== */
+
+    .danger {
+      background: #dc2626 !important;
+      color: white !important;
+    }
+
+
+    .green {
+      background: #16a34a !important;
+      color: white !important;
+    }
+
+
+    .gray {
+      background: #64748b !important;
+      color: white !important;
+    }
+
+
+    #exportBtn {
+      background: #2563eb;
+      color: white;
+    }
+
+
+    /* ========================================================
+       DELETE ALL
+    ======================================================== */
+
+    #deleteAllBtn {
+      background: #991b1b;
+
+      color: white;
+
+      border: 0;
+
+      font-weight: 900;
+
+      box-shadow:
+        0 3px 10px rgba(153,27,27,0.25);
+    }
+
+
+    #deleteAllBtn:hover {
+      background: #7f1d1d;
+    }
+
+
+    /* ========================================================
        TABLE
-    ===================================================== */
+    ======================================================== */
 
     .table-wrap {
+      width: 100%;
+
       overflow-x: auto;
 
-      margin-top: 20px;
+      border:
+        1px solid #e5e7eb;
 
-      -webkit-overflow-scrolling: touch;
+      border-radius: 12px;
+
+      background: white;
     }
+
 
     table {
       width: 100%;
 
-      border-collapse: collapse;
-
       min-width: 1450px;
+
+      border-collapse: collapse;
     }
+
 
     th,
     td {
-      border: 1px solid #ddd;
+      padding:
+        11px 10px;
 
-      padding: 10px;
+      border-bottom:
+        1px solid #e5e7eb;
 
       text-align: left;
 
-      white-space: nowrap;
+      vertical-align: top;
+
+      font-size: 14px;
     }
+
 
     th {
       background: #f1f5f9;
 
-      font-weight: 800;
+      font-weight: 900;
+
+      white-space: nowrap;
+
+      position: sticky;
+      top: 0;
+
+      z-index: 1;
     }
 
-    /* =====================================================
-       BUTTON
-    ===================================================== */
 
-    .danger {
-      background: #dc2626;
-      color: white;
+    tbody tr:hover {
+      background: #f8fafc;
     }
 
-    .green {
-      background: #16a34a;
-      color: white;
+
+    .detail-cell {
+      min-width: 220px;
+
+      white-space: pre-wrap;
+
+      word-break: break-word;
     }
 
-    .gray {
-      background: #64748b;
-      color: white;
+
+    .money-cell {
+      text-align: right;
+
+      white-space: nowrap;
+
+      font-weight: 700;
     }
 
-    .edit-btn {
-      background: #2563eb;
-      color: white;
 
-      border: 0;
-      border-radius: 8px;
+    .action-cell {
+      white-space: nowrap;
 
-      padding: 8px 10px;
-
-      font-weight: bold;
-
-      cursor: pointer;
-
-      margin-right: 5px;
+      width: 90px;
     }
 
+
+    /* ========================================================
+       ACTION BUTTONS
+    ======================================================== */
+
+    .edit-btn,
     .delete-btn {
-      background: #dc2626;
-      color: white;
-
-      border: 0;
-      border-radius: 8px;
-
-      padding: 8px 10px;
-
-      font-weight: bold;
-
-      cursor: pointer;
-    }
-
-    .edit-btn:active,
-    .delete-btn:active {
-      transform: scale(.97);
-    }
-
-    /* =====================================================
-       MESSAGE
-    ===================================================== */
-
-    #managerMessage,
-    #loginMessage {
-      margin-top: 15px;
-
-      text-align: center;
-
-      font-weight: bold;
-    }
-
-    /* =====================================================
-       PAGINATION
-    ===================================================== */
-
-    #pagination {
-      display: flex;
-
-      justify-content: flex-start;
-      align-items: center;
-
-      gap: 5px;
-
-      margin-top: 15px;
-
-      flex-wrap: wrap;
-    }
-
-    #pagination button {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
 
       padding: 0;
 
-      border: 1px solid #cbd5e1;
+      border: 0;
 
-      border-radius: 7px;
-
-      background: white;
-
-      color: #334155;
-
-      font-size: 14px;
+      border-radius: 8px;
 
       cursor: pointer;
 
-      box-shadow: none;
+      margin-right: 4px;
+
+      font-size: 16px;
     }
 
-    #pagination button:hover {
-      background: #f1f5f9;
+
+    .edit-btn {
+      background: #dbeafe;
     }
 
-    #pagination button.active {
-      background: #2563eb;
 
-      color: white;
-
-      border-color: #2563eb;
-
-      font-weight: bold;
+    .delete-btn {
+      background: #fee2e2;
     }
 
-    #pagination button:disabled {
-      opacity: .4;
+
+    .edit-btn:hover,
+    .delete-btn:hover {
+      transform: scale(1.05);
+    }
+
+
+    /* ========================================================
+       EMPTY
+    ======================================================== */
+
+    .empty-row {
+      text-align: center;
+
+      padding: 40px !important;
+
+      color: #64748b;
+
+      font-weight: 700;
+    }
+
+
+    /* ========================================================
+       MESSAGE
+    ======================================================== */
+
+    #managerMessage {
+      margin-top: 15px;
+
+      padding: 10px;
+
+      font-weight: 700;
+    }
+
+
+    /* ========================================================
+       PAGINATION
+    ======================================================== */
+
+    #pagination {
+      margin-top: 18px;
+    }
+
+
+    .pagination-wrap {
+      display: flex;
+
+      justify-content: center;
+
+      align-items: center;
+
+      gap: 12px;
+    }
+
+
+    .pagination-wrap button {
+      border: 0;
+
+      padding:
+        9px 14px;
+
+      border-radius: 8px;
+
+      background: #e2e8f0;
+
+      font-weight: 800;
+
+      cursor: pointer;
+    }
+
+
+    .pagination-wrap button:disabled {
+      opacity: 0.45;
 
       cursor: not-allowed;
     }
 
-    /* =====================================================
-       CÁN BỘ ĐÃ NHẬP
-    ===================================================== */
 
-    #showSubmittedUsersBtn {
+    .page-info {
       font-weight: 800;
     }
 
-    #submittedUserCount {
-      font-weight: 900;
 
-      background: white;
-
-      color: #2563eb;
-
-      padding: 2px 8px;
-
-      border-radius: 20px;
-
-      margin-left: 4px;
-    }
-
-    /* =====================================================
+    /* ========================================================
        MODAL
-    ===================================================== */
+    ======================================================== */
 
-    .user-modal-overlay {
+    .modal-overlay {
       position: fixed;
 
       inset: 0;
 
-      background: rgba(0,0,0,.55);
+      background:
+        rgba(0,0,0,0.5);
+
+      z-index: 10000;
 
       display: flex;
 
-      justify-content: center;
       align-items: center;
 
-      padding: 15px;
+      justify-content: center;
 
-      z-index: 99999;
+      padding: 20px;
+
+      overflow-y: auto;
     }
 
-    .user-modal {
+
+    .edit-modal,
+    .submitted-modal {
       width: 100%;
 
-      max-width: 520px;
-
-      max-height: 85vh;
+      max-width: 700px;
 
       background: white;
 
-      border-radius: 20px;
+      border-radius: 16px;
+
+      box-shadow:
+        0 20px 60px
+        rgba(0,0,0,0.25);
 
       overflow: hidden;
-
-      box-shadow: 0 20px 60px rgba(0,0,0,.3);
     }
 
-    .user-modal-header {
-      padding: 18px;
 
-      background: #f1f5f9;
-
+    .edit-modal-header,
+    .submitted-modal-header {
       display: flex;
 
       justify-content: space-between;
-      align-items: center;
 
-      gap: 10px;
+      align-items: flex-start;
+
+      padding: 18px 20px;
+
+      border-bottom:
+        1px solid #e5e7eb;
     }
 
-    .user-modal-header h2 {
+
+    .edit-modal-header h2,
+    .submitted-modal-header h2 {
       margin: 0;
 
       font-size: 20px;
-
-      line-height: 1.3;
     }
 
-    .user-modal-close {
-      width: 44px;
-      height: 44px;
 
-      flex-shrink: 0;
+    .edit-modal-header p,
+    .submitted-modal-header p {
+      margin: 5px 0 0;
 
+      color: #64748b;
+    }
+
+
+    .modal-close {
       border: 0;
 
-      border-radius: 10px;
+      background: transparent;
 
-      background: #dc2626;
-
-      color: white;
-
-      font-size: 24px;
-
-      font-weight: bold;
+      font-size: 23px;
 
       cursor: pointer;
-
-      box-shadow: none;
     }
 
-    .user-modal-body {
-      padding: 15px;
+
+    /* ========================================================
+       EDIT FORM
+    ======================================================== */
+
+    .edit-form {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 14px;
+
+      padding: 20px;
 
       max-height: 65vh;
 
       overflow-y: auto;
     }
 
+
+    .edit-form label {
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 6px;
+
+      font-weight: 800;
+    }
+
+
+    .edit-form input,
+    .edit-form select,
+    .edit-form textarea {
+      width: 100%;
+
+      padding: 10px 11px;
+
+      border:
+        1px solid #d1d5db;
+
+      border-radius: 9px;
+
+      font-family: inherit;
+
+      font-size: 14px;
+
+      font-weight: 400;
+    }
+
+
+    .edit-form textarea {
+      resize: vertical;
+    }
+
+
+    .edit-modal-footer {
+      display: flex;
+
+      justify-content: flex-end;
+
+      gap: 10px;
+
+      padding: 15px 20px;
+
+      border-top:
+        1px solid #e5e7eb;
+    }
+
+
+    .edit-modal-footer button {
+      border: 0;
+
+      border-radius: 9px;
+
+      padding:
+        11px 15px;
+
+      font-weight: 800;
+
+      cursor: pointer;
+    }
+
+
+    .save-edit-btn {
+      background: #16a34a;
+
+      color: white;
+    }
+
+
+    /* ========================================================
+       SUBMITTED USERS
+    ======================================================== */
+
+    .submitted-user-list {
+      max-height: 60vh;
+
+      overflow-y: auto;
+
+      padding: 15px 20px;
+    }
+
+
     .submitted-user-item {
       display: flex;
 
       align-items: center;
 
-      gap: 12px;
+      gap: 10px;
 
-      width: 100%;
+      padding: 12px 0;
 
-      padding: 13px;
+      border-bottom:
+        1px solid #e5e7eb;
+    }
 
-      margin-bottom: 8px;
 
-      background: #f8fafc;
+    .submitted-number {
+      width: 30px;
 
-      border: 1px solid #e2e8f0;
+      font-weight: 900;
 
-      border-radius: 12px;
+      color: #64748b;
+    }
 
-      font-size: 17px;
+
+    .submitted-user-name {
+      flex: 1;
+
+      font-weight: 800;
+    }
+
+
+    .submitted-count {
+      font-size: 13px;
+
+      color: #64748b;
+    }
+
+
+    .submitted-empty {
+      padding: 35px;
+
+      text-align: center;
+
+      color: #64748b;
 
       font-weight: 700;
-
-      cursor: pointer;
-
-      text-align: left;
     }
 
-    .submitted-user-item:hover {
-      background: #eff6ff;
-      border-color: #93c5fd;
-    }
 
-    .submitted-user-number {
-      min-width: 36px;
-
-      height: 36px;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 50%;
-
-      background: #2563eb;
-
-      color: white;
-
-      font-weight: 800;
-    }
-
-    .submitted-user-count {
-      margin-left: auto;
-
-      color: #2563eb;
-
-      font-size: 14px;
-
-      white-space: nowrap;
-    }
-
-    /* =====================================================
-       EDIT MODAL
-    ===================================================== */
-
-    .edit-modal-overlay {
-      position: fixed;
-
-      inset: 0;
-
-      z-index: 100000;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      padding: 15px;
-
-      background: rgba(0,0,0,.55);
-    }
-
-    .edit-modal {
-      width: 100%;
-      max-width: 650px;
-      max-height: 90vh;
-
-      overflow-y: auto;
-
-      padding: 20px;
-
-      background: white;
-
-      border-radius: 18px;
-
-      box-shadow: 0 20px 60px rgba(0,0,0,.3);
-    }
-
-    .edit-modal h2 {
-      margin-top: 0;
-
-      color: #2563eb;
-    }
-
-    .edit-field {
-      margin-bottom: 12px;
-    }
-
-    .edit-field label {
-      display: block;
-
-      margin-bottom: 5px;
-
-      font-weight: 800;
-
-      font-size: 14px;
-    }
-
-    .edit-field input,
-    .edit-field select,
-    .edit-field textarea {
-      width: 100%;
-
-      padding: 10px;
-
-      border: 1px solid #cbd5e1;
-
-      border-radius: 9px;
-
-      font-size: 14px;
-    }
-
-    .edit-field textarea {
-      min-height: 80px;
-
-      resize: vertical;
-    }
-
-    .edit-actions {
-      display: flex;
-
-      justify-content: flex-end;
-
-      gap: 8px;
-
-      margin-top: 18px;
-    }
-
-    .edit-actions button {
-      border: 0;
-
-      border-radius: 9px;
-
-      padding: 10px 16px;
-
-      font-weight: 800;
-
-      cursor: pointer;
-    }
-
-    .save-edit {
-      background: #2563eb;
-
-      color: white;
-    }
-
-    .cancel-edit {
-      background: #e2e8f0;
-
-      color: #334155;
-    }
-
-    /* =====================================================
-       ẨN LOGOUT CŨ
-    ===================================================== */
-
-    #logoutBtn {
-      display: none !important;
-    }
-
-    /* =====================================================
+    /* ========================================================
        MOBILE
-    ===================================================== */
+    ======================================================== */
 
-    @media (max-width: 600px) {
+    @media (max-width: 700px) {
+
+      .header h1 {
+        font-size: 18px;
+      }
+
+
+      .header p {
+        font-size: 12px;
+      }
+
+
+      .logo {
+        font-size: 28px;
+      }
+
 
       .stats {
         grid-template-columns: 1fr;
       }
 
-      #pagination {
-        gap: 4px;
+
+      .filters {
+        flex-direction: column;
+
+        align-items: stretch;
       }
 
-      #pagination button {
-        width: 34px;
-        height: 34px;
+
+      .filters label {
+        margin-top: 5px;
       }
 
-      .user-modal-overlay {
-        padding: 10px;
+
+      .filters input,
+      .filters button {
+        width: 100%;
       }
 
-      .user-modal {
-        max-height: 88vh;
+
+      .edit-form {
+        grid-template-columns: 1fr;
       }
 
-      .user-modal-body {
-        max-height: 68vh;
+
+      .edit-modal-footer {
+        flex-direction: column;
       }
 
+
+      .edit-modal-footer button {
+        width: 100%;
+      }
+
+
+      .submitted-user-item {
+        align-items: flex-start;
+      }
+
+    }
+
+
+    #logoutBtn {
+      display: none !important;
     }
 
   </style>
 
 </head>
 
+
 <body>
 
-  <!-- =====================================================
+
+  <!-- ======================================================
+       SIDE MENU OVERLAY
+  ======================================================= -->
+
+  <div
+    id="sideMenuOverlay"
+    class="side-menu-overlay">
+  </div>
+
+
+  <!-- ======================================================
+       SIDE MENU
+  ======================================================= -->
+
+  <aside
+    id="sideMenu"
+    class="side-menu">
+
+    <div class="side-menu-header">
+
+      <h2>
+        ☰ MENU
+      </h2>
+
+      <button
+        id="sideMenuClose"
+        class="side-menu-close"
+        type="button">
+        ✕
+      </button>
+
+    </div>
+
+
+    <button
+      id="menuReportsBtn"
+      type="button">
+
+      📊 Quản lý báo cáo
+
+    </button>
+
+
+    <button
+      id="menuLogoutBtn"
+      type="button">
+
+      🚪 Đăng xuất
+
+    </button>
+
+  </aside>
+
+
+  <!-- ======================================================
        MAIN
-  ===================================================== -->
+  ======================================================= -->
 
   <main class="container manager-card">
 
     <section class="card">
 
-      <!-- HEADER -->
+
+      <!-- ==================================================
+           HEADER
+      =================================================== -->
 
       <div class="manager-header">
 
@@ -716,14 +1043,18 @@
           id="menuBtn"
           class="menu-button"
           type="button">
+
           ☰
+
         </button>
+
 
         <div class="header">
 
           <div class="logo">
             📊
           </div>
+
 
           <div>
 
@@ -742,28 +1073,26 @@
       </div>
 
 
-      <!-- =================================================
+      <!-- ==================================================
            LOGIN
-      ================================================= -->
+      =================================================== -->
 
-      <div id="loginBox">
+      <div
+        id="loginBox">
 
-        <div class="field">
+        <div class="login-form">
 
           <label>
-            User / Email
+            Email quản lý
           </label>
 
           <input
             id="loginId"
             type="email"
             placeholder="Nhập email"
-            autocomplete="username">
+            autocomplete="username"
+          >
 
-        </div>
-
-
-        <div class="field">
 
           <label>
             Mật khẩu
@@ -773,82 +1102,91 @@
             id="password"
             type="password"
             placeholder="Nhập mật khẩu"
-            autocomplete="current-password">
+            autocomplete="current-password"
+          >
+
+
+          <button
+            id="loginBtn"
+            type="button">
+
+            🔐 ĐĂNG NHẬP
+
+          </button>
+
+
+          <div
+            id="loginMessage">
+          </div>
 
         </div>
-
-
-        <button
-          id="loginBtn"
-          type="button">
-          🔐 ĐĂNG NHẬP
-        </button>
-
-
-        <div id="loginMessage"></div>
 
       </div>
 
 
-      <!-- =================================================
+      <!-- ==================================================
            MANAGER
-      ================================================= -->
+      =================================================== -->
 
       <div
         id="managerBox"
         style="display:none;">
 
-        <!-- LOGOUT CŨ - GIỮ ID ĐỂ TƯƠNG THÍCH -->
 
+        <!-- Hidden logout -->
         <button
           id="logoutBtn"
           class="danger"
           type="button">
+
           🚪 ĐĂNG XUẤT
+
         </button>
 
 
-        <!-- =================================================
+        <!-- ==================================================
              STATS
-        ================================================= -->
+        =================================================== -->
 
         <div class="stats">
 
-          <div class="stat">
+
+          <div class="stat-box">
 
             <div class="stat-title">
-              Tổng báo cáo
+              Tổng số báo cáo
             </div>
 
             <div
-              class="stat-value"
-              id="totalReports">
+              id="totalReports"
+              class="stat-value">
               0
             </div>
 
           </div>
 
 
-          <div class="stat">
+          <div class="stat-box">
 
             <div class="stat-title">
               Tổng dự thu
             </div>
 
             <div
-              class="stat-value"
-              id="totalAmount">
+              id="totalAmount"
+              class="stat-value">
               0 đ
             </div>
 
           </div>
 
+
         </div>
 
 
-        <!-- =================================================
+        <!-- ==================================================
              FILTER
-        ================================================= -->
+        =================================================== -->
 
         <div class="section-title">
           🔎 BỘ LỌC
@@ -857,30 +1195,37 @@
 
         <div class="filters">
 
-          <label>
+
+          <label for="filterUser">
             Lọc theo cán bộ
           </label>
+
 
           <input
             id="filterUser"
             type="text"
-            placeholder="Nhập tên cán bộ">
+            placeholder="Nhập tên user cán bộ"
+          >
 
 
-          <label>
+          <label for="filterDate">
             Lọc theo ngày field
           </label>
 
+
           <input
             id="filterDate"
-            type="date">
+            type="date"
+          >
 
 
           <button
             id="filterBtn"
             class="gray"
             type="button">
+
             🔎 LỌC DỮ LIỆU
+
           </button>
 
 
@@ -888,14 +1233,18 @@
             id="refreshBtn"
             class="green"
             type="button">
+
             🔄 LÀM MỚI
+
           </button>
 
 
           <button
             id="exportBtn"
             type="button">
+
             📥 XUẤT EXCEL
+
           </button>
 
 
@@ -905,20 +1254,31 @@
             type="button">
 
             👥 CÁN BỘ ĐÃ NHẬP BÁO CÁO
-            (
-            <span id="submittedUserCount">
-              0
-            </span>
-            )
+            (<span id="submittedUserCount">0</span>)
 
           </button>
+
+
+          <!-- =================================================
+               XÓA TOÀN BỘ
+          ================================================== -->
+
+          <button
+            id="deleteAllBtn"
+            class="danger"
+            type="button">
+
+            🗑️ XÓA TẤT CẢ
+
+          </button>
+
 
         </div>
 
 
-        <!-- =================================================
+        <!-- ==================================================
              TABLE
-        ================================================= -->
+        =================================================== -->
 
         <div class="table-wrap">
 
@@ -928,46 +1288,77 @@
 
               <tr>
 
-                <th>Cán bộ</th>
+                <th>
+                  Cán bộ
+                </th>
 
-                <th>Ngày field</th>
+                <th>
+                  Ngày field
+                </th>
 
-                <th>Số CIF</th>
+                <th>
+                  Số CIF
+                </th>
 
-                <th>Tên khách hàng</th>
+                <th>
+                  Tên khách hàng
+                </th>
 
-                <th>Kết quả</th>
+                <th>
+                  Kết quả
+                </th>
 
-                <th>Kết nối</th>
+                <th>
+                  Kết nối
+                </th>
 
-                <th>Kết quả chi tiết</th>
+                <th>
+                  Kết quả chi tiết
+                </th>
 
-                <th>Dự thu</th>
+                <th>
+                  Dự thu
+                </th>
 
-                <th>Hướng tác động tiếp theo</th>
+                <th>
+                  Hướng tác động tiếp theo
+                </th>
 
-                <th>Thao tác</th>
+                <th>
+                  Thao tác
+                </th>
 
               </tr>
 
             </thead>
 
 
-            <tbody id="tableBody"></tbody>
+            <tbody id="tableBody">
+
+            </tbody>
 
           </table>
 
         </div>
 
 
-        <!-- PAGINATION -->
+        <!-- ==================================================
+             PAGINATION
+        =================================================== -->
 
-        <div id="pagination"></div>
+        <div
+          id="pagination">
+        </div>
 
 
-        <!-- MESSAGE -->
+        <!-- ==================================================
+             MESSAGE
+        =================================================== -->
 
-        <div id="managerMessage"></div>
+        <div
+          id="managerMessage">
+        </div>
+
 
       </div>
 
@@ -976,69 +1367,37 @@
   </main>
 
 
-  <!-- =====================================================
-       SIDE MENU
-  ===================================================== -->
+  <!-- ======================================================
+       SUPABASE
+  ======================================================= -->
 
-  <div
-    id="sideMenuOverlay"
-    class="side-menu-overlay">
-  </div>
-
-
-  <aside
-    id="sideMenu"
-    class="side-menu">
-
-    <div class="side-menu-header">
-
-      <h2>
-        ☰ MENU
-      </h2>
-
-      <button
-        id="sideMenuClose"
-        class="side-menu-close"
-        type="button">
-        ×
-      </button>
-
-    </div>
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+  </script>
 
 
-    <div class="side-menu-list">
+  <!-- ======================================================
+       XLSX
+  ======================================================= -->
 
-      <button
-        id="menuReportsBtn"
-        class="side-menu-item"
-        type="button">
-        📊 Quản lý báo cáo
-      </button>
-
-
-      <button
-        id="menuLogoutBtn"
-        class="side-menu-item"
-        type="button">
-        🚪 Đăng xuất
-      </button>
-
-    </div>
-
-  </aside>
+  <script
+    src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js">
+  </script>
 
 
-  <!-- =====================================================
-       LIBRARIES
-  ===================================================== -->
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
+  <!-- ======================================================
+       CONFIG
+  ======================================================= -->
 
   <script src="config.js"></script>
 
+
+  <!-- ======================================================
+       MANAGER JS
+  ======================================================= -->
+
   <script src="manager.js"></script>
+
 
 </body>
 
