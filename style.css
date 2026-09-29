@@ -1,355 +1,246 @@
 /* ============================================================
-
    BÁO CÁO NGÀY - STYLE.CSS
-
    FULL VERSION
-
-   - TRANG CÁN BỘ NHẬP LIỆU
-
-   - TRANG QUẢN LÝ
-
-   - RESPONSIVE IPHONE
-
+   GIAO DIỆN CÁN BỘ GIỐNG TRANG DỰ THU
 ============================================================ */
 
 /* ============================================================
-
-   1. RESET
-
+   RESET
 ============================================================ */
 
 * {
-
   box-sizing: border-box;
-
+  -webkit-tap-highlight-color: transparent;
 }
 
 html,
-
 body {
-
   margin: 0;
-
   padding: 0;
-
   min-height: 100%;
-
 }
 
 html {
-
   scroll-behavior: smooth;
-
 }
 
 body {
-
   font-family:
-
     -apple-system,
-
     BlinkMacSystemFont,
-
     "Segoe UI",
-
     Roboto,
-
     Arial,
-
     sans-serif;
 
   background:
-
     linear-gradient(
-
-      160deg,
-
+      145deg,
       #eef2ff 0%,
-
-      #fdf2f8 45%,
-
+      #f8f7ff 42%,
       #ecfeff 100%
-
     );
 
   color: #172033;
-
 }
 
 /* ============================================================
-
-   2. NỀN TRANG
-
+   NỀN TRANG
 ============================================================ */
 
 body::before {
-
   content: "";
-
   position: fixed;
 
-  top: -120px;
+  top: -130px;
+  left: -120px;
 
-  left: -100px;
-
-  width: 300px;
-
-  height: 300px;
+  width: 360px;
+  height: 360px;
 
   border-radius: 50%;
 
   background:
-
     linear-gradient(
-
       135deg,
-
       #6366f1,
-
       #a855f7
-
     );
 
   opacity: .12;
 
   pointer-events: none;
-
   z-index: -1;
-
 }
 
 .top-bg {
-
   position: fixed;
 
   top: -100px;
-
   left: -80px;
 
-  width: 260px;
-
-  height: 260px;
+  width: 300px;
+  height: 300px;
 
   border-radius: 50%;
 
   background:
-
     linear-gradient(
-
       135deg,
-
       #6366f1,
-
       #a855f7
-
     );
 
-  opacity: .18;
+  opacity: .15;
 
   pointer-events: none;
-
   z-index: -1;
-
 }
 
 /* ============================================================
-
-   3. CONTAINER
-
+   CONTAINER
 ============================================================ */
 
 .container {
-
   width: 100%;
-
-  max-width: 1450px;
+  max-width: 920px;
 
   margin: 0 auto;
 
   padding:
-
-    20px
-
-    16px
-
-    40px;
-
+    28px
+    18px
+    45px;
 }
 
 /* ============================================================
-
-   4. CARD
-
+   CARD
 ============================================================ */
 
 .card {
-
   position: relative;
 
   width: 100%;
 
   background:
-
-    rgba(255, 255, 255, .96);
-
-  border-radius: 28px;
-
-  padding:
-
-    22px
-
-    18px
-
-    28px;
-
-  box-shadow:
-
-    0 15px 45px
-
-    rgba(79, 70, 229, .13);
+    rgba(255, 255, 255, .97);
 
   border:
-
     1px solid
+    rgba(255, 255, 255, .9);
 
-    rgba(255, 255, 255, .8);
+  border-radius: 30px;
 
+  padding:
+    28px
+    30px
+    34px;
+
+  box-shadow:
+    0 18px 55px
+    rgba(79, 70, 229, .14);
 }
 
 /* ============================================================
-
-   5. HEADER
-
+   HEADER
 ============================================================ */
 
 .manager-header {
-
   display: flex;
-
   align-items: center;
+  gap: 15px;
 
-  gap: 12px;
-
-  margin-bottom: 20px;
-
+  margin-bottom: 25px;
 }
 
 .header {
-
   display: flex;
-
   align-items: center;
-
-  gap: 14px;
+  gap: 17px;
 
   flex: 1;
 
-  margin-bottom: 0;
-
-  padding-bottom: 18px;
+  margin: 0;
+  padding-bottom: 22px;
 
   border-bottom:
-
     1px solid #edf0f7;
-
 }
 
 .logo {
-
-  width: 58px;
-
-  height: 58px;
+  width: 76px;
+  height: 76px;
 
   flex-shrink: 0;
 
   display: flex;
-
   align-items: center;
-
   justify-content: center;
 
-  border-radius: 18px;
+  border-radius: 23px;
 
-  font-size: 29px;
+  font-size: 38px;
 
   background:
-
     linear-gradient(
-
       135deg,
-
-      #6366f1,
-
-      #a855f7
-
+      #5846e8,
+      #873cf2
     );
 
   box-shadow:
-
-    0 8px 20px
-
+    0 12px 28px
     rgba(99, 102, 241, .25);
-
 }
 
 h1 {
-
   margin: 0;
 
-  font-size: 20px;
+  color: #172033;
 
-  font-weight: 800;
+  font-size: 27px;
+  line-height: 1.15;
 
-  letter-spacing: -.3px;
+  font-weight: 900;
 
+  letter-spacing: -.6px;
 }
 
 .header p {
+  margin:
+    7px
+    0
+    0;
 
-  margin: 5px 0 0;
+  color: #71809a;
 
-  color: #7c8498;
-
-  font-size: 14px;
-
+  font-size: 16px;
+  line-height: 1.35;
 }
 
 /* ============================================================
-
-   6. MENU BUTTON
-
+   MENU BUTTON
 ============================================================ */
 
 .menu-button {
-
   width: 46px !important;
-
   min-width: 46px !important;
-
   max-width: 46px !important;
 
   height: 46px !important;
-
   min-height: 46px !important;
 
   margin: 0 !important;
-
   padding: 0 !important;
 
   border: 0 !important;
-
   border-radius: 13px !important;
 
   background:
-
     linear-gradient(
-
       135deg,
-
       #4f46e5,
-
       #7c3aed
-
     ) !important;
 
   color: #fff !important;
@@ -357,833 +248,645 @@ h1 {
   font-size: 22px !important;
 
   display: flex !important;
-
   align-items: center !important;
-
   justify-content: center !important;
 
   cursor: pointer;
 
   box-shadow:
-
     0 7px 17px
-
     rgba(79, 70, 229, .25) !important;
-
 }
 
 /* ============================================================
-
-   7. SIDE MENU
-
+   SIDE MENU
 ============================================================ */
 
 .side-menu-overlay {
-
   position: fixed;
-
   inset: 0;
 
   background:
-
     rgba(15, 23, 42, .45);
 
   opacity: 0;
-
   visibility: hidden;
 
   transition:
-
     opacity .25s ease,
-
     visibility .25s ease;
 
   z-index: 9998;
-
 }
 
 .side-menu-overlay.show {
-
   opacity: 1;
-
   visibility: visible;
-
 }
 
 .side-menu {
-
   position: fixed;
 
   top: 0;
-
   left: 0;
 
   width: 310px;
-
   max-width: 86vw;
-
   height: 100vh;
 
   padding: 20px;
 
   background:
-
     rgba(255, 255, 255, .98);
 
   transform:
-
     translateX(-105%);
 
   transition:
-
     transform .3s ease;
 
   z-index: 9999;
 
   box-shadow:
-
     10px 0 35px
-
     rgba(0, 0, 0, .18);
 
   overflow-y: auto;
-
 }
 
 .side-menu.open {
-
-  transform:
-
-    translateX(0);
-
+  transform: translateX(0);
 }
 
 .side-menu-header {
-
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
 
   padding-bottom: 18px;
-
   margin-bottom: 15px;
 
   border-bottom:
-
     1px solid #edf0f7;
-
 }
 
 .side-menu-header h2 {
-
   margin: 0;
 
   font-size: 19px;
-
   font-weight: 900;
-
 }
 
 .side-menu-close {
-
   width: 40px !important;
-
   min-width: 40px !important;
-
   max-width: 40px !important;
 
   height: 40px !important;
-
   min-height: 40px !important;
 
   margin: 0 !important;
-
   padding: 0 !important;
 
   border: 0 !important;
-
   border-radius: 10px !important;
 
   background: #f1f5f9 !important;
-
   color: #334155 !important;
 
   font-size: 18px !important;
 
   box-shadow: none !important;
-
 }
 
 .side-menu button:not(.side-menu-close) {
-
   width: 100% !important;
 
   height: 48px !important;
-
   min-height: 48px !important;
 
   margin:
-
     0
-
     0
-
     10px
-
     0 !important;
 
   padding:
-
     0
-
     14px !important;
 
   border: 0 !important;
-
   border-radius: 12px !important;
 
   text-align: left;
 
   font-size: 14px !important;
-
   font-weight: 800 !important;
 
   box-shadow: none !important;
-
-  cursor: pointer;
-
 }
 
 #menuReportsBtn {
-
   background: #eef2ff !important;
-
   color: #4338ca !important;
-
 }
 
 #menuLogoutBtn {
-
   background: #fee2e2 !important;
-
   color: #b91c1c !important;
-
 }
 
 /* ============================================================
-
-   8. ==========================================================
-
-   TRANG CÁN BỘ NHẬP BÁO CÁO
-
    ============================================================
-
+   PHẦN CÁN BỘ NHẬP BÁO CÁO
+   ============================================================
 ============================================================ */
+
+/*
+   Các selector dưới đây được thiết kế để form cán bộ
+   hiển thị giống giao diện DỰ THU.
+*/
 
 /* Form chính */
 
-form {
-
+.card form {
   width: 100%;
-
 }
 
-/* Nhóm field */
+/* ============================================================
+   SECTION TITLE
+============================================================ */
 
-.form-group {
-
+.section-title {
   width: 100%;
 
-  margin-bottom: 16px;
+  margin:
+    24px
+    0
+    27px;
 
+  padding:
+    17px
+    22px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eef2ff,
+      #e0e7ff
+    );
+
+  color: #4338ca;
+
+  font-size: 22px;
+
+  line-height: 1.25;
+
+  font-weight: 900;
+
+  letter-spacing: -.3px;
 }
 
-/* Label */
+/* Section đầu tiên sát header hơn */
 
-.form-group label {
+.header + .section-title {
+  margin-top: 25px;
+}
 
+/* ============================================================
+   FORM LABEL
+============================================================ */
+
+.card form label {
   display: block;
 
   width: 100%;
 
   margin:
-
     0
-
     0
+    25px;
 
-    7px
+  color: #334155;
 
-    0;
+  font-size: 20px;
 
-  color: #172033;
+  line-height: 1.25;
 
-  font-size: 15px;
-
-  font-weight: 700;
-
-  line-height: 1.35;
-
+  font-weight: 800;
 }
 
-/* Tất cả input/select/textarea */
+/* ============================================================
+   FORM INPUT / SELECT / TEXTAREA
+============================================================ */
 
-.form-group input,
-
-.form-group select,
-
-.form-group textarea,
-
-form input,
-
-form select,
-
-form textarea {
+.card form input:not([type="hidden"]),
+.card form select,
+.card form textarea {
+  display: block;
 
   width: 100%;
 
-  max-width: 100%;
+  margin-top: 9px;
 
-  margin: 0;
+  border:
+    2px solid #d5dce7;
 
-  font-family: inherit;
+  border-radius: 18px;
+
+  background:
+    #f8fafc;
 
   color: #172033;
 
-  background: #fff;
+  font-family: inherit;
 
-  border:
+  font-size: 19px;
 
-    2px solid #d9dce5;
-
-  border-radius: 11px;
+  font-weight: 500;
 
   outline: none;
 
-  font-size: 16px;
-
   transition:
-
-    border-color .15s ease,
-
-    box-shadow .15s ease,
-
-    background .15s ease;
-
+    border-color .18s ease,
+    box-shadow .18s ease,
+    background .18s ease;
 }
 
-/* Input */
+/* INPUT */
 
-.form-group input,
-
-form input {
-
-  height: 48px;
-
-  min-height: 48px;
+.card form input:not([type="hidden"]),
+.card form select {
+  height: 64px;
 
   padding:
-
     0
-
-    13px;
-
+    20px;
 }
 
-/* Select */
+/* TEXTAREA */
 
-.form-group select,
-
-form select {
-
-  height: 48px;
-
-  min-height: 48px;
+.card form textarea {
+  min-height: 130px;
 
   padding:
-
-    0
-
-    13px;
-
-  appearance: auto;
-
-  -webkit-appearance: auto;
-
-}
-
-/* Textarea */
-
-.form-group textarea,
-
-form textarea {
-
-  min-height: 110px;
-
-  padding:
-
-    12px
-
-    13px;
+    17px
+    20px;
 
   line-height: 1.45;
 
   resize: vertical;
-
 }
 
-/* Focus */
+/* PLACEHOLDER */
 
-.form-group input:focus,
-
-.form-group select:focus,
-
-.form-group textarea:focus,
-
-form input:focus,
-
-form select:focus,
-
-form textarea:focus {
-
-  border-color: #6366f1;
-
-  background: #fff;
-
-  box-shadow:
-
-    0 0 0 4px
-
-    rgba(99, 102, 241, .10);
-
-}
-
-/* Placeholder */
-
-.form-group input::placeholder,
-
-.form-group textarea::placeholder,
-
-form input::placeholder,
-
-form textarea::placeholder {
-
-  color: #a1a1aa;
+.card form input::placeholder,
+.card form textarea::placeholder {
+  color: #9aa6b8;
 
   opacity: 1;
+}
 
+/* FOCUS */
+
+.card form input:not([type="hidden"]):focus,
+.card form select:focus,
+.card form textarea:focus {
+  background: #fff;
+
+  border-color: #818cf8;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(99, 102, 241, .10);
 }
 
 /* ============================================================
+   DATE
+============================================================ */
 
-   9. FIX TRANG CÁN BỘ - CÁC ROW
+.card form input[type="date"] {
+  color: #334155;
 
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* ============================================================
+   SELECT
+============================================================ */
+
+.card form select {
+  -webkit-appearance: auto;
+  appearance: auto;
+
+  color: #172033;
+}
+
+/* ============================================================
+   CÁC FIELD CÓ ID
+============================================================ */
+
+/* User */
+
+#user_name,
+#userName,
+#user {
+  width: 100%;
+}
+
+/* CIF */
+
+#cif,
+#soCif {
+  width: 100%;
+}
+
+/* Tên khách hàng */
+
+#customer_name,
+#customerName,
+#tenKhachHang {
+  width: 100%;
+}
+
+/* Kết quả */
+
+#result {
+  width: 100%;
+}
+
+/* Kết nối */
+
+#connection {
+  width: 100%;
+}
+
+/* Chi tiết */
+
+#detail,
+#result_detail,
+#expected_detail {
+  width: 100%;
+}
+
+/* Dư thu */
+
+#expected_amount,
+#expectedAmount {
+  width: 100%;
+}
+
+/* Hướng tác động */
+
+#next_action,
+#nextAction {
+  width: 100%;
+}
+
+/* ============================================================
+   DƯ THU
 ============================================================ */
 
 /*
-
-   Nếu HTML đang sử dụng các class row / field-row
-
-   thì bắt buộc xếp dọc trên mobile.
-
+   Nếu label chứa input expected_amount,
+   tạo cảm giác giống ô tiền trong trang Dự Thu.
 */
 
-.field-row,
-
-.form-row,
-
-.input-row {
-
-  width: 100%;
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 14px;
-
-  margin-bottom: 15px;
-
-}
-
-.field-row > *,
-
-.form-row > *,
-
-.input-row > * {
-
-  width: 100% !important;
-
-  max-width: 100% !important;
-
-  flex: 1 1 100%;
-
-}
-
-/* ============================================================
-
-   10. USER CÁN BỘ
-
-============================================================ */
-
-#userName,
-
-#user_name,
-
-#user,
-
-#staffName,
-
-#staff_name {
-
-  width: 100% !important;
-
-  max-width: 100% !important;
-
-}
-
-/* ============================================================
-
-   11. NGÀY FIELD
-
-============================================================ */
-
-#fieldDate,
-
-#field_date {
-
-  width: 100% !important;
-
-  max-width: 100% !important;
-
-}
-
-/* ============================================================
-
-   12. CIF
-
-============================================================ */
-
-#cif,
-
-#soCif,
-
-#so_cif {
-
-  width: 100% !important;
-
-  max-width: 100% !important;
-
-}
-
-/* ============================================================
-
-   13. TÊN KHÁCH HÀNG
-
-============================================================ */
-
-#customerName,
-
-#customer_name,
-
-#tenKhachHang {
-
-  width: 100% !important;
-
-  max-width: 100% !important;
-
-}
-
-/* ============================================================
-
-   14. KẾT QUẢ
-
-============================================================ */
-
-#result,
-
-#ketQua {
-
-  width: 100% !important;
-
-  max-width: 100% !important;
-
-}
-
-/* ============================================================
-
-   15. KẾT NỐI
-
-============================================================ */
-
-#connection,
-
-#ketNoi {
-
-  width: 100% !important;
-
-  max-width: 100% !important;
-
-}
-
-/* ============================================================
-
-   16. KẾT QUẢ CHI TIẾT
-
-============================================================ */
-
-#detail,
-
-#details,
-
-#resultDetail,
-
-#result_detail,
-
-#chiTiet,
-
-#ketQuaChiTiet {
-
-  width: 100% !important;
-
-  max-width: 100% !important;
-
-  min-height: 120px;
-
-  display: block;
-
-}
-
-/* ============================================================
-
-   17. DỰ THU
-
-============================================================ */
-
-.expected-money,
-
-.money-input,
-
-#expectedAmount,
-
-#expected_amount,
-
-#duThu {
-
-  width: 100% !important;
-
-  max-width: 100% !important;
-
-}
-
-/* Nếu có đơn vị VND */
-
-.money-group {
-
-  width: 100%;
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 8px;
-
-}
-
-.money-group input {
-
-  flex: 1;
-
-  min-width: 0;
-
-}
-
-.money-group span {
-
-  flex-shrink: 0;
-
-  color: #172033;
-
-  font-size: 16px;
-
-  font-weight: 900;
-
-}
-
-/* ============================================================
-
-   18. HƯỚNG TÁC ĐỘNG TIẾP THEO
-
-============================================================ */
-
-#nextAction,
-
-#next_action,
-
-#action,
-
-#huongTacDong,
-
-#huong_tac_dong {
-
-  width: 100% !important;
-
-  max-width: 100% !important;
-
-  min-height: 110px;
-
-  display: block;
-
-}
-
-/* ============================================================
-
-   19. NÚT GỬI BÁO CÁO
-
-============================================================ */
-
-form button[type="submit"],
-
-#submitBtn,
-
-#sendReportBtn,
-
-#submitReportBtn {
-
-  width: auto !important;
-
-  min-width: 180px !important;
-
-  height: 46px !important;
-
-  min-height: 46px !important;
-
-  margin:
-
-    4px
-
-    0
-
-    0
-
-    0 !important;
+.card form label:has(
+  input#expected_amount
+),
+.card form label:has(
+  input#expectedAmount
+) {
+  color: #9a3412;
 
   padding:
+    17px
+    20px;
 
+  border:
+    2px solid #fed7aa;
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff7ed,
+      #fffbeb
+    );
+}
+
+.card form label:has(
+  input#expected_amount
+) input,
+.card form label:has(
+  input#expectedAmount
+) input {
+  border:
+    2px solid #fdba74;
+
+  background: #fff;
+
+  color: #c2410c;
+
+  font-size: 22px;
+
+  font-weight: 800;
+}
+
+/* ============================================================
+   ĐƠN VỊ VND
+============================================================ */
+
+.money-input-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.money-input-wrap input {
+  padding-right: 85px !important;
+}
+
+.money-input-wrap::after {
+  content: "VNĐ";
+
+  position: absolute;
+
+  right: 20px;
+  top: 50%;
+
+  transform:
+    translateY(-50%);
+
+  color: #ea580c;
+
+  font-size: 20px;
+  font-weight: 900;
+
+  pointer-events: none;
+}
+
+/* ============================================================
+   NÚT GỬI BÁO CÁO
+============================================================ */
+
+#submitBtn,
+#submitReportBtn,
+button[type="submit"] {
+  width: auto !important;
+
+  min-width: 210px !important;
+
+  height: 50px !important;
+  min-height: 50px !important;
+
+  margin:
+    2px
     0
+    5px !important;
 
-    20px !important;
+  padding:
+    0
+    24px !important;
 
   border: 0 !important;
 
-  border-radius: 999px !important;
+  border-radius: 25px !important;
 
   background:
-
     linear-gradient(
-
       135deg,
-
-      #2563eb,
-
-      #3b82f6
-
+      #0d8df5,
+      #147cf5
     ) !important;
 
   color: #fff !important;
 
-  font-size: 14px !important;
+  font-size: 17px !important;
 
   font-weight: 900 !important;
 
   box-shadow:
-
-    0 7px 17px
-
-    rgba(37, 99, 235, .25) !important;
+    0 7px 18px
+    rgba(37, 99, 235, .20) !important;
 
   display: inline-flex !important;
 
   align-items: center !important;
-
   justify-content: center !important;
 
+  cursor: pointer;
+}
+
+#submitBtn:hover,
+#submitReportBtn:hover,
+button[type="submit"]:hover {
+  opacity: .94;
 }
 
 /* ============================================================
-
-   20. MESSAGE TRANG CÁN BỘ
-
+   THÔNG BÁO
 ============================================================ */
 
 #message,
-
 #formMessage,
-
-#submitMessage {
+#statusMessage {
+  margin:
+    13px
+    0
+    0;
 
   min-height: 22px;
 
-  margin:
+  color: #475569;
 
-    10px
+  font-size: 14px;
 
-    0
-
-    0;
+  font-weight: 700;
 
   text-align: center;
-
-  font-size: 13px;
-
-  font-weight: 800;
-
 }
 
 /* ============================================================
+   DÒNG GHI CHÚ CUỐI TRANG
+============================================================ */
 
-   21. LOGIN
+.footer-note {
+  margin:
+    22px
+    5px
+    0;
 
+  color: #475569;
+
+  font-size: 17px;
+
+  font-weight: 500;
+}
+
+/* ============================================================
+   BUTTON CHUNG
+============================================================ */
+
+button {
+  font-family: inherit;
+
+  cursor: pointer;
+
+  -webkit-tap-highlight-color:
+    transparent;
+
+  transition:
+    transform .15s ease,
+    opacity .15s ease,
+    background .15s ease;
+}
+
+button:active {
+  transform: scale(.97);
+}
+
+button:disabled {
+  opacity: .55;
+
+  cursor: not-allowed;
+
+  transform: none !important;
+}
+
+/* ============================================================
+   LOGIN
 ============================================================ */
 
 #loginBox {
-
   width: 100%;
 
   max-width: 500px;
 
   margin:
-
     20px
-
     auto
-
     5px;
-
 }
 
 .login-form {
-
   display: flex;
 
   flex-direction: column;
 
   gap: 10px;
-
 }
 
 .login-form label {
-
   display: block;
 
   margin:
-
     5px
-
     0
-
     2px;
 
   font-size: 14px;
@@ -1191,23 +894,18 @@ form button[type="submit"],
   font-weight: 800;
 
   color: #374151;
-
 }
 
 .login-form input {
-
   width: 100%;
 
   height: 52px;
 
   padding:
-
     0
-
     14px;
 
   border:
-
     2px solid #edf0f5;
 
   border-radius: 14px;
@@ -1217,29 +915,22 @@ form button[type="submit"],
   font-size: 16px;
 
   outline: none;
-
 }
 
 .login-form input:focus {
-
   background: #fff;
 
   border-color: #818cf8;
 
   box-shadow:
-
     0 0 0 4px
-
     rgba(99, 102, 241, .10);
-
 }
 
 #loginBtn {
-
   width: 100% !important;
 
   height: 52px !important;
-
   min-height: 52px !important;
 
   margin-top: 8px !important;
@@ -1249,15 +940,10 @@ form button[type="submit"],
   border-radius: 14px !important;
 
   background:
-
     linear-gradient(
-
       135deg,
-
       #4f46e5,
-
       #9333ea
-
     ) !important;
 
   color: #fff !important;
@@ -1267,17 +953,11 @@ form button[type="submit"],
   font-weight: 900 !important;
 
   box-shadow:
-
     0 9px 22px
-
     rgba(99, 102, 241, .25) !important;
-
-  cursor: pointer;
-
 }
 
 #loginMessage {
-
   min-height: 22px;
 
   margin-top: 5px;
@@ -1287,101 +967,46 @@ form button[type="submit"],
   font-size: 14px;
 
   font-weight: 700;
-
 }
 
 /* ============================================================
-
-   22. SECTION TITLE
-
-============================================================ */
-
-.section-title {
-
-  margin:
-
-    5px
-
-    0
-
-    13px;
-
-  padding:
-
-    10px
-
-    13px;
-
-  border-radius: 12px;
-
-  background: #eef2ff;
-
-  color: #4f46e5;
-
-  font-size: 13px;
-
-  font-weight: 900;
-
-  letter-spacing: .2px;
-
-}
-
-/* ============================================================
-
-   23. STATS
-
+   MANAGER - STATS
 ============================================================ */
 
 .stats {
-
   display: grid;
 
   grid-template-columns:
-
     repeat(2, minmax(0, 1fr));
 
   gap: 14px;
 
   margin-bottom: 22px;
-
 }
 
 .stat-box {
-
   padding:
-
     17px
-
     18px;
 
   border-radius: 17px;
 
   background:
-
     linear-gradient(
-
       135deg,
-
       #f8fafc,
-
       #eef2ff
-
     );
 
   border:
-
     1px solid #e5e7eb;
 
   box-shadow:
-
     0 5px 16px
-
     rgba(79, 70, 229, .07);
-
 }
 
 .stat-title {
-
   margin-bottom: 6px;
 
   color: #64748b;
@@ -1389,27 +1014,21 @@ form button[type="submit"],
   font-size: 13px;
 
   font-weight: 700;
-
 }
 
 .stat-value {
-
   color: #312e81;
 
   font-size: 24px;
 
   font-weight: 900;
-
 }
 
 /* ============================================================
-
-   24. FILTER
-
+   FILTER
 ============================================================ */
 
 .filters {
-
   display: flex;
 
   align-items: center;
@@ -1423,17 +1042,14 @@ form button[type="submit"],
   padding: 14px;
 
   border:
-
     1px solid #e5e7eb;
 
   border-radius: 15px;
 
   background: #f8fafc;
-
 }
 
 .filters label {
-
   display: block;
 
   margin: 0;
@@ -1443,25 +1059,19 @@ form button[type="submit"],
   font-size: 12px;
 
   font-weight: 800;
-
 }
 
 .filters input {
-
   width: 190px;
 
   height: 44px;
-
   min-height: 44px;
 
   padding:
-
     0
-
     11px;
 
   border:
-
     2px solid #e5e7eb;
 
   border-radius: 10px;
@@ -1471,93 +1081,28 @@ form button[type="submit"],
   font-size: 14px;
 
   outline: none;
-
-}
-
-.filters input:focus {
-
-  border-color: #818cf8;
-
-  box-shadow:
-
-    0 0 0 3px
-
-    rgba(99, 102, 241, .08);
-
 }
 
 /* ============================================================
-
-   25. BUTTON CHUNG
-
-============================================================ */
-
-button {
-
-  font-family: inherit;
-
-  cursor: pointer;
-
-  -webkit-tap-highlight-color:
-
-    transparent;
-
-  transition:
-
-    transform .15s ease,
-
-    opacity .15s ease,
-
-    background .15s ease;
-
-}
-
-button:active {
-
-  transform: scale(.97);
-
-}
-
-button:disabled {
-
-  opacity: .55;
-
-  cursor: not-allowed;
-
-  transform: none !important;
-
-}
-
-/* ============================================================
-
-   26. BUTTON MANAGER
-
+   MANAGER BUTTON
 ============================================================ */
 
 #filterBtn,
-
 #refreshBtn,
-
 #exportBtn,
-
 #showSubmittedUsersBtn,
-
 #deleteAllBtn {
-
   width: auto !important;
 
   min-width: 0 !important;
 
   height: 44px !important;
-
   min-height: 44px !important;
 
   margin: 0 !important;
 
   padding:
-
     0
-
     13px !important;
 
   border: 0 !important;
@@ -1573,175 +1118,79 @@ button:disabled {
   display: inline-flex !important;
 
   align-items: center !important;
-
   justify-content: center !important;
 
   box-shadow:
-
     0 5px 13px
-
     rgba(0, 0, 0, .08) !important;
-
 }
-
-/* ============================================================
-
-   27. FILTER BUTTON
-
-============================================================ */
 
 #filterBtn {
-
   background:
-
     linear-gradient(
-
       135deg,
-
       #64748b,
-
       #475569
-
     ) !important;
 
   color: #fff !important;
-
 }
-
-/* ============================================================
-
-   28. REFRESH
-
-============================================================ */
 
 #refreshBtn {
-
   background:
-
     linear-gradient(
-
       135deg,
-
       #16a34a,
-
       #22c55e
-
     ) !important;
 
   color: #fff !important;
-
 }
-
-/* ============================================================
-
-   29. EXPORT
-
-============================================================ */
 
 #exportBtn {
-
   background:
-
     linear-gradient(
-
       135deg,
-
       #4f46e5,
-
       #9333ea
-
     ) !important;
 
   color: #fff !important;
-
 }
-
-/* ============================================================
-
-   30. SUBMITTED USERS
-
-============================================================ */
 
 #showSubmittedUsersBtn {
-
   background:
-
     linear-gradient(
-
       135deg,
-
       #64748b,
-
       #475569
-
     ) !important;
 
   color: #fff !important;
-
 }
-
-/* ============================================================
-
-   31. DELETE ALL
-
-============================================================ */
 
 #deleteAllBtn {
-
   background:
-
     linear-gradient(
-
       135deg,
-
       #dc2626,
-
       #991b1b
-
     ) !important;
 
   color: #fff !important;
-
-  box-shadow:
-
-    0 5px 14px
-
-    rgba(220, 38, 38, .22) !important;
-
-}
-
-#deleteAllBtn:hover {
-
-  background:
-
-    linear-gradient(
-
-      135deg,
-
-      #b91c1c,
-
-      #7f1d1d
-
-    ) !important;
-
 }
 
 /* ============================================================
-
-   32. TABLE
-
+   TABLE
 ============================================================ */
 
 .table-wrap {
-
   width: 100%;
 
   overflow-x: auto;
-
   overflow-y: hidden;
 
   border:
-
     1px solid #e5e7eb;
 
   border-radius: 14px;
@@ -1749,11 +1198,9 @@ button:disabled {
   background: #fff;
 
   -webkit-overflow-scrolling: touch;
-
 }
 
 table {
-
   width: 100%;
 
   min-width: 1450px;
@@ -1761,41 +1208,28 @@ table {
   border-collapse: collapse;
 
   border-spacing: 0;
-
 }
 
 th,
-
 td {
-
   padding:
-
     9px
-
     9px;
 
   border-bottom:
-
     1px solid #edf0f5;
 
   vertical-align: middle;
 
   text-align: left;
-
 }
 
 th {
-
   background:
-
     linear-gradient(
-
       135deg,
-
       #eef2ff,
-
       #f5f3ff
-
     );
 
   color: #3730a3;
@@ -1811,47 +1245,29 @@ th {
   top: 0;
 
   z-index: 2;
-
 }
 
 td {
-
   color: #374151;
 
   font-size: 13px;
 
   font-weight: 500;
-
-}
-
-tbody tr {
-
-  transition:
-
-    background .15s ease;
-
 }
 
 tbody tr:hover {
-
   background: #f8fafc;
-
 }
 
 tbody tr:last-child td {
-
   border-bottom: 0;
-
 }
 
 /* ============================================================
-
-   33. DETAIL CELL
-
+   DETAIL CELL
 ============================================================ */
 
 .detail-cell {
-
   min-width: 210px;
 
   max-width: 350px;
@@ -1861,17 +1277,13 @@ tbody tr:last-child td {
   word-break: break-word;
 
   line-height: 1.45;
-
 }
 
 /* ============================================================
-
-   34. MONEY CELL
-
+   MONEY CELL
 ============================================================ */
 
 .money-cell {
-
   min-width: 130px;
 
   text-align: right;
@@ -1881,17 +1293,13 @@ tbody tr:last-child td {
   font-weight: 800 !important;
 
   color: #c2410c !important;
-
 }
 
 /* ============================================================
-
-   35. ACTION CELL
-
+   ACTION
 ============================================================ */
 
 .action-cell {
-
   width: 90px;
 
   min-width: 90px;
@@ -1899,35 +1307,20 @@ tbody tr:last-child td {
   text-align: center;
 
   white-space: nowrap;
-
 }
 
-/* ============================================================
-
-   36. EDIT BUTTON
-
-============================================================ */
-
 .edit-btn {
-
   width: 34px !important;
-
   min-width: 34px !important;
-
   max-width: 34px !important;
 
   height: 34px !important;
-
   min-height: 34px !important;
 
   margin:
-
     0
-
     3px
-
     0
-
     0 !important;
 
   padding: 0 !important;
@@ -1945,35 +1338,17 @@ tbody tr:last-child td {
   display: inline-flex !important;
 
   align-items: center !important;
-
   justify-content: center !important;
 
   box-shadow: none !important;
-
 }
-
-.edit-btn:hover {
-
-  background: #bfdbfe !important;
-
-}
-
-/* ============================================================
-
-   37. DELETE BUTTON
-
-============================================================ */
 
 .delete-btn {
-
   width: 34px !important;
-
   min-width: 34px !important;
-
   max-width: 34px !important;
 
   height: 34px !important;
-
   min-height: 34px !important;
 
   margin: 0 !important;
@@ -1993,31 +1368,18 @@ tbody tr:last-child td {
   display: inline-flex !important;
 
   align-items: center !important;
-
   justify-content: center !important;
 
   box-shadow: none !important;
-
-}
-
-.delete-btn:hover {
-
-  background: #fecaca !important;
-
 }
 
 /* ============================================================
-
-   38. EMPTY
-
+   EMPTY
 ============================================================ */
 
 .empty-row {
-
   padding:
-
     45px
-
     20px !important;
 
   text-align: center !important;
@@ -2027,23 +1389,17 @@ tbody tr:last-child td {
   font-size: 14px !important;
 
   font-weight: 800 !important;
-
 }
 
 /* ============================================================
-
-   39. PAGINATION
-
+   PAGINATION
 ============================================================ */
 
 #pagination {
-
   margin-top: 17px;
-
 }
 
 .pagination-wrap {
-
   display: flex;
 
   align-items: center;
@@ -2051,11 +1407,9 @@ tbody tr:last-child td {
   justify-content: center;
 
   gap: 10px;
-
 }
 
 .pagination-wrap button {
-
   width: auto !important;
 
   min-width: 90px !important;
@@ -2067,9 +1421,7 @@ tbody tr:last-child td {
   margin: 0 !important;
 
   padding:
-
     0
-
     13px !important;
 
   border: 0 !important;
@@ -2085,17 +1437,9 @@ tbody tr:last-child td {
   font-weight: 800 !important;
 
   box-shadow: none !important;
-
-}
-
-.pagination-wrap button:disabled {
-
-  opacity: .45;
-
 }
 
 .page-info {
-
   min-width: 90px;
 
   text-align: center;
@@ -2105,17 +1449,13 @@ tbody tr:last-child td {
   font-size: 13px;
 
   font-weight: 900;
-
 }
 
 /* ============================================================
-
-   40. MANAGER MESSAGE
-
+   MANAGER MESSAGE
 ============================================================ */
 
 #managerMessage {
-
   min-height: 22px;
 
   margin-top: 12px;
@@ -2129,29 +1469,23 @@ tbody tr:last-child td {
   font-size: 13px;
 
   font-weight: 700;
-
 }
 
 /* ============================================================
-
-   41. MODAL
-
+   MODAL
 ============================================================ */
 
 .modal-overlay {
-
   position: fixed;
 
   inset: 0;
 
   width: 100%;
-
   height: 100%;
 
   padding: 18px;
 
   background:
-
     rgba(15, 23, 42, .55);
 
   display: flex;
@@ -2165,15 +1499,11 @@ tbody tr:last-child td {
   z-index: 10000;
 
   backdrop-filter:
-
     blur(3px);
-
 }
 
 .edit-modal,
-
 .submitted-modal {
-
   width: 100%;
 
   max-width: 720px;
@@ -2187,23 +1517,12 @@ tbody tr:last-child td {
   overflow: hidden;
 
   box-shadow:
-
     0 25px 70px
-
     rgba(15, 23, 42, .30);
-
 }
 
-/* ============================================================
-
-   42. MODAL HEADER
-
-============================================================ */
-
 .edit-modal-header,
-
 .submitted-modal-header {
-
   display: flex;
 
   align-items: flex-start;
@@ -2213,33 +1532,22 @@ tbody tr:last-child td {
   gap: 15px;
 
   padding:
-
     18px
-
     20px;
 
   border-bottom:
-
     1px solid #edf0f5;
 
   background:
-
     linear-gradient(
-
       135deg,
-
       #f8fafc,
-
       #eef2ff
-
     );
-
 }
 
 .edit-modal-header h2,
-
 .submitted-modal-header h2 {
-
   margin: 0;
 
   color: #312e81;
@@ -2247,37 +1555,26 @@ tbody tr:last-child td {
   font-size: 18px;
 
   font-weight: 900;
-
 }
 
 .edit-modal-header p,
-
 .submitted-modal-header p {
-
   margin:
-
     4px
-
     0
-
     0;
 
   color: #64748b;
 
   font-size: 12px;
-
 }
 
 .modal-close {
-
   width: 38px !important;
-
   min-width: 38px !important;
-
   max-width: 38px !important;
 
   height: 38px !important;
-
   min-height: 38px !important;
 
   margin: 0 !important;
@@ -2299,41 +1596,31 @@ tbody tr:last-child td {
   display: flex !important;
 
   align-items: center !important;
-
   justify-content: center !important;
-
 }
 
 /* ============================================================
-
-   43. EDIT FORM
-
+   EDIT FORM
 ============================================================ */
 
 .edit-form {
-
   display: grid;
 
   grid-template-columns:
-
     repeat(2, minmax(0, 1fr));
 
   gap: 14px;
 
   padding:
-
     18px
-
     20px;
 
   max-height: 62vh;
 
   overflow-y: auto;
-
 }
 
 .edit-form label {
-
   display: flex;
 
   flex-direction: column;
@@ -2347,19 +1634,14 @@ tbody tr:last-child td {
   font-size: 13px;
 
   font-weight: 800;
-
 }
 
 .edit-form input,
-
 .edit-form select,
-
 .edit-form textarea {
-
   width: 100%;
 
   border:
-
     2px solid #edf0f5;
 
   border-radius: 11px;
@@ -2375,55 +1657,26 @@ tbody tr:last-child td {
   outline: none;
 
   padding:
-
     10px
-
     11px;
-
 }
 
 .edit-form input,
-
 .edit-form select {
-
   height: 45px;
-
 }
 
 .edit-form textarea {
-
   min-height: 90px;
 
   resize: vertical;
-
-}
-
-.edit-form input:focus,
-
-.edit-form select:focus,
-
-.edit-form textarea:focus {
-
-  background: #fff;
-
-  border-color: #818cf8;
-
-  box-shadow:
-
-    0 0 0 3px
-
-    rgba(99, 102, 241, .08);
-
 }
 
 /* ============================================================
-
-   44. EDIT FOOTER
-
+   EDIT FOOTER
 ============================================================ */
 
 .edit-modal-footer {
-
   display: flex;
 
   justify-content: flex-end;
@@ -2433,21 +1686,16 @@ tbody tr:last-child td {
   gap: 9px;
 
   padding:
-
     14px
-
     20px;
 
   border-top:
-
     1px solid #edf0f5;
 
   background: #fff;
-
 }
 
 .edit-modal-footer button {
-
   width: auto !important;
 
   min-width: 100px !important;
@@ -2459,9 +1707,7 @@ tbody tr:last-child td {
   margin: 0 !important;
 
   padding:
-
     0
-
     14px !important;
 
   border: 0 !important;
@@ -2473,59 +1719,41 @@ tbody tr:last-child td {
   font-weight: 900 !important;
 
   box-shadow: none !important;
-
 }
 
 .edit-modal-footer .gray {
-
   background: #64748b !important;
 
   color: #fff !important;
-
 }
 
 .save-edit-btn {
-
   background:
-
     linear-gradient(
-
       135deg,
-
       #16a34a,
-
       #22c55e
-
     ) !important;
 
   color: #fff !important;
-
 }
 
 /* ============================================================
-
-   45. SUBMITTED USERS
-
+   SUBMITTED USERS
 ============================================================ */
 
 .submitted-user-list {
-
   max-height: 65vh;
 
   overflow-y: auto;
 
   padding:
-
     8px
-
     20px
-
     18px;
-
 }
 
 .submitted-user-item {
-
   display: flex;
 
   align-items: center;
@@ -2533,25 +1761,18 @@ tbody tr:last-child td {
   gap: 10px;
 
   padding:
-
     12px
-
     0;
 
   border-bottom:
-
     1px solid #edf0f5;
-
 }
 
 .submitted-user-item:last-child {
-
   border-bottom: 0;
-
 }
 
 .submitted-number {
-
   width: 28px;
 
   flex-shrink: 0;
@@ -2563,11 +1784,9 @@ tbody tr:last-child td {
   font-weight: 900;
 
   text-align: center;
-
 }
 
 .submitted-user-name {
-
   flex: 1;
 
   min-width: 0;
@@ -2579,11 +1798,9 @@ tbody tr:last-child td {
   font-weight: 800;
 
   word-break: break-word;
-
 }
 
 .submitted-count {
-
   flex-shrink: 0;
 
   color: #64748b;
@@ -2591,15 +1808,11 @@ tbody tr:last-child td {
   font-size: 12px;
 
   font-weight: 700;
-
 }
 
 .submitted-empty {
-
   padding:
-
     40px
-
     20px;
 
   text-align: center;
@@ -2609,333 +1822,283 @@ tbody tr:last-child td {
   font-size: 14px;
 
   font-weight: 800;
-
 }
 
 /* ============================================================
-
-   46. HIDDEN LOGOUT
-
+   HIDDEN LOGOUT
 ============================================================ */
 
 #logoutBtn {
-
   display: none !important;
-
 }
 
 /* ============================================================
-
-   47. COLORS
-
+   GENERIC
 ============================================================ */
 
 .danger {
-
   background: #dc2626 !important;
-
   color: #fff !important;
-
 }
 
 .green {
-
   background: #16a34a !important;
-
   color: #fff !important;
-
 }
 
 .gray {
-
   background: #64748b !important;
-
   color: #fff !important;
-
 }
 
 /* ============================================================
-
-   48. MOBILE
-
+   MOBILE
 ============================================================ */
 
 @media (max-width: 700px) {
 
+  /* ----------------------------------------------------------
+     CONTAINER
+  ---------------------------------------------------------- */
+
   .container {
+    max-width: 860px;
 
     padding:
-
+      14px
       10px
-
-      8px
-
-      25px;
-
+      30px;
   }
+
+  /* ----------------------------------------------------------
+     CARD
+  ---------------------------------------------------------- */
 
   .card {
-
-    border-radius: 22px;
+    border-radius: 25px;
 
     padding:
+      22px
+      14px
+      27px;
 
-      16px
-
-      11px
-
-      22px;
-
+    box-shadow:
+      0 14px 40px
+      rgba(79, 70, 229, .12);
   }
 
-  /* HEADER */
+  /* ----------------------------------------------------------
+     HEADER
+  ---------------------------------------------------------- */
 
   .manager-header {
+    gap: 9px;
 
-    gap: 8px;
-
+    margin-bottom: 19px;
   }
 
   .header {
+    gap: 13px;
 
-    gap: 10px;
+    padding-bottom: 18px;
+  }
 
-    padding-bottom: 15px;
+  .logo {
+    width: 62px;
+    height: 62px;
 
+    border-radius: 19px;
+
+    font-size: 31px;
+  }
+
+  h1 {
+    font-size: 21px;
+
+    letter-spacing: -.4px;
+  }
+
+  .header p {
+    margin-top: 5px;
+
+    font-size: 14px;
   }
 
   .menu-button {
-
     width: 42px !important;
-
     min-width: 42px !important;
-
     max-width: 42px !important;
 
     height: 42px !important;
-
     min-height: 42px !important;
 
     border-radius: 11px !important;
 
     font-size: 20px !important;
-
   }
 
-  .logo {
+  /* ----------------------------------------------------------
+     SECTION
+  ---------------------------------------------------------- */
 
-    width: 50px;
+  .section-title {
+    margin:
+      20px
+      0
+      25px;
 
-    height: 50px;
+    padding:
+      15px
+      17px;
 
-    border-radius: 15px;
+    border-radius: 17px;
 
-    font-size: 24px;
-
+    font-size: 19px;
   }
 
-  h1 {
+  /* ----------------------------------------------------------
+     LABEL
+  ---------------------------------------------------------- */
 
-    font-size: 17px;
+  .card form label {
+    margin-bottom: 22px;
 
+    font-size: 18px;
   }
 
-  .header p {
+  /* ----------------------------------------------------------
+     INPUT
+  ---------------------------------------------------------- */
 
-    font-size: 12px;
+  .card form input:not([type="hidden"]),
+  .card form select {
+    height: 62px;
 
+    margin-top: 8px;
+
+    padding:
+      0
+      18px;
+
+    border-radius: 17px;
+
+    font-size: 18px;
   }
 
-  /* ========================================================
+  .card form textarea {
+    min-height: 125px;
 
-     CÁN BỘ NHẬP LIỆU
+    margin-top: 8px;
 
-  ======================================================== */
+    padding:
+      16px
+      18px;
 
-  .form-group {
+    border-radius: 17px;
 
-    margin-bottom: 15px;
-
+    font-size: 18px;
   }
 
-  .form-group label {
+  /* ----------------------------------------------------------
+     DƯ THU
+  ---------------------------------------------------------- */
 
-    font-size: 15px;
+  .card form label:has(
+    input#expected_amount
+  ),
+  .card form label:has(
+    input#expectedAmount
+  ) {
+    padding:
+      15px
+      15px;
 
-    margin-bottom: 6px;
-
+    border-radius: 18px;
   }
 
-  .form-group input,
-
-  .form-group select,
-
-  .form-group textarea,
-
-  form input,
-
-  form select,
-
-  form textarea {
-
-    width: 100% !important;
-
-    max-width: 100% !important;
-
-    font-size: 16px !important;
-
+  .card form label:has(
+    input#expected_amount
+  ) input,
+  .card form label:has(
+    input#expectedAmount
+  ) input {
+    font-size: 20px;
   }
 
-  .form-group input,
-
-  .form-group select,
-
-  form input,
-
-  form select {
-
-    height: 47px !important;
-
-    min-height: 47px !important;
-
-  }
-
-  .form-group textarea,
-
-  form textarea {
-
-    min-height: 105px !important;
-
-  }
-
-  /* ÉP ROW XẾP DỌC */
-
-  .field-row,
-
-  .form-row,
-
-  .input-row {
-
-    display: flex !important;
-
-    flex-direction: column !important;
-
-    width: 100% !important;
-
-    gap: 13px !important;
-
-  }
-
-  .field-row > *,
-
-  .form-row > *,
-
-  .input-row > * {
-
-    width: 100% !important;
-
-    max-width: 100% !important;
-
-  }
-
-  /* NÚT GỬI */
-
-  form button[type="submit"],
+  /* ----------------------------------------------------------
+     SUBMIT
+  ---------------------------------------------------------- */
 
   #submitBtn,
-
-  #sendReportBtn,
-
-  #submitReportBtn {
+  #submitReportBtn,
+  button[type="submit"] {
+    min-width: 0 !important;
 
     width: auto !important;
 
-    min-width: 180px !important;
+    height: 48px !important;
+    min-height: 48px !important;
 
-    height: 44px !important;
+    padding:
+      0
+      20px !important;
 
-    min-height: 44px !important;
+    border-radius: 24px !important;
 
-    font-size: 13px !important;
-
+    font-size: 16px !important;
   }
 
-  /* ========================================================
-
-     MANAGER STATS
-
-  ======================================================== */
+  /* ----------------------------------------------------------
+     STATS
+  ---------------------------------------------------------- */
 
   .stats {
-
     grid-template-columns: 1fr;
 
     gap: 9px;
-
   }
 
   .stat-box {
-
     padding:
-
       13px
-
       15px;
-
   }
 
   .stat-value {
-
     font-size: 21px;
-
   }
 
-  /* ========================================================
-
+  /* ----------------------------------------------------------
      FILTER
-
-  ======================================================== */
+  ---------------------------------------------------------- */
 
   .filters {
-
     align-items: stretch;
 
     gap: 7px;
 
-    padding:
-
-      11px;
-
+    padding: 11px;
   }
 
   .filters label {
-
     width: 100%;
 
     margin-top: 2px;
-
   }
 
   .filters input {
-
     width: 100%;
 
     height: 43px;
 
     min-height: 43px;
-
   }
 
   #filterBtn,
-
   #refreshBtn,
-
   #exportBtn,
-
   #showSubmittedUsersBtn,
-
   #deleteAllBtn {
-
     height: 42px !important;
 
     min-height: 42px !important;
@@ -2943,89 +2106,59 @@ tbody tr:last-child td {
     font-size: 11px !important;
 
     padding:
-
       0
-
       10px !important;
-
   }
 
   #showSubmittedUsersBtn,
-
   #deleteAllBtn {
-
     width: 100% !important;
-
   }
 
-  /* ========================================================
-
+  /* ----------------------------------------------------------
      TABLE
-
-  ======================================================== */
+  ---------------------------------------------------------- */
 
   .table-wrap {
-
     border-radius: 11px;
-
   }
 
   table {
-
     min-width: 1350px;
-
   }
 
   th,
-
   td {
-
     padding:
-
       7px
-
       7px;
-
   }
 
   th {
-
     font-size: 11px;
-
   }
 
   td {
-
     font-size: 11px;
-
   }
 
-  /* ========================================================
-
+  /* ----------------------------------------------------------
      ACTION
-
-  ======================================================== */
+  ---------------------------------------------------------- */
 
   .action-cell {
-
     width: 78px;
 
     min-width: 78px;
-
   }
 
   .edit-btn,
-
   .delete-btn {
-
     width: 31px !important;
-
     min-width: 31px !important;
-
     max-width: 31px !important;
 
     height: 31px !important;
-
     min-height: 31px !important;
 
     margin-right: 2px !important;
@@ -3033,23 +2166,17 @@ tbody tr:last-child td {
     border-radius: 8px !important;
 
     font-size: 14px !important;
-
   }
 
-  /* ========================================================
-
+  /* ----------------------------------------------------------
      PAGINATION
-
-  ======================================================== */
+  ---------------------------------------------------------- */
 
   .pagination-wrap {
-
     gap: 7px;
-
   }
 
   .pagination-wrap button {
-
     min-width: 80px !important;
 
     height: 38px !important;
@@ -3057,87 +2184,58 @@ tbody tr:last-child td {
     min-height: 38px !important;
 
     font-size: 12px !important;
-
   }
 
   .page-info {
-
     min-width: 70px;
 
     font-size: 12px;
-
   }
 
-  /* ========================================================
-
+  /* ----------------------------------------------------------
      MODAL
-
-  ======================================================== */
+  ---------------------------------------------------------- */
 
   .modal-overlay {
-
-    padding:
-
-      10px;
-
+    padding: 10px;
   }
 
   .edit-modal,
-
   .submitted-modal {
-
     max-height: 95vh;
 
     border-radius: 17px;
-
   }
 
   .edit-form {
-
     grid-template-columns: 1fr;
 
     gap: 11px;
 
     max-height: 66vh;
 
-    padding:
-
-      15px;
-
+    padding: 15px;
   }
 
   .edit-modal-header,
-
   .submitted-modal-header {
-
     padding:
-
       14px
-
       15px;
-
   }
 
   .edit-modal-header h2,
-
   .submitted-modal-header h2 {
-
     font-size: 16px;
-
   }
 
   .edit-modal-footer {
-
     padding:
-
       11px
-
       15px;
-
   }
 
   .edit-modal-footer button {
-
     height: 42px !important;
 
     min-height: 42px !important;
@@ -3145,607 +2243,324 @@ tbody tr:last-child td {
     min-width: 90px !important;
 
     font-size: 12px !important;
-
   }
 
   .submitted-user-list {
-
     padding:
-
       6px
-
       15px
-
       15px;
-
   }
-
 }
 
 /* ============================================================
-
-   49. IPHONE NHỎ
-
+   IPHONE 420PX
 ============================================================ */
 
 @media (max-width: 420px) {
 
   .container {
-
     padding:
-
-      8px
-
-      6px
-
-      20px;
-
+      10px
+      7px
+      25px;
   }
 
   .card {
-
-    border-radius: 20px;
+    border-radius: 22px;
 
     padding:
-
-      14px
-
-      9px
-
-      18px;
-
+      18px
+      10px
+      23px;
   }
 
   /* HEADER */
 
   .manager-header {
-
-    margin-bottom: 15px;
-
+    margin-bottom: 17px;
   }
 
-  .menu-button {
-
-    width: 40px !important;
-
-    min-width: 40px !important;
-
-    max-width: 40px !important;
-
-    height: 40px !important;
-
-    min-height: 40px !important;
-
+  .header {
+    gap: 10px;
   }
 
   .logo {
+    width: 55px;
+    height: 55px;
 
-    width: 46px;
+    border-radius: 17px;
 
-    height: 46px;
-
-    border-radius: 14px;
-
-    font-size: 22px;
-
+    font-size: 28px;
   }
 
   h1 {
-
-    font-size: 16px;
-
+    font-size: 19px;
   }
 
   .header p {
-
-    font-size: 11px;
-
+    font-size: 12px;
   }
 
-  /* ========================================================
+  .menu-button {
+    width: 40px !important;
+    min-width: 40px !important;
+    max-width: 40px !important;
 
-     FORM CÁN BỘ
-
-  ======================================================== */
-
-  .form-group {
-
-    margin-bottom: 14px;
-
+    height: 40px !important;
+    min-height: 40px !important;
   }
 
-  .form-group label {
+  /* SECTION */
 
-    font-size: 15px;
+  .section-title {
+    margin:
+      18px
+      0
+      22px;
 
+    padding:
+      14px
+      15px;
+
+    border-radius: 16px;
+
+    font-size: 18px;
   }
 
-  .form-group input,
+  /* LABEL */
 
-  .form-group select,
+  .card form label {
+    margin-bottom: 19px;
 
-  form input,
+    font-size: 17px;
+  }
 
-  form select {
+  /* INPUT */
 
+  .card form input:not([type="hidden"]),
+  .card form select {
+    height: 60px;
+
+    padding:
+      0
+      17px;
+
+    border-radius: 16px;
+
+    font-size: 17px;
+  }
+
+  .card form textarea {
+    min-height: 120px;
+
+    padding:
+      15px
+      17px;
+
+    border-radius: 16px;
+
+    font-size: 17px;
+  }
+
+  /* DƯ THU */
+
+  .card form label:has(
+    input#expected_amount
+  ),
+  .card form label:has(
+    input#expectedAmount
+  ) {
+    padding:
+      14px
+      13px;
+  }
+
+  /* SUBMIT */
+
+  #submitBtn,
+  #submitReportBtn,
+  button[type="submit"] {
     height: 46px !important;
 
     min-height: 46px !important;
 
-    font-size: 16px !important;
+    padding:
+      0
+      18px !important;
 
+    font-size: 15px !important;
   }
 
-  .form-group textarea,
-
-  form textarea {
-
-    min-height: 105px !important;
-
-  }
-
-  /* ========================================================
-
-     BUTTON
-
-  ======================================================== */
+  /* MANAGER */
 
   #filterBtn,
-
   #refreshBtn,
-
   #exportBtn {
-
     flex: 1 1 auto !important;
 
     padding:
-
       0
-
       8px !important;
 
     font-size: 10px !important;
-
   }
 
   #showSubmittedUsersBtn,
-
   #deleteAllBtn {
-
     font-size: 11px !important;
-
   }
 
-  /* ========================================================
-
-     TABLE
-
-  ======================================================== */
-
   table {
-
     min-width: 1300px;
-
   }
 
   th {
-
     font-size: 10.5px;
-
   }
 
   td {
-
     font-size: 10.5px;
-
   }
 
   .edit-btn,
-
   .delete-btn {
-
     width: 29px !important;
-
     min-width: 29px !important;
-
     max-width: 29px !important;
 
     height: 29px !important;
-
     min-height: 29px !important;
 
     font-size: 13px !important;
-
   }
 
   .action-cell {
-
     width: 68px;
 
     min-width: 68px;
-
   }
 
-  /* ========================================================
-
-     MODAL
-
-  ======================================================== */
-
   .modal-overlay {
-
-    padding:
-
-      7px;
-
+    padding: 7px;
   }
 
   .edit-modal,
-
   .submitted-modal {
-
     border-radius: 15px;
-
   }
 
   .edit-form {
-
-    padding:
-
-      13px;
-
+    padding: 13px;
   }
 
   .edit-modal-footer {
-
     flex-direction: column;
-
   }
 
   .edit-modal-footer button {
-
     width: 100% !important;
 
     min-width: 100% !important;
-
   }
-
 }
 
 /* ============================================================
-
-   50. IPHONE RẤT HẸP
-
+   IPHONE RẤT HẸP
 ============================================================ */
 
 @media (max-width: 360px) {
 
   .container {
-
     padding:
-
-      6px
-
+      8px
       5px
-
-      18px;
-
+      20px;
   }
 
   .card {
-
     padding:
-
-      12px
-
+      15px
       8px
-
-      16px;
-
+      20px;
   }
 
   .header {
-
     gap: 7px;
-
   }
 
   .menu-button {
-
     width: 38px !important;
-
     min-width: 38px !important;
-
     max-width: 38px !important;
 
     height: 38px !important;
-
     min-height: 38px !important;
 
     font-size: 18px !important;
-
   }
 
   .logo {
+    width: 48px;
+    height: 48px;
 
-    width: 42px;
-
-    height: 42px;
-
-    font-size: 20px;
-
+    font-size: 24px;
   }
 
   h1 {
+    font-size: 17px;
+  }
 
-    font-size: 15px;
+  .header p {
+    font-size: 11px;
+  }
 
+  .section-title {
+    font-size: 16px;
+
+    padding:
+      12px
+      13px;
+  }
+
+  .card form label {
+    font-size: 16px;
+  }
+
+  .card form input:not([type="hidden"]),
+  .card form select {
+    height: 57px;
+
+    font-size: 16px;
+  }
+
+  .card form textarea {
+    font-size: 16px;
   }
 
   #filterBtn,
-
   #refreshBtn,
-
   #exportBtn {
-
     padding:
-
       0
-
       6px !important;
 
     font-size: 9.5px !important;
-
   }
 
   table {
-
     min-width: 1250px;
-
   }
 
   .edit-btn,
-
   .delete-btn {
-
     width: 27px !important;
-
     min-width: 27px !important;
-
     max-width: 27px !important;
 
     height: 27px !important;
-
     min-height: 27px !important;
 
     font-size: 12px !important;
-
   }
-
-}
-
-/* ============================================================
-
-   51. IPHONE SAFARI - FIX INPUT
-
-============================================================ */
-
-input,
-
-select,
-
-textarea,
-
-button {
-
-  -webkit-font-smoothing: antialiased;
-
-}
-
-/*
-
-   Safari thường tự thêm appearance cho input.
-
-   Reset để giao diện ổn định hơn.
-
-*/
-
-input,
-
-textarea {
-
-  -webkit-appearance: none;
-
-  appearance: none;
-
-}
-
-/* Không cho textarea bị tràn ngang */
-
-textarea {
-
-  overflow-wrap: break-word;
-
-  word-break: break-word;
-
-}
-
-/* ============================================================
-
-   52. FIX CHUNG CHO LABEL + FIELD
-
-============================================================ */
-
-label {
-
-  max-width: 100%;
-
-}
-
-/*
-
-   Nếu HTML dùng:
-
-   <label>...</label>
-
-   <input ...>
-
-   thì vẫn ép input xuống dòng.
-
-*/
-
-label + input,
-
-label + select,
-
-label + textarea {
-
-  display: block;
-
-  width: 100% !important;
-
-  max-width: 100% !important;
-
-}
-
-/* ============================================================
-
-   53. FIX CÁC NHÓM CÓ FLEX
-
-============================================================ */
-
-.form-group,
-
-.field,
-
-.form-field,
-
-.input-group {
-
-  min-width: 0;
-
-}
-
-/*
-
-   Tránh input bị co nhỏ vì flex.
-
-*/
-
-.form-group input,
-
-.form-group select,
-
-.form-group textarea,
-
-.field input,
-
-.field select,
-
-.field textarea,
-
-.form-field input,
-
-.form-field select,
-
-.form-field textarea,
-
-.input-group input,
-
-.input-group select,
-
-.input-group textarea {
-
-  flex: none;
-
-  min-width: 0;
-
-}
-
-/* ============================================================
-
-   54. FIX DỰ THU TRÊN IPHONE
-
-============================================================ */
-
-@media (max-width: 700px) {
-
-  .money-group {
-
-    width: 100%;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 8px;
-
-  }
-
-  .money-group input {
-
-    flex: 1 1 auto;
-
-    width: 100% !important;
-
-  }
-
-  .money-group span {
-
-    width: auto;
-
-    flex-shrink: 0;
-
-    white-space: nowrap;
-
-    font-size: 15px;
-
-  }
-
-}
-
-/* ============================================================
-
-   55. FIX SUBMIT FORM
-
-============================================================ */
-
-form {
-
-  overflow: visible;
-
-}
-
-form > * {
-
-  max-width: 100%;
-
-}
-
-/* ============================================================
-
-   56. TOUCH DEVICE
-
-============================================================ */
-
-@media (hover: none) {
-
-  button:hover {
-
-    transform: none;
-
-  }
-
-  .edit-btn:hover {
-
-    background: #dbeafe !important;
-
-  }
-
-  .delete-btn:hover {
-
-    background: #fee2e2 !important;
-
-  }
-
 }
