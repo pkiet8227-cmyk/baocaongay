@@ -2540,3 +2540,76 @@ label[for="expectedAmount"] {
   }
 
 }
+/* =========================================================
+
+   FIX: KHÔNG CHO DÒNG BÁO CÁO BỊ KÉO QUÁ CAO TRÊN MOBILE
+
+========================================================= */
+
+table {
+
+  border-collapse: collapse;
+
+}
+
+table tbody tr {
+
+  height: auto !important;
+
+  min-height: 0 !important;
+
+}
+
+table tbody td {
+
+  height: auto !important;
+
+  min-height: 0 !important;
+
+  padding: 14px 12px !important;
+
+  vertical-align: middle !important;
+
+  line-height: 1.4 !important;
+
+}
+
+/* Không cho nội dung rỗng tạo khoảng trắng khổng lồ */
+
+table tbody td:empty {
+
+  display: table-cell !important;
+
+  height: auto !important;
+
+  min-height: 0 !important;
+
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+  table tbody tr {
+
+    height: auto !important;
+
+    min-height: 0 !important;
+
+  }
+
+  table tbody td {
+
+    height: auto !important;
+
+    min-height: 0 !important;
+
+    padding: 14px 10px !important;
+
+    line-height: 1.35 !important;
+
+    vertical-align: middle !important;
+
+  }
+
+}
