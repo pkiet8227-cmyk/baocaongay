@@ -828,6 +828,12 @@
 
       }
 
+      if (submittedUserCount) {
+
+        submittedUserCount.textContent = "0";
+
+      }
+
     } catch (error) {
 
       console.error(
@@ -966,6 +972,8 @@
 
       updateStats();
 
+      // Luôn đếm cán bộ của ngày hôm nay
+
       updateSubmittedUserCount();
 
       render();
@@ -1004,6 +1012,218 @@
 
   // ============================================================
 
+  // LẤY NGÀY HÔM NAY
+
+  // ============================================================
+
+  function getTodayDateString() {
+
+    const now = new Date();
+
+    const year =
+
+      now.getFullYear();
+
+    const month =
+
+      String(
+
+        now.getMonth() + 1
+
+      ).padStart(2, "0");
+
+    const day =
+
+      String(
+
+        now.getDate()
+
+      ).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+
+  }
+
+  // ============================================================
+
+  // CHUẨN HÓA USER
+
+  // ============================================================
+
+  //
+
+  // Ví dụ:
+
+  // kietpm1
+
+  // Kietpm1
+
+  // KIETPM1
+
+  //  kietpm1
+
+  //
+
+  // => đều thành:
+
+  // kietpm1
+
+  //
+
+  // ============================================================
+
+  function normalizeUserName(value) {
+
+    if (
+
+      value === null ||
+
+      value === undefined
+
+    ) {
+
+      return "";
+
+    }
+
+    return String(value)
+
+      .replace(
+
+        /[\u200B-\u200D\uFEFF]/g,
+
+        ""
+
+      )
+
+      .trim()
+
+      .toLowerCase();
+
+  }
+
+  // ============================================================
+
+  // LẤY NGÀY CỦA BẢN GHI
+
+  // ============================================================
+
+  function getRowDate(value) {
+
+    if (!value) {
+
+      return "";
+
+    }
+
+    const text =
+
+      String(value);
+
+    // Nếu Supabase trả trực tiếp YYYY-MM-DD
+
+    if (
+
+      /^\d{4}-\d{2}-\d{2}$/.test(text)
+
+    ) {
+
+      return text;
+
+    }
+
+    return formatDateForInput(value);
+
+  }
+
+  // ============================================================
+
+  // ĐẾM CÁN BỘ ĐÃ NHẬP BÁO CÁO
+
+  // ============================================================
+
+  //
+
+  // QUAN TRỌNG:
+
+  // - Luôn lấy dữ liệu từ ALL DATA
+
+  // - Không phụ thuộc bộ lọc ngày
+
+  // - Chỉ đếm NGÀY HÔM NAY
+
+  // - Không phân biệt hoa/thường
+
+  // - Không đếm trùng User
+
+  //
+
+  // ============================================================
+
+  function updateSubmittedUserCount() {
+
+    const today =
+
+      getTodayDateString();
+
+    const users =
+
+      new Set();
+
+    allData.forEach(
+
+      (row) => {
+
+        const rowDate =
+
+          getRowDate(
+
+            row.field_date
+
+          );
+
+        // Chỉ tính báo cáo của hôm nay
+
+        if (
+
+          rowDate !== today
+
+        ) {
+
+          return;
+
+        }
+
+        const user =
+
+          normalizeUserName(
+
+            row.user_name
+
+          );
+
+        if (user) {
+
+          users.add(user);
+
+        }
+
+      }
+
+    );
+
+    if (submittedUserCount) {
+
+      submittedUserCount.textContent =
+
+        users.size.toString();
+
+    }
+
+  }
+
+  // ============================================================
+
   // LỌC
 
   // ============================================================
@@ -1028,15 +1248,11 @@
 
         const rowUser =
 
-          String(
+          normalizeUserName(
 
-            row.user_name || ""
+            row.user_name
 
-          )
-
-            .trim()
-
-            .toLowerCase();
+          );
 
         let matchUser = true;
 
@@ -1081,6 +1297,8 @@
     updateStats();
 
     render();
+
+    // updateStats() vẫn luôn đếm cán bộ của hôm nay
 
     if (managerMessage) {
 
@@ -1134,49 +1352,13 @@
 
     }
 
+    // Quan trọng:
+
+    // Không đếm filteredData.
+
+    // Luôn đếm cán bộ của ngày hôm nay.
+
     updateSubmittedUserCount();
-
-  }
-
-  // ============================================================
-
-  // ĐẾM CÁN BỘ
-
-  // ============================================================
-
-  function updateSubmittedUserCount() {
-
-    const users = new Set();
-
-    filteredData.forEach(
-
-      (row) => {
-
-        const user =
-
-          String(
-
-            row.user_name || ""
-
-          ).trim();
-
-        if (user) {
-
-          users.add(user);
-
-        }
-
-      }
-
-    );
-
-    if (submittedUserCount) {
-
-      submittedUserCount.textContent =
-
-        users.size.toString();
-
-    }
 
   }
 
@@ -3014,17 +3196,57 @@
 
   // ============================================================
 
+  //
+
+  // Khi bấm xem:
+
+  // - Chỉ lấy cán bộ của HÔM NAY
+
+  // - Không phụ thuộc bộ lọc ngày
+
+  // - Không phân biệt hoa/thường
+
+  // - kietpm1 / Kietpm1 / KIETPM1 = 1 cán bộ
+
+  //
+
+  // ============================================================
+
   function showSubmittedUsers() {
+
+    const today =
+
+      getTodayDateString();
 
     const usersMap =
 
       new Map();
 
-    filteredData.forEach(
+    allData.forEach(
 
       (row) => {
 
-        const user =
+        const rowDate =
+
+          getRowDate(
+
+            row.field_date
+
+          );
+
+        // Chỉ lấy báo cáo của hôm nay
+
+        if (
+
+          rowDate !== today
+
+        ) {
+
+          return;
+
+        }
+
+        const originalUser =
 
           String(
 
@@ -3032,31 +3254,59 @@
 
           ).trim();
 
-        if (!user) return;
+        if (!originalUser) {
+
+          return;
+
+        }
+
+        const normalizedUser =
+
+          normalizeUserName(
+
+            originalUser
+
+          );
+
+        if (!normalizedUser) {
+
+          return;
+
+        }
 
         if (
 
-          !usersMap.has(user)
+          !usersMap.has(
+
+            normalizedUser
+
+          )
 
         ) {
 
           usersMap.set(
 
-            user,
+            normalizedUser,
 
-            0
+            {
+
+              displayName:
+
+                originalUser,
+
+              count: 0
+
+            }
 
           );
 
         }
 
-        usersMap.set(
+        usersMap.get(
 
-          user,
+          normalizedUser
 
-          usersMap.get(user) + 1
-
-        );
+        ).count++;
 
       }
 
@@ -3066,15 +3316,15 @@
 
       Array.from(
 
-        usersMap.entries()
+        usersMap.values()
 
       ).sort(
 
         (a, b) =>
 
-          a[0].localeCompare(
+          a.displayName.localeCompare(
 
-            b[0],
+            b.displayName,
 
             "vi"
 
@@ -3114,7 +3364,7 @@
 
         <div class="submitted-empty">
 
-          📭 Chưa có cán bộ nào nhập báo cáo.
+          📭 Hôm nay chưa có cán bộ nào nhập báo cáo.
 
         </div>
 
@@ -3130,7 +3380,7 @@
 
       users.forEach(
 
-        ([user, count], index) => {
+        (item, index) => {
 
           html += `
 
@@ -3144,13 +3394,17 @@
 
               <span class="submitted-user-name">
 
-                ${escapeHtml(user)}
+                ${escapeHtml(
+
+                  item.displayName
+
+                )}
 
               </span>
 
               <span class="submitted-count">
 
-                ${count} báo cáo
+                ${item.count} báo cáo
 
               </span>
 
@@ -3186,7 +3440,9 @@
 
             <p>
 
-              Tổng số: ${users.length} cán bộ
+              Ngày ${formatDate(today)}
+
+              • Tổng số: ${users.length} cán bộ
 
             </p>
 
@@ -3536,13 +3792,17 @@
 
                 sz: 10,
 
-                bold: row === 0
+                bold:
+
+                  row === 0
 
               },
 
               alignment: {
 
-                vertical: "center",
+                vertical:
+
+                  "center",
 
                 horizontal:
 
@@ -3552,7 +3812,9 @@
 
                     : "left",
 
-                wrapText: true
+                wrapText:
+
+                  true
 
               },
 
@@ -3636,11 +3898,17 @@
 
             alignment: {
 
-              horizontal: "center",
+              horizontal:
 
-              vertical: "center",
+                "center",
 
-              wrapText: true
+              vertical:
+
+                "center",
+
+              wrapText:
+
+                true
 
             },
 
@@ -3806,27 +4074,45 @@
 
         );
 
+      // --------------------------------------------------------
+
+      // SỐ CÁN BỘ TRONG EXCEL
+
+      // Vẫn tính theo filteredData vì đây là thống kê
+
+      // của bộ dữ liệu đang xuất Excel.
+
+      //
+
+      // Nhưng không phân biệt hoa/thường.
+
+      // --------------------------------------------------------
+
       const uniqueUsers =
 
-        new Set(
+        new Set();
 
-          filteredData
+      filteredData.forEach(
 
-            .map(
+        (row) => {
 
-              (row) =>
+          const user =
 
-                String(
+            normalizeUserName(
 
-                  row.user_name || ""
+              row.user_name
 
-                ).trim()
+            );
 
-            )
+          if (user) {
 
-            .filter(Boolean)
+            uniqueUsers.add(user);
 
-        );
+          }
+
+        }
+
+      );
 
       const summaryRows = [
 
@@ -3902,7 +4188,9 @@
 
           alignment: {
 
-            horizontal: "center"
+            horizontal:
+
+              "center"
 
           }
 
@@ -4051,6 +4339,46 @@
     if (!value) {
 
       return "";
+
+    }
+
+    const text =
+
+      String(value);
+
+    // Tránh lỗi múi giờ với YYYY-MM-DD
+
+    if (
+
+      /^\d{4}-\d{2}-\d{2}$/.test(text)
+
+    ) {
+
+      const [
+
+        year,
+
+        month,
+
+        day
+
+      ] =
+
+        text
+
+          .split("-")
+
+          .map(Number);
+
+      return [
+
+        String(day).padStart(2, "0"),
+
+        String(month).padStart(2, "0"),
+
+        year
+
+      ].join("/");
 
     }
 
