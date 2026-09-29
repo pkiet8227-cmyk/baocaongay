@@ -4,31 +4,7 @@
 
   // ============================================================
 
-  // QUẢN LÝ BÁO CÁO NGÀY
-
-  // FULL VERSION
-
-  //
-
-  // - Đăng nhập Supabase Auth
-
-  // - Lọc cán bộ / ngày
-
-  // - Làm mới dữ liệu
-
-  // - Sửa báo cáo bằng POPUP
-
-  // - Xóa từng báo cáo
-
-  // - Xóa toàn bộ dữ liệu
-
-  // - Danh sách cán bộ đã nhập
-
-  // - Phân trang 20 dòng
-
-  // - Xuất Excel
-
-  // - Sửa lỗi xác nhận "XOA TAT CA"
+  // QUẢN LÝ BÁO CÁO NGÀY - FULL VERSION
 
   // ============================================================
 
@@ -50,11 +26,7 @@
 
     ) {
 
-      throw new Error(
-
-        "Không tìm thấy thư viện Supabase."
-
-      );
+      throw new Error("Không tìm thấy thư viện Supabase.");
 
     }
 
@@ -84,13 +56,7 @@
 
   } catch (error) {
 
-    console.error(
-
-      "Supabase init error:",
-
-      error
-
-    );
+    console.error("Supabase init error:", error);
 
     alert(
 
@@ -182,461 +148,347 @@
 
   // ============================================================
 
-  document.addEventListener(
+  document.addEventListener("DOMContentLoaded", () => {
 
-    "DOMContentLoaded",
+    // ----------------------------------------------------------
 
-    () => {
+    // LOGIN
 
-      // --------------------------------------------------------
+    // ----------------------------------------------------------
 
-      // LOGIN
+    loginBox =
 
-      // --------------------------------------------------------
+      document.getElementById("loginBox");
 
-      loginBox =
+    managerBox =
 
-        document.getElementById(
+      document.getElementById("managerBox");
 
-          "loginBox"
+    emailInput =
 
-        );
+      document.getElementById("loginId");
 
-      managerBox =
+    passwordInput =
 
-        document.getElementById(
+      document.getElementById("password");
 
-          "managerBox"
+    loginBtn =
 
-        );
+      document.getElementById("loginBtn");
 
-      emailInput =
+    loginMessage =
 
-        document.getElementById(
+      document.getElementById("loginMessage");
 
-          "loginId"
+    // ----------------------------------------------------------
 
-        );
+    // MANAGER
 
-      passwordInput =
+    // ----------------------------------------------------------
 
-        document.getElementById(
+    logoutBtn =
 
-          "password"
+      document.getElementById("logoutBtn");
 
-        );
+    managerMessage =
 
-      loginBtn =
+      document.getElementById("managerMessage");
 
-        document.getElementById(
+    totalReports =
 
-          "loginBtn"
+      document.getElementById("totalReports");
 
-        );
+    totalAmount =
 
-      loginMessage =
+      document.getElementById("totalAmount");
 
-        document.getElementById(
+    // ----------------------------------------------------------
 
-          "loginMessage"
+    // FILTER
 
-        );
+    // ----------------------------------------------------------
 
-      // --------------------------------------------------------
+    filterUser =
 
-      // MANAGER
+      document.getElementById("filterUser");
 
-      // --------------------------------------------------------
+    filterDate =
 
-      logoutBtn =
+      document.getElementById("filterDate");
 
-        document.getElementById(
+    filterBtn =
 
-          "logoutBtn"
+      document.getElementById("filterBtn");
 
-        );
+    refreshBtn =
 
-      managerMessage =
+      document.getElementById("refreshBtn");
 
-        document.getElementById(
+    exportBtn =
 
-          "managerMessage"
+      document.getElementById("exportBtn");
 
-        );
+    // ----------------------------------------------------------
 
-      totalReports =
+    // TABLE
 
-        document.getElementById(
+    // ----------------------------------------------------------
 
-          "totalReports"
+    tableBody =
 
-        );
+      document.getElementById("tableBody");
 
-      totalAmount =
+    pagination =
 
-        document.getElementById(
+      document.getElementById("pagination");
 
-          "totalAmount"
+    // ----------------------------------------------------------
 
-        );
+    // MENU
 
-      // --------------------------------------------------------
+    // ----------------------------------------------------------
 
-      // FILTER
+    menuBtn =
 
-      // --------------------------------------------------------
+      document.getElementById("menuBtn");
 
-      filterUser =
+    sideMenu =
 
-        document.getElementById(
+      document.getElementById("sideMenu");
 
-          "filterUser"
+    sideMenuOverlay =
 
-        );
+      document.getElementById("sideMenuOverlay");
 
-      filterDate =
+    sideMenuClose =
 
-        document.getElementById(
+      document.getElementById("sideMenuClose");
 
-          "filterDate"
+    menuReportsBtn =
 
-        );
+      document.getElementById("menuReportsBtn");
 
-      filterBtn =
+    menuLogoutBtn =
 
-        document.getElementById(
+      document.getElementById("menuLogoutBtn");
 
-          "filterBtn"
+    // ----------------------------------------------------------
 
-        );
+    // CÁN BỘ
 
-      refreshBtn =
+    // ----------------------------------------------------------
 
-        document.getElementById(
+    showSubmittedUsersBtn =
 
-          "refreshBtn"
+      document.getElementById("showSubmittedUsersBtn");
 
-        );
+    submittedUserCount =
 
-      exportBtn =
+      document.getElementById("submittedUserCount");
 
-        document.getElementById(
+    // ----------------------------------------------------------
 
-          "exportBtn"
+    // XÓA
 
-        );
+    // ----------------------------------------------------------
 
-      // --------------------------------------------------------
+    deleteAllBtn =
 
-      // TABLE
+      document.getElementById("deleteAllBtn");
 
-      // --------------------------------------------------------
+    // ==========================================================
 
-      tableBody =
+    // EVENT
 
-        document.getElementById(
+    // ==========================================================
 
-          "tableBody"
+    loginBtn?.addEventListener(
 
-        );
+      "click",
 
-      pagination =
+      login
 
-        document.getElementById(
+    );
 
-          "pagination"
+    passwordInput?.addEventListener(
 
-        );
+      "keydown",
 
-      // --------------------------------------------------------
+      (event) => {
 
-      // MENU
+        if (event.key === "Enter") {
 
-      // --------------------------------------------------------
-
-      menuBtn =
-
-        document.getElementById(
-
-          "menuBtn"
-
-        );
-
-      sideMenu =
-
-        document.getElementById(
-
-          "sideMenu"
-
-        );
-
-      sideMenuOverlay =
-
-        document.getElementById(
-
-          "sideMenuOverlay"
-
-        );
-
-      sideMenuClose =
-
-        document.getElementById(
-
-          "sideMenuClose"
-
-        );
-
-      menuReportsBtn =
-
-        document.getElementById(
-
-          "menuReportsBtn"
-
-        );
-
-      menuLogoutBtn =
-
-        document.getElementById(
-
-          "menuLogoutBtn"
-
-        );
-
-      // --------------------------------------------------------
-
-      // CÁN BỘ
-
-      // --------------------------------------------------------
-
-      showSubmittedUsersBtn =
-
-        document.getElementById(
-
-          "showSubmittedUsersBtn"
-
-        );
-
-      submittedUserCount =
-
-        document.getElementById(
-
-          "submittedUserCount"
-
-        );
-
-      // --------------------------------------------------------
-
-      // XÓA
-
-      // --------------------------------------------------------
-
-      deleteAllBtn =
-
-        document.getElementById(
-
-          "deleteAllBtn"
-
-        );
-
-      // ========================================================
-
-      // EVENT
-
-      // ========================================================
-
-      loginBtn?.addEventListener(
-
-        "click",
-
-        login
-
-      );
-
-      passwordInput?.addEventListener(
-
-        "keydown",
-
-        (event) => {
-
-          if (event.key === "Enter") {
-
-            login();
-
-          }
+          login();
 
         }
 
-      );
+      }
 
-      emailInput?.addEventListener(
+    );
 
-        "keydown",
+    emailInput?.addEventListener(
 
-        (event) => {
+      "keydown",
 
-          if (event.key === "Enter") {
+      (event) => {
 
-            passwordInput?.focus();
+        if (event.key === "Enter") {
 
-          }
-
-        }
-
-      );
-
-      logoutBtn?.addEventListener(
-
-        "click",
-
-        logout
-
-      );
-
-      menuLogoutBtn?.addEventListener(
-
-        "click",
-
-        logout
-
-      );
-
-      filterBtn?.addEventListener(
-
-        "click",
-
-        applyFilter
-
-      );
-
-      // --------------------------------------------------------
-
-      // LÀM MỚI
-
-      // --------------------------------------------------------
-
-      refreshBtn?.addEventListener(
-
-        "click",
-
-        async () => {
-
-          await loadData();
+          passwordInput?.focus();
 
         }
 
-      );
+      }
 
-      // --------------------------------------------------------
+    );
 
-      // XUẤT EXCEL
+    logoutBtn?.addEventListener(
 
-      // --------------------------------------------------------
+      "click",
 
-      exportBtn?.addEventListener(
+      logout
 
-        "click",
+    );
 
-        exportExcel
+    menuLogoutBtn?.addEventListener(
 
-      );
+      "click",
 
-      // --------------------------------------------------------
+      logout
 
-      // DANH SÁCH CÁN BỘ
+    );
 
-      // --------------------------------------------------------
+    filterBtn?.addEventListener(
 
-      showSubmittedUsersBtn?.addEventListener(
+      "click",
 
-        "click",
+      applyFilter
 
-        showSubmittedUsers
+    );
 
-      );
+    // ----------------------------------------------------------
 
-      // --------------------------------------------------------
+    // LÀM MỚI
 
-      // XÓA TẤT CẢ
+    // ----------------------------------------------------------
 
-      // --------------------------------------------------------
+    refreshBtn?.addEventListener(
 
-      deleteAllBtn?.addEventListener(
+      "click",
 
-        "click",
+      async () => {
 
-        deleteAllReports
+        await loadData();
 
-      );
+      }
 
-      // --------------------------------------------------------
+    );
 
-      // MENU
+    // ----------------------------------------------------------
 
-      // --------------------------------------------------------
+    // XUẤT EXCEL
 
-      menuBtn?.addEventListener(
+    // ----------------------------------------------------------
 
-        "click",
+    exportBtn?.addEventListener(
 
-        openMenu
+      "click",
 
-      );
+      exportExcel
 
-      sideMenuClose?.addEventListener(
+    );
 
-        "click",
+    // ----------------------------------------------------------
 
-        closeMenu
+    // DANH SÁCH CÁN BỘ
 
-      );
+    // ----------------------------------------------------------
 
-      sideMenuOverlay?.addEventListener(
+    showSubmittedUsersBtn?.addEventListener(
 
-        "click",
+      "click",
 
-        closeMenu
+      showSubmittedUsers
 
-      );
+    );
 
-      menuReportsBtn?.addEventListener(
+    // ----------------------------------------------------------
 
-        "click",
+    // XÓA TẤT CẢ
 
-        () => {
+    // ----------------------------------------------------------
 
-          closeMenu();
+    deleteAllBtn?.addEventListener(
 
-          document
+      "click",
 
-            .querySelector(
+      deleteAllReports
 
-              ".manager-card"
+    );
 
-            )
+    // ----------------------------------------------------------
 
-            ?.scrollIntoView({
+    // MENU
 
-              behavior: "smooth",
+    // ----------------------------------------------------------
 
-              block: "start"
+    menuBtn?.addEventListener(
 
-            });
+      "click",
 
-        }
+      openMenu
 
-      );
+    );
 
-      // ========================================================
+    sideMenuClose?.addEventListener(
 
-      // KIỂM TRA SESSION
+      "click",
 
-      // ========================================================
+      closeMenu
 
-      checkSession();
+    );
 
-    }
+    sideMenuOverlay?.addEventListener(
 
-  );
+      "click",
+
+      closeMenu
+
+    );
+
+    menuReportsBtn?.addEventListener(
+
+      "click",
+
+      () => {
+
+        closeMenu();
+
+        document
+
+          .querySelector(".manager-card")
+
+          ?.scrollIntoView({
+
+            behavior: "smooth",
+
+            block: "start"
+
+          });
+
+      }
+
+    );
+
+    // ==========================================================
+
+    // KIỂM TRA SESSION
+
+    // ==========================================================
+
+    checkSession();
+
+  });
 
   // ============================================================
 
@@ -710,17 +562,13 @@
 
     if (loginBox) {
 
-      loginBox.style.display =
-
-        "block";
+      loginBox.style.display = "block";
 
     }
 
     if (managerBox) {
 
-      managerBox.style.display =
-
-        "none";
+      managerBox.style.display = "none";
 
     }
 
@@ -736,17 +584,13 @@
 
     if (loginBox) {
 
-      loginBox.style.display =
-
-        "none";
+      loginBox.style.display = "none";
 
     }
 
     if (managerBox) {
 
-      managerBox.style.display =
-
-        "block";
+      managerBox.style.display = "block";
 
     }
 
@@ -798,9 +642,7 @@
 
     if (loginBtn) {
 
-      loginBtn.disabled =
-
-        true;
+      loginBtn.disabled = true;
 
       loginBtn.textContent =
 
@@ -824,15 +666,13 @@
 
         error
 
-      } =
+      } = await db.auth.signInWithPassword({
 
-        await db.auth.signInWithPassword({
+        email,
 
-          email,
+        password
 
-          password
-
-        });
+      });
 
       if (error) {
 
@@ -874,17 +714,13 @@
 
       if (loginMessage) {
 
-        loginMessage.textContent =
-
-          "";
+        loginMessage.textContent = "";
 
       }
 
       if (passwordInput) {
 
-        passwordInput.value =
-
-          "";
+        passwordInput.value = "";
 
       }
 
@@ -914,9 +750,7 @@
 
       if (loginBtn) {
 
-        loginBtn.disabled =
-
-          false;
+        loginBtn.disabled = false;
 
         loginBtn.textContent =
 
@@ -944,17 +778,11 @@
 
         error
 
-      } =
-
-        await db.auth.signOut();
+      } = await db.auth.signOut();
 
       if (error) {
 
-        console.error(
-
-          error
-
-        );
+        console.error(error);
 
         alert(
 
@@ -978,33 +806,25 @@
 
       if (emailInput) {
 
-        emailInput.value =
-
-          "";
+        emailInput.value = "";
 
       }
 
       if (passwordInput) {
 
-        passwordInput.value =
-
-          "";
+        passwordInput.value = "";
 
       }
 
       if (tableBody) {
 
-        tableBody.innerHTML =
-
-          "";
+        tableBody.innerHTML = "";
 
       }
 
       if (pagination) {
 
-        pagination.innerHTML =
-
-          "";
+        pagination.innerHTML = "";
 
       }
 
@@ -1056,45 +876,43 @@
 
           error
 
-        } =
+        } = await db
 
-          await db
+          .from("bao_cao_ngay")
 
-            .from("bao_cao_ngay")
+          .select("*")
 
-            .select("*")
+          .order(
 
-            .order(
+            "field_date",
 
-              "field_date",
+            {
 
-              {
+              ascending: false
 
-                ascending: false
+            }
 
-              }
+          )
 
-            )
+          .order(
 
-            .order(
+            "created_at",
 
-              "created_at",
+            {
 
-              {
+              ascending: false
 
-                ascending: false
+            }
 
-              }
+          )
 
-            )
+          .range(
 
-            .range(
+            from,
 
-              from,
+            from + batchSize - 1
 
-              from + batchSize - 1
-
-            );
+          );
 
         if (error) {
 
@@ -1122,11 +940,7 @@
 
         }
 
-        allRows.push(
-
-          ...data
-
-        );
+        allRows.push(...data);
 
         if (
 
@@ -1140,23 +954,15 @@
 
         }
 
-        from +=
-
-          batchSize;
+        from += batchSize;
 
       }
 
-      allData =
+      allData = allRows;
 
-        allRows;
+      filteredData = [...allData];
 
-      filteredData =
-
-        [...allData];
-
-      currentPage =
-
-        1;
+      currentPage = 1;
 
       updateStats();
 
@@ -1218,75 +1024,59 @@
 
     filteredData =
 
-      allData.filter(
+      allData.filter((row) => {
 
-        (row) => {
+        const rowUser =
 
-          const rowUser =
+          String(
 
-            String(
+            row.user_name || ""
 
-              row.user_name || ""
+          )
 
-            )
+            .trim()
 
-              .trim()
+            .toLowerCase();
 
-              .toLowerCase();
+        let matchUser = true;
 
-          let matchUser =
+        let matchDate = true;
 
-            true;
+        if (user) {
 
-          let matchDate =
+          matchUser =
 
-            true;
-
-          if (user) {
-
-            matchUser =
-
-              rowUser.includes(
-
-                user
-
-              );
-
-          }
-
-          if (date) {
-
-            const rowDate =
-
-              formatDateForInput(
-
-                row.field_date
-
-              );
-
-            matchDate =
-
-              rowDate ===
-
-              date;
-
-          }
-
-          return (
-
-            matchUser &&
-
-            matchDate
-
-          );
+            rowUser.includes(user);
 
         }
 
-      );
+        if (date) {
 
-    currentPage =
+          const rowDate =
 
-      1;
+            formatDateForInput(
+
+              row.field_date
+
+            );
+
+          matchDate =
+
+            rowDate === date;
+
+        }
+
+        return (
+
+          matchUser &&
+
+          matchDate
+
+        );
+
+      });
+
+    currentPage = 1;
 
     updateStats();
 
@@ -1326,13 +1116,11 @@
 
       (row) => {
 
-        total +=
+        total += parseAmount(
 
-          parseAmount(
+          row.expected_amount
 
-            row.expected_amount
-
-          );
+        );
 
       }
 
@@ -1358,9 +1146,7 @@
 
   function updateSubmittedUserCount() {
 
-    const users =
-
-      new Set();
+    const users = new Set();
 
     filteredData.forEach(
 
@@ -1376,11 +1162,7 @@
 
         if (user) {
 
-          users.add(
-
-            user
-
-          );
+          users.add(user);
 
         }
 
@@ -1408,9 +1190,7 @@
 
     if (!tableBody) return;
 
-    tableBody.innerHTML =
-
-      "";
+    tableBody.innerHTML = "";
 
     const totalPages =
 
@@ -1470,11 +1250,7 @@
 
       const tr =
 
-        document.createElement(
-
-          "tr"
-
-        );
+        document.createElement("tr");
 
       tr.innerHTML = `
 
@@ -1486,11 +1262,7 @@
 
       `;
 
-      tableBody.appendChild(
-
-        tr
-
-      );
+      tableBody.appendChild(tr);
 
       renderPagination();
 
@@ -1504,11 +1276,7 @@
 
         const tr =
 
-          document.createElement(
-
-            "tr"
-
-          );
+          document.createElement("tr");
 
         const amount =
 
@@ -1592,11 +1360,7 @@
 
           <td class="money-cell">
 
-            ${formatMoney(
-
-              amount
-
-            )}
+            ${formatMoney(amount)}
 
           </td>
 
@@ -1618,11 +1382,7 @@
 
               class="edit-btn"
 
-              data-id="${escapeAttr(
-
-                row.id
-
-              )}"
+              data-id="${escapeAttr(row.id)}"
 
               title="Chỉnh sửa">
 
@@ -1636,11 +1396,7 @@
 
               class="delete-btn"
 
-              data-id="${escapeAttr(
-
-                row.id
-
-              )}"
+              data-id="${escapeAttr(row.id)}"
 
               title="Xóa">
 
@@ -1654,31 +1410,17 @@
 
         const editButton =
 
-          tr.querySelector(
-
-            ".edit-btn"
-
-          );
+          tr.querySelector(".edit-btn");
 
         const deleteButton =
 
-          tr.querySelector(
-
-            ".delete-btn"
-
-          );
+          tr.querySelector(".delete-btn");
 
         editButton?.addEventListener(
 
           "click",
 
-          () =>
-
-            editReport(
-
-              row.id
-
-            )
+          () => editReport(row.id)
 
         );
 
@@ -1686,21 +1428,11 @@
 
           "click",
 
-          () =>
-
-            deleteReport(
-
-              row.id
-
-            )
+          () => deleteReport(row.id)
 
         );
 
-        tableBody.appendChild(
-
-          tr
-
-        );
+        tableBody.appendChild(tr);
 
       }
 
@@ -1720,9 +1452,7 @@
 
     if (!pagination) return;
 
-    pagination.innerHTML =
-
-      "";
+    pagination.innerHTML = "";
 
     const totalPages =
 
@@ -1734,11 +1464,7 @@
 
       );
 
-    if (
-
-      totalPages <= 1
-
-    ) {
+    if (totalPages <= 1) {
 
       return;
 
@@ -1746,11 +1472,7 @@
 
     const wrapper =
 
-      document.createElement(
-
-        "div"
-
-      );
+      document.createElement("div");
 
     wrapper.className =
 
@@ -1764,15 +1486,9 @@
 
     const prev =
 
-      document.createElement(
+      document.createElement("button");
 
-        "button"
-
-      );
-
-    prev.type =
-
-      "button";
+    prev.type = "button";
 
     prev.textContent =
 
@@ -1788,11 +1504,7 @@
 
       () => {
 
-        if (
-
-          currentPage > 1
-
-        ) {
+        if (currentPage > 1) {
 
           currentPage--;
 
@@ -1812,25 +1524,17 @@
 
     );
 
-    wrapper.appendChild(
-
-      prev
-
-    );
+    wrapper.appendChild(prev);
 
     // ----------------------------------------------------------
 
-    // THÔNG TIN TRANG
+    // TRANG
 
     // ----------------------------------------------------------
 
     const info =
 
-      document.createElement(
-
-        "span"
-
-      );
+      document.createElement("span");
 
     info.className =
 
@@ -1840,11 +1544,7 @@
 
       `Trang ${currentPage} / ${totalPages}`;
 
-    wrapper.appendChild(
-
-      info
-
-    );
+    wrapper.appendChild(info);
 
     // ----------------------------------------------------------
 
@@ -1854,15 +1554,9 @@
 
     const next =
 
-      document.createElement(
+      document.createElement("button");
 
-        "button"
-
-      );
-
-    next.type =
-
-      "button";
+    next.type = "button";
 
     next.textContent =
 
@@ -1870,9 +1564,7 @@
 
     next.disabled =
 
-      currentPage ===
-
-      totalPages;
+      currentPage === totalPages;
 
     next.addEventListener(
 
@@ -1906,17 +1598,9 @@
 
     );
 
-    wrapper.appendChild(
+    wrapper.appendChild(next);
 
-      next
-
-    );
-
-    pagination.appendChild(
-
-      wrapper
-
-    );
+    pagination.appendChild(wrapper);
 
   }
 
@@ -1952,11 +1636,7 @@
 
     }
 
-    createEditModal(
-
-      row
-
-    );
+    createEditModal(row);
 
   }
 
@@ -1972,11 +1652,7 @@
 
     const modal =
 
-      document.createElement(
-
-        "div"
-
-      );
+      document.createElement("div");
 
     modal.id =
 
@@ -2104,9 +1780,7 @@
 
             Kết quả
 
-            <select
-
-              id="editResult">
+            <select id="editResult">
 
               <option value="">
 
@@ -2158,9 +1832,7 @@
 
             Kết nối
 
-            <select
-
-              id="editConnection">
+            <select id="editConnection">
 
               <option value="">
 
@@ -2342,19 +2014,11 @@
 
     `;
 
-    document.body.appendChild(
-
-      modal
-
-    );
+    document.body.appendChild(modal);
 
     document
 
-      .getElementById(
-
-        "editModalClose"
-
-      )
+      .getElementById("editModalClose")
 
       ?.addEventListener(
 
@@ -2366,11 +2030,7 @@
 
     document
 
-      .getElementById(
-
-        "editCancelBtn"
-
-      )
+      .getElementById("editCancelBtn")
 
       ?.addEventListener(
 
@@ -2382,11 +2042,7 @@
 
     document
 
-      .getElementById(
-
-        "saveEditBtn"
-
-      )
+      .getElementById("saveEditBtn")
 
       ?.addEventListener(
 
@@ -2394,19 +2050,9 @@
 
         () =>
 
-          saveEditReport(
-
-            row.id
-
-          )
+          saveEditReport(row.id)
 
       );
-
-    // ----------------------------------------------------------
-
-    // FORMAT TIỀN
-
-    // ----------------------------------------------------------
 
     const amountInput =
 
@@ -2424,25 +2070,19 @@
 
         const value =
 
-          amountInput.value
+          amountInput.value.replace(
 
-            .replace(
+            /\D/g,
 
-              /\D/g,
+            ""
 
-              ""
-
-            );
+          );
 
         amountInput.value =
 
           value
 
-            ? Number(
-
-                value
-
-              ).toLocaleString(
+            ? Number(value).toLocaleString(
 
                 "en-US"
 
@@ -2454,12 +2094,6 @@
 
     );
 
-    // ----------------------------------------------------------
-
-    // CLICK RA NGOÀI MODAL
-
-    // ----------------------------------------------------------
-
     modal.addEventListener(
 
       "click",
@@ -2468,9 +2102,7 @@
 
         if (
 
-          event.target ===
-
-          modal
+          event.target === modal
 
         ) {
 
@@ -2486,7 +2118,7 @@
 
   // ============================================================
 
-  // OPTION SELECT
+  // OPTION
 
   // ============================================================
 
@@ -2502,11 +2134,7 @@
 
       <option
 
-        value="${escapeAttr(
-
-          value
-
-        )}"
+        value="${escapeAttr(value)}"
 
         ${
 
@@ -2518,11 +2146,7 @@
 
         }>
 
-        ${escapeHtml(
-
-          value
-
-        )}
+        ${escapeHtml(value)}
 
       </option>
 
@@ -2542,11 +2166,7 @@
 
       document
 
-        .getElementById(
-
-          "editUserName"
-
-        )
+        .getElementById("editUserName")
 
         ?.value.trim() || "";
 
@@ -2554,11 +2174,7 @@
 
       document
 
-        .getElementById(
-
-          "editFieldDate"
-
-        )
+        .getElementById("editFieldDate")
 
         ?.value || "";
 
@@ -2566,11 +2182,7 @@
 
       document
 
-        .getElementById(
-
-          "editCif"
-
-        )
+        .getElementById("editCif")
 
         ?.value.trim() || "";
 
@@ -2578,11 +2190,7 @@
 
       document
 
-        .getElementById(
-
-          "editCustomerName"
-
-        )
+        .getElementById("editCustomerName")
 
         ?.value.trim() || "";
 
@@ -2590,11 +2198,7 @@
 
       document
 
-        .getElementById(
-
-          "editResult"
-
-        )
+        .getElementById("editResult")
 
         ?.value || "";
 
@@ -2602,11 +2206,7 @@
 
       document
 
-        .getElementById(
-
-          "editConnection"
-
-        )
+        .getElementById("editConnection")
 
         ?.value || "";
 
@@ -2614,11 +2214,7 @@
 
       document
 
-        .getElementById(
-
-          "editDetail"
-
-        )
+        .getElementById("editDetail")
 
         ?.value.trim() || "";
 
@@ -2626,31 +2222,19 @@
 
       document
 
-        .getElementById(
-
-          "editExpectedAmount"
-
-        )
+        .getElementById("editExpectedAmount")
 
         ?.value || "";
 
     const expectedAmount =
 
-      parseAmount(
-
-        amountText
-
-      );
+      parseAmount(amountText);
 
     const nextAction =
 
       document
 
-        .getElementById(
-
-          "editNextAction"
-
-        )
+        .getElementById("editNextAction")
 
         ?.value.trim() || "";
 
@@ -2706,9 +2290,7 @@
 
     if (saveBtn) {
 
-      saveBtn.disabled =
-
-        true;
+      saveBtn.disabled = true;
 
       saveBtn.textContent =
 
@@ -2722,63 +2304,33 @@
 
         error
 
-      } =
+      } = await db
 
-        await db
+        .from("bao_cao_ngay")
 
-          .from(
+        .update({
 
-            "bao_cao_ngay"
+          user_name: userName,
 
-          )
+          field_date: fieldDate,
 
-          .update({
+          cif: cif,
 
-            user_name:
+          customer_name: customerName,
 
-              userName,
+          result: result,
 
-            field_date:
+          connection: connection,
 
-              fieldDate,
+          detail: detail,
 
-            cif:
+          expected_amount: expectedAmount,
 
-              cif,
+          next_action: nextAction
 
-            customer_name:
+        })
 
-              customerName,
-
-            result:
-
-              result,
-
-            connection:
-
-              connection,
-
-            detail:
-
-              detail,
-
-            expected_amount:
-
-              expectedAmount,
-
-            next_action:
-
-              nextAction
-
-          })
-
-          .eq(
-
-            "id",
-
-            id
-
-          );
+        .eq("id", id);
 
       if (error) {
 
@@ -2836,9 +2388,7 @@
 
       if (saveBtn) {
 
-        saveBtn.disabled =
-
-          false;
+        saveBtn.disabled = false;
 
         saveBtn.textContent =
 
@@ -2912,25 +2462,13 @@
 
         error
 
-      } =
+      } = await db
 
-        await db
+        .from("bao_cao_ngay")
 
-          .from(
+        .delete()
 
-            "bao_cao_ngay"
-
-          )
-
-          .delete()
-
-          .eq(
-
-            "id",
-
-            id
-
-          );
+        .eq("id", id);
 
       if (error) {
 
@@ -2988,11 +2526,121 @@
 
   // ============================================================
 
+  // CHUẨN HÓA CHUỖI XÁC NHẬN
+
+  // ============================================================
+
+  function normalizeDeleteKeyword(value) {
+
+    if (
+
+      value === null ||
+
+      value === undefined
+
+    ) {
+
+      return "";
+
+    }
+
+    let text =
+
+      String(value);
+
+    // Loại bỏ ký tự ẩn / zero-width
+
+    text =
+
+      text.replace(
+
+        /[\u200B-\u200D\uFEFF]/g,
+
+        ""
+
+      );
+
+    // Chuẩn hóa Unicode
+
+    text =
+
+      text.normalize("NFD");
+
+    // Xóa dấu
+
+    text =
+
+      text.replace(
+
+        /[\u0300-\u036f]/g,
+
+        ""
+
+      );
+
+    // Đ riêng
+
+    text =
+
+      text.replace(
+
+        /đ/gi,
+
+        "d"
+
+      );
+
+    // Chuẩn hóa khoảng trắng
+
+    text =
+
+      text.replace(
+
+        /\s+/g,
+
+        " "
+
+      );
+
+    // Xóa khoảng trắng đầu/cuối
+
+    text =
+
+      text.trim();
+
+    // Chuyển chữ hoa
+
+    text =
+
+      text.toUpperCase();
+
+    return text;
+
+  }
+
+  // ============================================================
+
   // XÓA TOÀN BỘ DỮ LIỆU
 
   // ============================================================
 
   async function deleteAllReports() {
+
+    // ----------------------------------------------------------
+
+    // CHỐNG BẤM NHIỀU LẦN
+
+    // ----------------------------------------------------------
+
+    if (
+
+      deleteAllBtn?.disabled
+
+    ) {
+
+      return;
+
+    }
 
     // ----------------------------------------------------------
 
@@ -3002,7 +2650,7 @@
 
     const confirmed =
 
-      confirm(
+      window.confirm(
 
         "⚠️ CẢNH BÁO NGHIÊM TRỌNG!\n\n" +
 
@@ -3034,85 +2682,47 @@
 
     const keyword =
 
-      prompt(
+      window.prompt(
 
-        "Để xác nhận xóa toàn bộ dữ liệu,\n\n" +
+        "🔐 XÁC NHẬN XÓA TOÀN BỘ\n\n" +
 
-        "hãy nhập chính xác:\n\n" +
+        "Nhập chính xác cụm từ:\n\n" +
 
-        "XÓA TẤT CẢ"
+        "XOA TAT CA\n\n" +
+
+        "Có thể nhập có dấu hoặc không dấu."
 
       );
 
-    // ==========================================================
+    // ----------------------------------------------------------
 
-    // CHUẨN HÓA TỪ XÁC NHẬN
+    // DEBUG - CHUẨN HÓA
 
-    //
-
-    // Chấp nhận:
-
-    //
-
-    // XOA TAT CA
-
-    // XÓA TẤT CẢ
-
-    // xoa tat ca
-
-    // xóa tất cả
-
-    //
-
-    // Và có thể có dư khoảng trắng.
-
-    // ==========================================================
+    // ----------------------------------------------------------
 
     const normalizedKeyword =
 
-      String(
+      normalizeDeleteKeyword(
 
-        keyword || ""
+        keyword
 
-      )
+      );
 
-        .trim()
+    console.log(
 
-        .normalize("NFD")
+      "Nội dung nhập:",
 
-        .replace(
+      keyword
 
-          /[\u0300-\u036f]/g,
+    );
 
-          ""
+    console.log(
 
-        )
+      "Sau khi chuẩn hóa:",
 
-        .replace(
+      normalizedKeyword
 
-          /đ/g,
-
-          "d"
-
-        )
-
-        .replace(
-
-          /Đ/g,
-
-          "D"
-
-        )
-
-        .replace(
-
-          /\s+/g,
-
-          " "
-
-        )
-
-        .toUpperCase();
+    );
 
     // ----------------------------------------------------------
 
@@ -3128,11 +2738,15 @@
 
     ) {
 
-      alert(
+      window.alert(
 
-        "❌ Xác nhận không đúng.\n\n" +
+        "❌ XÁC NHẬN KHÔNG ĐÚNG.\n\n" +
 
-        "Dữ liệu chưa bị xóa."
+        "Dữ liệu chưa bị xóa.\n\n" +
+
+        "Bạn phải nhập:\n" +
+
+        "XOA TAT CA"
 
       );
 
@@ -3148,9 +2762,7 @@
 
     if (deleteAllBtn) {
 
-      deleteAllBtn.disabled =
-
-        true;
+      deleteAllBtn.disabled = true;
 
       deleteAllBtn.textContent =
 
@@ -3178,31 +2790,25 @@
 
         error
 
-      } =
+      } = await db
 
-        await db
+        .from("bao_cao_ngay")
 
-          .from(
+        .delete()
 
-            "bao_cao_ngay"
+        .not(
 
-          )
+          "id",
 
-          .delete()
+          "is",
 
-          .not(
+          null
 
-            "id",
-
-            "is",
-
-            null
-
-          );
+        );
 
       // --------------------------------------------------------
 
-      // NẾU LỖI
+      // LỖI
 
       // --------------------------------------------------------
 
@@ -3226,7 +2832,7 @@
 
         }
 
-        alert(
+        window.alert(
 
           "❌ XÓA TẤT CẢ THẤT BẠI.\n\n" +
 
@@ -3248,7 +2854,7 @@
 
       // --------------------------------------------------------
 
-      // RESET DỮ LIỆU GIAO DIỆN
+      // RESET DỮ LIỆU
 
       // --------------------------------------------------------
 
@@ -3266,17 +2872,13 @@
 
       if (filterUser) {
 
-        filterUser.value =
-
-          "";
+        filterUser.value = "";
 
       }
 
       if (filterDate) {
 
-        filterDate.value =
-
-          "";
+        filterDate.value = "";
 
       }
 
@@ -3288,25 +2890,19 @@
 
       if (totalReports) {
 
-        totalReports.textContent =
-
-          "0";
+        totalReports.textContent = "0";
 
       }
 
       if (totalAmount) {
 
-        totalAmount.textContent =
-
-          "0 đ";
+        totalAmount.textContent = "0 đ";
 
       }
 
       if (submittedUserCount) {
 
-        submittedUserCount.textContent =
-
-          "0";
+        submittedUserCount.textContent = "0";
 
       }
 
@@ -3318,17 +2914,13 @@
 
       if (tableBody) {
 
-        tableBody.innerHTML =
-
-          "";
+        tableBody.innerHTML = "";
 
       }
 
       if (pagination) {
 
-        pagination.innerHTML =
-
-          "";
+        pagination.innerHTML = "";
 
       }
 
@@ -3348,7 +2940,7 @@
 
       }
 
-      alert(
+      window.alert(
 
         "✅ ĐÃ XÓA SẠCH TOÀN BỘ DỮ LIỆU!\n\n" +
 
@@ -3380,7 +2972,7 @@
 
       }
 
-      alert(
+      window.alert(
 
         "❌ KHÔNG THỂ XÓA TOÀN BỘ DỮ LIỆU.\n\n" +
 
@@ -3404,9 +2996,7 @@
 
       if (deleteAllBtn) {
 
-        deleteAllBtn.disabled =
-
-          false;
+        deleteAllBtn.disabled = false;
 
         deleteAllBtn.textContent =
 
@@ -3496,11 +3086,7 @@
 
     const modal =
 
-      document.createElement(
-
-        "div"
-
-      );
+      document.createElement("div");
 
     modal.id =
 
@@ -3510,13 +3096,11 @@
 
       "modal-overlay";
 
-    let html =
-
-      "";
+    let html = "";
 
     // ----------------------------------------------------------
 
-    // KHÔNG CÓ CÁN BỘ
+    // KHÔNG CÓ
 
     // ----------------------------------------------------------
 
@@ -3536,15 +3120,7 @@
 
       `;
 
-    }
-
-    // ----------------------------------------------------------
-
-    // CÓ CÁN BỘ
-
-    // ----------------------------------------------------------
-
-    else {
+    } else {
 
       html = `
 
@@ -3558,33 +3134,21 @@
 
           html += `
 
-            <div
+            <div class="submitted-user-item">
 
-              class="submitted-user-item">
-
-              <span
-
-                class="submitted-number">
+              <span class="submitted-number">
 
                 ${index + 1}
 
               </span>
 
-              <span
+              <span class="submitted-user-name">
 
-                class="submitted-user-name">
-
-                ${escapeHtml(
-
-                  user
-
-                )}
+                ${escapeHtml(user)}
 
               </span>
 
-              <span
-
-                class="submitted-count">
+              <span class="submitted-count">
 
                 ${count} báo cáo
 
@@ -3605,12 +3169,6 @@
       `;
 
     }
-
-    // ----------------------------------------------------------
-
-    // MODAL
-
-    // ----------------------------------------------------------
 
     modal.innerHTML = `
 
@@ -3654,11 +3212,7 @@
 
     `;
 
-    document.body.appendChild(
-
-      modal
-
-    );
+    document.body.appendChild(modal);
 
     document
 
@@ -3684,9 +3238,7 @@
 
         if (
 
-          event.target ===
-
-          modal
+          event.target === modal
 
         ) {
 
@@ -3800,9 +3352,7 @@
 
     if (
 
-      typeof XLSX ===
-
-      "undefined"
+      typeof XLSX === "undefined"
 
     ) {
 
@@ -3834,12 +3384,6 @@
 
     try {
 
-      // --------------------------------------------------------
-
-      // NGÀY XUẤT
-
-      // --------------------------------------------------------
-
       const exportDate =
 
         new Date();
@@ -3854,33 +3398,21 @@
 
             exportDate.getMonth() + 1
 
-          ).padStart(
-
-            2,
-
-            "0"
-
-          ),
+          ).padStart(2, "0"),
 
           String(
 
             exportDate.getDate()
 
-          ).padStart(
-
-            2,
-
-            "0"
-
-          )
+          ).padStart(2, "0")
 
         ].join("-");
 
-      // ========================================================
+      // --------------------------------------------------------
 
       // SHEET 1
 
-      // ========================================================
+      // --------------------------------------------------------
 
       const reportRows =
 
@@ -3940,55 +3472,135 @@
 
         XLSX.utils.json_to_sheet(
 
-          reportRows,
-
-          {
-
-            skipHeader:
-
-              false
-
-          }
+          reportRows
 
         );
 
-      // ========================================================
+      // --------------------------------------------------------
 
       // STYLE
 
-      // ========================================================
+      // --------------------------------------------------------
 
-      const range =
+      if (ws["!ref"]) {
 
-        XLSX.utils.decode_range(
+        const range =
 
-          ws["!ref"]
+          XLSX.utils.decode_range(
 
-        );
+            ws["!ref"]
 
-      for (
-
-        let row =
-
-          range.s.r;
-
-        row <=
-
-          range.e.r;
-
-        row++
-
-      ) {
+          );
 
         for (
 
-          let col =
+          let row = range.s.r;
 
-            range.s.c;
+          row <= range.e.r;
 
-          col <=
+          row++
 
-            range.e.c;
+        ) {
+
+          for (
+
+            let col = range.s.c;
+
+            col <= range.e.c;
+
+            col++
+
+          ) {
+
+            const cell =
+
+              ws[
+
+                XLSX.utils.encode_cell({
+
+                  r: row,
+
+                  c: col
+
+                })
+
+              ];
+
+            if (!cell) continue;
+
+            cell.s = {
+
+              font: {
+
+                name: "Arial",
+
+                sz: 10,
+
+                bold: row === 0
+
+              },
+
+              alignment: {
+
+                vertical: "center",
+
+                horizontal:
+
+                  row === 0
+
+                    ? "center"
+
+                    : "left",
+
+                wrapText: true
+
+              },
+
+              border: {
+
+                top: {
+
+                  style: "thin"
+
+                },
+
+                bottom: {
+
+                  style: "thin"
+
+                },
+
+                left: {
+
+                  style: "thin"
+
+                },
+
+                right: {
+
+                  style: "thin"
+
+                }
+
+              }
+
+            };
+
+          }
+
+        }
+
+        // ------------------------------------------------------
+
+        // HEADER
+
+        // ------------------------------------------------------
+
+        for (
+
+          let col = range.s.c;
+
+          col <= range.e.c;
 
           col++
 
@@ -4000,7 +3612,7 @@
 
               XLSX.utils.encode_cell({
 
-                r: row,
+                r: 0,
 
                 c: col
 
@@ -4014,37 +3626,21 @@
 
             font: {
 
-              name:
+              name: "Arial",
 
-                "Arial",
+              sz: 11,
 
-              sz:
-
-                10,
-
-              bold:
-
-                row === 0
+              bold: true
 
             },
 
             alignment: {
 
-              vertical:
+              horizontal: "center",
 
-                "center",
+              vertical: "center",
 
-              horizontal:
-
-                row === 0
-
-                  ? "center"
-
-                  : "left",
-
-              wrapText:
-
-                true
+              wrapText: true
 
             },
 
@@ -4052,33 +3648,25 @@
 
               top: {
 
-                style:
-
-                  "thin"
+                style: "thin"
 
               },
 
               bottom: {
 
-                style:
-
-                  "thin"
+                style: "thin"
 
               },
 
               left: {
 
-                style:
-
-                  "thin"
+                style: "thin"
 
               },
 
               right: {
 
-                style:
-
-                  "thin"
+                style: "thin"
 
               }
 
@@ -4088,305 +3676,123 @@
 
         }
 
-      }
+        // ------------------------------------------------------
 
-      // ========================================================
+        // DATE + MONEY
 
-      // HEADER
+        // ------------------------------------------------------
 
-      // ========================================================
+        for (
 
-      for (
+          let row = 1;
 
-        let col =
+          row <= range.e.r;
 
-          range.s.c;
+          row++
 
-        col <=
+        ) {
 
-          range.e.c;
+          const dateCell =
 
-        col++
+            ws[
 
-      ) {
+              XLSX.utils.encode_cell({
 
-        const cell =
+                r: row,
 
-          ws[
+                c: 1
 
-            XLSX.utils.encode_cell({
+              })
 
-              r: 0,
+            ];
 
-              c: col
+          if (dateCell) {
 
-            })
+            dateCell.z =
 
-          ];
-
-        if (!cell) continue;
-
-        cell.s = {
-
-          font: {
-
-            name:
-
-              "Arial",
-
-            sz:
-
-              11,
-
-            bold:
-
-              true
-
-          },
-
-          alignment: {
-
-            horizontal:
-
-              "center",
-
-            vertical:
-
-              "center",
-
-            wrapText:
-
-              true
-
-          },
-
-          border: {
-
-            top: {
-
-              style:
-
-                "thin"
-
-            },
-
-            bottom: {
-
-              style:
-
-                "thin"
-
-            },
-
-            left: {
-
-              style:
-
-                "thin"
-
-            },
-
-            right: {
-
-              style:
-
-                "thin"
-
-            }
+              "dd/mm/yyyy";
 
           }
+
+          const moneyCell =
+
+            ws[
+
+              XLSX.utils.encode_cell({
+
+                r: row,
+
+                c: 7
+
+              })
+
+            ];
+
+          if (moneyCell) {
+
+            moneyCell.z =
+
+              '#,##0" đ"';
+
+          }
+
+        }
+
+        ws["!autofilter"] = {
+
+          ref: ws["!ref"]
+
+        };
+
+        ws["!freeze"] = {
+
+          xSplit: 0,
+
+          ySplit: 1
 
         };
 
       }
 
-      // ========================================================
+      // --------------------------------------------------------
 
-      // FORMAT NGÀY + TIỀN
+      // CỘT
 
-      // ========================================================
-
-      for (
-
-        let row = 1;
-
-        row <=
-
-          range.e.r;
-
-        row++
-
-      ) {
-
-        const dateCell =
-
-          ws[
-
-            XLSX.utils.encode_cell({
-
-              r: row,
-
-              c: 1
-
-            })
-
-          ];
-
-        if (dateCell) {
-
-          dateCell.z =
-
-            "dd/mm/yyyy";
-
-        }
-
-        const moneyCell =
-
-          ws[
-
-            XLSX.utils.encode_cell({
-
-              r: row,
-
-              c: 7
-
-            })
-
-          ];
-
-        if (moneyCell) {
-
-          moneyCell.z =
-
-            '#,##0" đ"';
-
-        }
-
-      }
-
-      // ========================================================
-
-      // ĐỘ RỘNG CỘT
-
-      // ========================================================
+      // --------------------------------------------------------
 
       ws["!cols"] = [
 
-        {
+        { wch: 18 },
 
-          wch: 18
+        { wch: 14 },
 
-        },
+        { wch: 16 },
 
-        {
+        { wch: 28 },
 
-          wch: 14
+        { wch: 12 },
 
-        },
+        { wch: 24 },
 
-        {
+        { wch: 45 },
 
-          wch: 16
+        { wch: 18 },
 
-        },
-
-        {
-
-          wch: 28
-
-        },
-
-        {
-
-          wch: 12
-
-        },
-
-        {
-
-          wch: 24
-
-        },
-
-        {
-
-          wch: 45
-
-        },
-
-        {
-
-          wch: 18
-
-        },
-
-        {
-
-          wch: 45
-
-        }
+        { wch: 45 }
 
       ];
 
-      ws["!rows"] = [
+      // --------------------------------------------------------
 
-        {
+      // SHEET 2
 
-          hpt: 25
-
-        }
-
-      ];
-
-      // ========================================================
-
-      // FILTER
-
-      // ========================================================
-
-      ws["!autofilter"] = {
-
-        ref:
-
-          ws["!ref"]
-
-      };
-
-      // ========================================================
-
-      // FREEZE HEADER
-
-      // ========================================================
-
-      ws["!freeze"] = {
-
-        xSplit:
-
-          0,
-
-        ySplit:
-
-          1
-
-      };
-
-      // ========================================================
-
-      // SHEET 2 - TỔNG QUAN
-
-      // ========================================================
+      // --------------------------------------------------------
 
       const totalMoney =
 
         filteredData.reduce(
 
-          (
-
-            sum,
-
-            row
-
-          ) =>
+          (sum, row) =>
 
             sum +
 
@@ -4412,19 +3818,13 @@
 
                 String(
 
-                  row.user_name ||
-
-                  ""
+                  row.user_name || ""
 
                 ).trim()
 
             )
 
-            .filter(
-
-              Boolean
-
-            )
+            .filter(Boolean)
 
         );
 
@@ -4488,37 +3888,21 @@
 
         );
 
-      // --------------------------------------------------------
-
-      // TITLE
-
-      // --------------------------------------------------------
-
-      if (
-
-        wsSummary["A1"]
-
-      ) {
+      if (wsSummary["A1"]) {
 
         wsSummary["A1"].s = {
 
           font: {
 
-            bold:
+            bold: true,
 
-              true,
-
-            sz:
-
-              16
+            sz: 16
 
           },
 
           alignment: {
 
-            horizontal:
-
-              "center"
+            horizontal: "center"
 
           }
 
@@ -4526,25 +3910,13 @@
 
       }
 
-      // --------------------------------------------------------
-
-      // HEADER
-
-      // --------------------------------------------------------
-
-      if (
-
-        wsSummary["A3"]
-
-      ) {
+      if (wsSummary["A3"]) {
 
         wsSummary["A3"].s = {
 
           font: {
 
-            bold:
-
-              true
+            bold: true
 
           }
 
@@ -4552,19 +3924,13 @@
 
       }
 
-      if (
-
-        wsSummary["B3"]
-
-      ) {
+      if (wsSummary["B3"]) {
 
         wsSummary["B3"].s = {
 
           font: {
 
-            bold:
-
-              true
+            bold: true
 
           }
 
@@ -4572,17 +3938,7 @@
 
       }
 
-      // --------------------------------------------------------
-
-      // MONEY
-
-      // --------------------------------------------------------
-
-      if (
-
-        wsSummary["B6"]
-
-      ) {
+      if (wsSummary["B6"]) {
 
         wsSummary["B6"].z =
 
@@ -4590,17 +3946,7 @@
 
       }
 
-      // --------------------------------------------------------
-
-      // DATE
-
-      // --------------------------------------------------------
-
-      if (
-
-        wsSummary["B7"]
-
-      ) {
+      if (wsSummary["B7"]) {
 
         wsSummary["B7"].z =
 
@@ -4610,25 +3956,17 @@
 
       wsSummary["!cols"] = [
 
-        {
+        { wch: 30 },
 
-          wch: 30
-
-        },
-
-        {
-
-          wch: 25
-
-        }
+        { wch: 25 }
 
       ];
 
-      // ========================================================
+      // --------------------------------------------------------
 
       // WORKBOOK
 
-      // ========================================================
+      // --------------------------------------------------------
 
       const wb =
 
@@ -4654,21 +3992,15 @@
 
       );
 
-      // ========================================================
+      // --------------------------------------------------------
 
-      // TÊN FILE
+      // FILE
 
-      // ========================================================
+      // --------------------------------------------------------
 
       const fileName =
 
         `Bao_Cao_Ngay_${dateText}.xlsx`;
-
-      // ========================================================
-
-      // SAVE
-
-      // ========================================================
 
       XLSX.writeFile(
 
@@ -4724,11 +4056,7 @@
 
     const date =
 
-      new Date(
-
-        value
-
-      );
+      new Date(value);
 
     if (
 
@@ -4740,11 +4068,7 @@
 
     ) {
 
-      return String(
-
-        value
-
-      );
+      return String(value);
 
     }
 
@@ -4754,25 +4078,13 @@
 
         date.getDate()
 
-      ).padStart(
-
-        2,
-
-        "0"
-
-      ),
+      ).padStart(2, "0"),
 
       String(
 
         date.getMonth() + 1
 
-      ).padStart(
-
-        2,
-
-        "0"
-
-      ),
+      ).padStart(2, "0"),
 
       date.getFullYear()
 
@@ -4796,11 +4108,7 @@
 
     const date =
 
-      new Date(
-
-        value
-
-      );
+      new Date(value);
 
     if (
 
@@ -4812,21 +4120,13 @@
 
     ) {
 
-      return String(
-
-        value
-
-      );
+      return String(value);
 
     }
 
     return (
 
-      formatDate(
-
-        value
-
-      ) +
+      formatDate(value) +
 
       " " +
 
@@ -4834,13 +4134,7 @@
 
         date.getHours()
 
-      ).padStart(
-
-        2,
-
-        "0"
-
-      ) +
+      ).padStart(2, "0") +
 
       ":" +
 
@@ -4848,13 +4142,7 @@
 
         date.getMinutes()
 
-      ).padStart(
-
-        2,
-
-        "0"
-
-      )
+      ).padStart(2, "0")
 
     );
 
@@ -4876,23 +4164,11 @@
 
     const text =
 
-      String(
-
-        value
-
-      );
-
-    // ----------------------------------------------------------
-
-    // ĐÃ LÀ YYYY-MM-DD
-
-    // ----------------------------------------------------------
+      String(value);
 
     if (
 
-      /^\d{4}-\d{2}-\d{2}$/
-
-        .test(text)
+      /^\d{4}-\d{2}-\d{2}$/.test(text)
 
     ) {
 
@@ -4902,11 +4178,7 @@
 
     const date =
 
-      new Date(
-
-        value
-
-      );
+      new Date(value);
 
     if (
 
@@ -4930,25 +4202,13 @@
 
         date.getMonth() + 1
 
-      ).padStart(
-
-        2,
-
-        "0"
-
-      ),
+      ).padStart(2, "0"),
 
       String(
 
         date.getDate()
 
-      ).padStart(
-
-        2,
-
-        "0"
-
-      )
+      ).padStart(2, "0")
 
     ].join("-");
 
@@ -4970,23 +4230,11 @@
 
     const text =
 
-      String(
-
-        value
-
-      );
-
-    // ----------------------------------------------------------
-
-    // YYYY-MM-DD
-
-    // ----------------------------------------------------------
+      String(value);
 
     if (
 
-      /^\d{4}-\d{2}-\d{2}$/
-
-        .test(text)
+      /^\d{4}-\d{2}-\d{2}$/.test(text)
 
     ) {
 
@@ -5004,11 +4252,7 @@
 
           .split("-")
 
-          .map(
-
-            Number
-
-          );
+          .map(Number);
 
       return new Date(
 
@@ -5024,11 +4268,7 @@
 
     const date =
 
-      new Date(
-
-        value
-
-      );
+      new Date(value);
 
     return Number.isNaN(
 
@@ -5066,17 +4306,11 @@
 
     if (
 
-      typeof value ===
-
-      "number"
+      typeof value === "number"
 
     ) {
 
-      return Number.isFinite(
-
-        value
-
-      )
+      return Number.isFinite(value)
 
         ? value
 
@@ -5086,11 +4320,7 @@
 
     let text =
 
-      String(
-
-        value
-
-      ).trim();
+      String(value).trim();
 
     text =
 
@@ -5110,17 +4340,9 @@
 
     const number =
 
-      Number(
+      Number(text);
 
-        text
-
-      );
-
-    return Number.isFinite(
-
-      number
-
-    )
+    return Number.isFinite(number)
 
       ? number
 
@@ -5138,19 +4360,11 @@
 
     const number =
 
-      parseAmount(
-
-        value
-
-      );
+      parseAmount(value);
 
     return (
 
-      number.toLocaleString(
-
-        "vi-VN"
-
-      ) +
+      number.toLocaleString("vi-VN") +
 
       " đ"
 
@@ -5168,11 +4382,7 @@
 
     const number =
 
-      parseAmount(
-
-        value
-
-      );
+      parseAmount(value);
 
     if (!number) {
 
@@ -5252,11 +4462,7 @@
 
   function escapeAttr(value) {
 
-    return escapeHtml(
-
-      value
-
-    );
+    return escapeHtml(value);
 
   }
 
