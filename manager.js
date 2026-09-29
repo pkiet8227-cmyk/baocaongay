@@ -6,6 +6,26 @@
 
   // QUẢN LÝ BÁO CÁO NGÀY - FULL VERSION
 
+  //
+
+  // BỔ SUNG / SỬA:
+
+  // 1. Cán bộ đã nhập báo cáo tự động tính theo ngày hôm nay
+
+  // 2. Không phụ thuộc bộ lọc ngày của bảng
+
+  // 3. Không phân biệt hoa/thường User
+
+  // 4. Loại bỏ khoảng trắng / ký tự ẩn
+
+  // 5. kietpm1 / Kietpm1 / KIETPM1 = 1 cán bộ
+
+  // 6. Lọc ngày chính xác, tránh lỗi lệch múi giờ
+
+  // 7. Danh sách cán bộ dùng cùng quy tắc
+
+  // 8. Sửa / Xóa / Làm mới đều cập nhật thống kê
+
   // ============================================================
 
   // ============================================================
@@ -26,7 +46,11 @@
 
     ) {
 
-      throw new Error("Không tìm thấy thư viện Supabase.");
+      throw new Error(
+
+        "Không tìm thấy thư viện Supabase."
+
+      );
 
     }
 
@@ -56,7 +80,13 @@
 
   } catch (error) {
 
-    console.error("Supabase init error:", error);
+    console.error(
+
+      "Supabase init error:",
+
+      error
+
+    );
 
     alert(
 
@@ -148,347 +178,469 @@
 
   // ============================================================
 
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener(
 
-    // ----------------------------------------------------------
+    "DOMContentLoaded",
 
-    // LOGIN
+    () => {
 
-    // ----------------------------------------------------------
+      // ----------------------------------------------------------
 
-    loginBox =
+      // LOGIN
 
-      document.getElementById("loginBox");
+      // ----------------------------------------------------------
 
-    managerBox =
+      loginBox =
 
-      document.getElementById("managerBox");
+        document.getElementById(
 
-    emailInput =
+          "loginBox"
 
-      document.getElementById("loginId");
+        );
 
-    passwordInput =
+      managerBox =
 
-      document.getElementById("password");
+        document.getElementById(
 
-    loginBtn =
+          "managerBox"
 
-      document.getElementById("loginBtn");
+        );
 
-    loginMessage =
+      emailInput =
 
-      document.getElementById("loginMessage");
+        document.getElementById(
 
-    // ----------------------------------------------------------
+          "loginId"
 
-    // MANAGER
+        );
 
-    // ----------------------------------------------------------
+      passwordInput =
 
-    logoutBtn =
+        document.getElementById(
 
-      document.getElementById("logoutBtn");
+          "password"
 
-    managerMessage =
+        );
 
-      document.getElementById("managerMessage");
+      loginBtn =
 
-    totalReports =
+        document.getElementById(
 
-      document.getElementById("totalReports");
+          "loginBtn"
 
-    totalAmount =
+        );
 
-      document.getElementById("totalAmount");
+      loginMessage =
 
-    // ----------------------------------------------------------
+        document.getElementById(
 
-    // FILTER
+          "loginMessage"
 
-    // ----------------------------------------------------------
+        );
 
-    filterUser =
+      // ----------------------------------------------------------
 
-      document.getElementById("filterUser");
+      // MANAGER
 
-    filterDate =
+      // ----------------------------------------------------------
 
-      document.getElementById("filterDate");
+      logoutBtn =
 
-    filterBtn =
+        document.getElementById(
 
-      document.getElementById("filterBtn");
+          "logoutBtn"
 
-    refreshBtn =
+        );
 
-      document.getElementById("refreshBtn");
+      managerMessage =
 
-    exportBtn =
+        document.getElementById(
 
-      document.getElementById("exportBtn");
+          "managerMessage"
 
-    // ----------------------------------------------------------
+        );
 
-    // TABLE
+      totalReports =
 
-    // ----------------------------------------------------------
+        document.getElementById(
 
-    tableBody =
+          "totalReports"
 
-      document.getElementById("tableBody");
+        );
 
-    pagination =
+      totalAmount =
 
-      document.getElementById("pagination");
+        document.getElementById(
 
-    // ----------------------------------------------------------
+          "totalAmount"
 
-    // MENU
+        );
 
-    // ----------------------------------------------------------
+      // ----------------------------------------------------------
 
-    menuBtn =
+      // FILTER
 
-      document.getElementById("menuBtn");
+      // ----------------------------------------------------------
 
-    sideMenu =
+      filterUser =
 
-      document.getElementById("sideMenu");
+        document.getElementById(
 
-    sideMenuOverlay =
+          "filterUser"
 
-      document.getElementById("sideMenuOverlay");
+        );
 
-    sideMenuClose =
+      filterDate =
 
-      document.getElementById("sideMenuClose");
+        document.getElementById(
 
-    menuReportsBtn =
+          "filterDate"
 
-      document.getElementById("menuReportsBtn");
+        );
 
-    menuLogoutBtn =
+      filterBtn =
 
-      document.getElementById("menuLogoutBtn");
+        document.getElementById(
 
-    // ----------------------------------------------------------
+          "filterBtn"
 
-    // CÁN BỘ
+        );
 
-    // ----------------------------------------------------------
+      refreshBtn =
 
-    showSubmittedUsersBtn =
+        document.getElementById(
 
-      document.getElementById("showSubmittedUsersBtn");
+          "refreshBtn"
 
-    submittedUserCount =
+        );
 
-      document.getElementById("submittedUserCount");
+      exportBtn =
 
-    // ----------------------------------------------------------
+        document.getElementById(
 
-    // XÓA
+          "exportBtn"
 
-    // ----------------------------------------------------------
+        );
 
-    deleteAllBtn =
+      // ----------------------------------------------------------
 
-      document.getElementById("deleteAllBtn");
+      // TABLE
 
-    // ==========================================================
+      // ----------------------------------------------------------
 
-    // EVENT
+      tableBody =
 
-    // ==========================================================
+        document.getElementById(
 
-    loginBtn?.addEventListener(
+          "tableBody"
 
-      "click",
+        );
 
-      login
+      pagination =
 
-    );
+        document.getElementById(
 
-    passwordInput?.addEventListener(
+          "pagination"
 
-      "keydown",
+        );
 
-      (event) => {
+      // ----------------------------------------------------------
 
-        if (event.key === "Enter") {
+      // MENU
 
-          login();
+      // ----------------------------------------------------------
+
+      menuBtn =
+
+        document.getElementById(
+
+          "menuBtn"
+
+        );
+
+      sideMenu =
+
+        document.getElementById(
+
+          "sideMenu"
+
+        );
+
+      sideMenuOverlay =
+
+        document.getElementById(
+
+          "sideMenuOverlay"
+
+        );
+
+      sideMenuClose =
+
+        document.getElementById(
+
+          "sideMenuClose"
+
+        );
+
+      menuReportsBtn =
+
+        document.getElementById(
+
+          "menuReportsBtn"
+
+        );
+
+      menuLogoutBtn =
+
+        document.getElementById(
+
+          "menuLogoutBtn"
+
+        );
+
+      // ----------------------------------------------------------
+
+      // CÁN BỘ
+
+      // ----------------------------------------------------------
+
+      showSubmittedUsersBtn =
+
+        document.getElementById(
+
+          "showSubmittedUsersBtn"
+
+        );
+
+      submittedUserCount =
+
+        document.getElementById(
+
+          "submittedUserCount"
+
+        );
+
+      // ----------------------------------------------------------
+
+      // XÓA
+
+      // ----------------------------------------------------------
+
+      deleteAllBtn =
+
+        document.getElementById(
+
+          "deleteAllBtn"
+
+        );
+
+      // ==========================================================
+
+      // EVENT
+
+      // ==========================================================
+
+      loginBtn?.addEventListener(
+
+        "click",
+
+        login
+
+      );
+
+      passwordInput?.addEventListener(
+
+        "keydown",
+
+        (event) => {
+
+          if (
+
+            event.key === "Enter"
+
+          ) {
+
+            login();
+
+          }
 
         }
 
-      }
+      );
 
-    );
+      emailInput?.addEventListener(
 
-    emailInput?.addEventListener(
+        "keydown",
 
-      "keydown",
+        (event) => {
 
-      (event) => {
+          if (
 
-        if (event.key === "Enter") {
+            event.key === "Enter"
 
-          passwordInput?.focus();
+          ) {
+
+            passwordInput?.focus();
+
+          }
 
         }
 
-      }
+      );
 
-    );
+      logoutBtn?.addEventListener(
 
-    logoutBtn?.addEventListener(
+        "click",
 
-      "click",
+        logout
 
-      logout
+      );
 
-    );
+      menuLogoutBtn?.addEventListener(
 
-    menuLogoutBtn?.addEventListener(
+        "click",
 
-      "click",
+        logout
 
-      logout
+      );
 
-    );
+      filterBtn?.addEventListener(
 
-    filterBtn?.addEventListener(
+        "click",
 
-      "click",
+        applyFilter
 
-      applyFilter
+      );
 
-    );
+      // ----------------------------------------------------------
 
-    // ----------------------------------------------------------
+      // LÀM MỚI
 
-    // LÀM MỚI
+      // ----------------------------------------------------------
 
-    // ----------------------------------------------------------
+      refreshBtn?.addEventListener(
 
-    refreshBtn?.addEventListener(
+        "click",
 
-      "click",
+        async () => {
 
-      async () => {
+          await loadData();
 
-        await loadData();
+        }
 
-      }
+      );
 
-    );
+      // ----------------------------------------------------------
 
-    // ----------------------------------------------------------
+      // XUẤT EXCEL
 
-    // XUẤT EXCEL
+      // ----------------------------------------------------------
 
-    // ----------------------------------------------------------
+      exportBtn?.addEventListener(
 
-    exportBtn?.addEventListener(
+        "click",
 
-      "click",
+        exportExcel
 
-      exportExcel
+      );
 
-    );
+      // ----------------------------------------------------------
 
-    // ----------------------------------------------------------
+      // DANH SÁCH CÁN BỘ
 
-    // DANH SÁCH CÁN BỘ
+      // ----------------------------------------------------------
 
-    // ----------------------------------------------------------
+      showSubmittedUsersBtn?.addEventListener(
 
-    showSubmittedUsersBtn?.addEventListener(
+        "click",
 
-      "click",
+        showSubmittedUsers
 
-      showSubmittedUsers
+      );
 
-    );
+      // ----------------------------------------------------------
 
-    // ----------------------------------------------------------
+      // XÓA TẤT CẢ
 
-    // XÓA TẤT CẢ
+      // ----------------------------------------------------------
 
-    // ----------------------------------------------------------
+      deleteAllBtn?.addEventListener(
 
-    deleteAllBtn?.addEventListener(
+        "click",
 
-      "click",
+        deleteAllReports
 
-      deleteAllReports
+      );
 
-    );
+      // ----------------------------------------------------------
 
-    // ----------------------------------------------------------
+      // MENU
 
-    // MENU
+      // ----------------------------------------------------------
 
-    // ----------------------------------------------------------
+      menuBtn?.addEventListener(
 
-    menuBtn?.addEventListener(
+        "click",
 
-      "click",
+        openMenu
 
-      openMenu
+      );
 
-    );
+      sideMenuClose?.addEventListener(
 
-    sideMenuClose?.addEventListener(
+        "click",
 
-      "click",
+        closeMenu
 
-      closeMenu
+      );
 
-    );
+      sideMenuOverlay?.addEventListener(
 
-    sideMenuOverlay?.addEventListener(
+        "click",
 
-      "click",
+        closeMenu
 
-      closeMenu
+      );
 
-    );
+      menuReportsBtn?.addEventListener(
 
-    menuReportsBtn?.addEventListener(
+        "click",
 
-      "click",
+        () => {
 
-      () => {
+          closeMenu();
 
-        closeMenu();
+          document
 
-        document
+            .querySelector(
 
-          .querySelector(".manager-card")
+              ".manager-card"
 
-          ?.scrollIntoView({
+            )
 
-            behavior: "smooth",
+            ?.scrollIntoView({
 
-            block: "start"
+              behavior: "smooth",
 
-          });
+              block: "start"
 
-      }
+            });
 
-    );
+        }
 
-    // ==========================================================
+      );
 
-    // KIỂM TRA SESSION
+      // ==========================================================
 
-    // ==========================================================
+      // KIỂM TRA SESSION
 
-    checkSession();
+      // ==========================================================
 
-  });
+      checkSession();
+
+    }
+
+  );
 
   // ============================================================
 
@@ -506,7 +658,9 @@
 
         error
 
-      } = await db.auth.getSession();
+      } =
+
+        await db.auth.getSession();
 
       if (error) {
 
@@ -562,13 +716,17 @@
 
     if (loginBox) {
 
-      loginBox.style.display = "block";
+      loginBox.style.display =
+
+        "block";
 
     }
 
     if (managerBox) {
 
-      managerBox.style.display = "none";
+      managerBox.style.display =
+
+        "none";
 
     }
 
@@ -584,13 +742,17 @@
 
     if (loginBox) {
 
-      loginBox.style.display = "none";
+      loginBox.style.display =
+
+        "none";
 
     }
 
     if (managerBox) {
 
-      managerBox.style.display = "block";
+      managerBox.style.display =
+
+        "block";
 
     }
 
@@ -606,11 +768,15 @@
 
     const email =
 
-      emailInput?.value.trim() || "";
+      emailInput?.value.trim() ||
+
+      "";
 
     const password =
 
-      passwordInput?.value || "";
+      passwordInput?.value ||
+
+      "";
 
     if (!email) {
 
@@ -666,13 +832,15 @@
 
         error
 
-      } = await db.auth.signInWithPassword({
+      } =
 
-        email,
+        await db.auth.signInWithPassword({
 
-        password
+          email,
 
-      });
+          password
+
+        });
 
       if (error) {
 
@@ -714,13 +882,17 @@
 
       if (loginMessage) {
 
-        loginMessage.textContent = "";
+        loginMessage.textContent =
+
+          "";
 
       }
 
       if (passwordInput) {
 
-        passwordInput.value = "";
+        passwordInput.value =
+
+          "";
 
       }
 
@@ -750,7 +922,9 @@
 
       if (loginBtn) {
 
-        loginBtn.disabled = false;
+        loginBtn.disabled =
+
+          false;
 
         loginBtn.textContent =
 
@@ -778,7 +952,9 @@
 
         error
 
-      } = await db.auth.signOut();
+      } =
+
+        await db.auth.signOut();
 
       if (error) {
 
@@ -806,31 +982,41 @@
 
       if (emailInput) {
 
-        emailInput.value = "";
+        emailInput.value =
+
+          "";
 
       }
 
       if (passwordInput) {
 
-        passwordInput.value = "";
+        passwordInput.value =
+
+          "";
 
       }
 
       if (tableBody) {
 
-        tableBody.innerHTML = "";
+        tableBody.innerHTML =
+
+          "";
 
       }
 
       if (pagination) {
 
-        pagination.innerHTML = "";
+        pagination.innerHTML =
+
+          "";
 
       }
 
       if (submittedUserCount) {
 
-        submittedUserCount.textContent = "0";
+        submittedUserCount.textContent =
+
+          "0";
 
       }
 
@@ -882,43 +1068,45 @@
 
           error
 
-        } = await db
+        } =
 
-          .from("bao_cao_ngay")
+          await db
 
-          .select("*")
+            .from("bao_cao_ngay")
 
-          .order(
+            .select("*")
 
-            "field_date",
+            .order(
 
-            {
+              "field_date",
 
-              ascending: false
+              {
 
-            }
+                ascending: false
 
-          )
+              }
 
-          .order(
+            )
 
-            "created_at",
+            .order(
 
-            {
+              "created_at",
 
-              ascending: false
+              {
 
-            }
+                ascending: false
 
-          )
+              }
 
-          .range(
+            )
 
-            from,
+            .range(
 
-            from + batchSize - 1
+              from,
 
-          );
+              from + batchSize - 1
+
+            );
 
         if (error) {
 
@@ -946,7 +1134,11 @@
 
         }
 
-        allRows.push(...data);
+        allRows.push(
+
+          ...data
+
+        );
 
         if (
 
@@ -964,15 +1156,17 @@
 
       }
 
-      allData = allRows;
+      allData =
 
-      filteredData = [...allData];
+        allRows;
+
+      filteredData =
+
+        [...allData];
 
       currentPage = 1;
 
       updateStats();
-
-      // Luôn đếm cán bộ của ngày hôm nay
 
       updateSubmittedUserCount();
 
@@ -1012,63 +1206,75 @@
 
   // ============================================================
 
-  // LẤY NGÀY HÔM NAY
+  // LẤY NGÀY HÔM NAY THEO GIỜ VIỆT NAM
 
   // ============================================================
 
   function getTodayDateString() {
 
-    const now = new Date();
+    try {
 
-    const year =
+      return new Intl.DateTimeFormat(
 
-      now.getFullYear();
+        "en-CA",
 
-    const month =
+        {
 
-      String(
+          timeZone:
 
-        now.getMonth() + 1
+            "Asia/Ho_Chi_Minh",
 
-      ).padStart(2, "0");
+          year:
 
-    const day =
+            "numeric",
 
-      String(
+          month:
 
-        now.getDate()
+            "2-digit",
 
-      ).padStart(2, "0");
+          day:
 
-    return `${year}-${month}-${day}`;
+            "2-digit"
+
+        }
+
+      ).format(
+
+        new Date()
+
+      );
+
+    } catch (error) {
+
+      const now =
+
+        new Date();
+
+      return [
+
+        now.getFullYear(),
+
+        String(
+
+          now.getMonth() + 1
+
+        ).padStart(2, "0"),
+
+        String(
+
+          now.getDate()
+
+        ).padStart(2, "0")
+
+      ].join("-");
+
+    }
 
   }
 
   // ============================================================
 
   // CHUẨN HÓA USER
-
-  // ============================================================
-
-  //
-
-  // Ví dụ:
-
-  // kietpm1
-
-  // Kietpm1
-
-  // KIETPM1
-
-  //  kietpm1
-
-  //
-
-  // => đều thành:
-
-  // kietpm1
-
-  //
 
   // ============================================================
 
@@ -1096,6 +1302,14 @@
 
       )
 
+      .replace(
+
+        /\s+/g,
+
+        " "
+
+      )
+
       .trim()
 
       .toLowerCase();
@@ -1118,13 +1332,21 @@
 
     const text =
 
-      String(value);
+      String(value).trim();
 
-    // Nếu Supabase trả trực tiếp YYYY-MM-DD
+    // ----------------------------------------------------------
+
+    // YYYY-MM-DD
+
+    // ----------------------------------------------------------
 
     if (
 
-      /^\d{4}-\d{2}-\d{2}$/.test(text)
+      /^\d{4}-\d{2}-\d{2}$/.test(
+
+        text
+
+      )
 
     ) {
 
@@ -1132,7 +1354,51 @@
 
     }
 
-    return formatDateForInput(value);
+    // ----------------------------------------------------------
+
+    // Nếu là datetime:
+
+    //
+
+    // 2026-09-29T00:00:00
+
+    // 2026-09-29T00:00:00+07:00
+
+    // 2026-09-29 00:00:00
+
+    //
+
+    // Lấy trực tiếp YYYY-MM-DD
+
+    // tránh lệch ngày do timezone.
+
+    // ----------------------------------------------------------
+
+    const match =
+
+      text.match(
+
+        /^(\d{4}-\d{2}-\d{2})/
+
+      );
+
+    if (match) {
+
+      return match[1];
+
+    }
+
+    // ----------------------------------------------------------
+
+    // FALLBACK
+
+    // ----------------------------------------------------------
+
+    return formatDateForInput(
+
+      value
+
+    );
 
   }
 
@@ -1140,23 +1406,19 @@
 
   // ĐẾM CÁN BỘ ĐÃ NHẬP BÁO CÁO
 
-  // ============================================================
-
   //
 
-  // QUAN TRỌNG:
+  // LUÔN:
 
-  // - Luôn lấy dữ liệu từ ALL DATA
+  // - Theo ngày hôm nay
 
-  // - Không phụ thuộc bộ lọc ngày
+  // - Không phụ thuộc filterDate
 
-  // - Chỉ đếm NGÀY HÔM NAY
+  // - Không phụ thuộc filteredData
 
   // - Không phân biệt hoa/thường
 
-  // - Không đếm trùng User
-
-  //
+  // - Không tính trùng User
 
   // ============================================================
 
@@ -1182,8 +1444,6 @@
 
           );
 
-        // Chỉ tính báo cáo của hôm nay
-
         if (
 
           rowDate !== today
@@ -1204,7 +1464,11 @@
 
         if (user) {
 
-          users.add(user);
+          users.add(
+
+            user
+
+          );
 
         }
 
@@ -1226,79 +1490,119 @@
 
   // LỌC
 
+  //
+
+  // Lưu ý:
+
+  // Bộ lọc ngày chỉ ảnh hưởng BẢNG BÁO CÁO.
+
+  //
+
+  // Không ảnh hưởng:
+
+  // "CÁN BỘ ĐÃ NHẬP BÁO CÁO"
+
   // ============================================================
 
   function applyFilter() {
 
     const user =
 
-      filterUser?.value
+      normalizeUserName(
 
-        .trim()
+        filterUser?.value ||
 
-        .toLowerCase() || "";
+        ""
+
+      );
 
     const date =
 
-      filterDate?.value || "";
+      filterDate?.value ||
+
+      "";
 
     filteredData =
 
-      allData.filter((row) => {
+      allData.filter(
 
-        const rowUser =
+        (row) => {
 
-          normalizeUserName(
+          const rowUser =
 
-            row.user_name
+            normalizeUserName(
 
-          );
-
-        let matchUser = true;
-
-        let matchDate = true;
-
-        if (user) {
-
-          matchUser =
-
-            rowUser.includes(user);
-
-        }
-
-        if (date) {
-
-          const rowDate =
-
-            formatDateForInput(
-
-              row.field_date
+              row.user_name
 
             );
 
-          matchDate =
+          let matchUser =
 
-            rowDate === date;
+            true;
+
+          let matchDate =
+
+            true;
+
+          // ----------------------------------------------------
+
+          // FILTER USER
+
+          // ----------------------------------------------------
+
+          if (user) {
+
+            matchUser =
+
+              rowUser.includes(
+
+                user
+
+              );
+
+          }
+
+          // ----------------------------------------------------
+
+          // FILTER DATE
+
+          // ----------------------------------------------------
+
+          if (date) {
+
+            const rowDate =
+
+              getRowDate(
+
+                row.field_date
+
+              );
+
+            matchDate =
+
+              rowDate ===
+
+              date;
+
+          }
+
+          return (
+
+            matchUser &&
+
+            matchDate
+
+          );
 
         }
 
-        return (
-
-          matchUser &&
-
-          matchDate
-
-        );
-
-      });
+      );
 
     currentPage = 1;
 
     updateStats();
 
     render();
-
-    // updateStats() vẫn luôn đếm cán bộ của hôm nay
 
     if (managerMessage) {
 
@@ -1324,7 +1628,11 @@
 
         filteredData.length
 
-          .toLocaleString("vi-VN");
+          .toLocaleString(
+
+            "vi-VN"
+
+          );
 
     }
 
@@ -1334,11 +1642,13 @@
 
       (row) => {
 
-        total += parseAmount(
+        total +=
 
-          row.expected_amount
+          parseAmount(
 
-        );
+            row.expected_amount
+
+          );
 
       }
 
@@ -1348,15 +1658,19 @@
 
       totalAmount.textContent =
 
-        formatMoney(total);
+        formatMoney(
+
+          total
+
+        );
 
     }
 
-    // Quan trọng:
+    // QUAN TRỌNG:
 
-    // Không đếm filteredData.
+    // Không dùng filteredData
 
-    // Luôn đếm cán bộ của ngày hôm nay.
+    // để đếm cán bộ.
 
     updateSubmittedUserCount();
 
@@ -1372,7 +1686,9 @@
 
     if (!tableBody) return;
 
-    tableBody.innerHTML = "";
+    tableBody.innerHTML =
+
+      "";
 
     const totalPages =
 
@@ -1412,7 +1728,9 @@
 
     const end =
 
-      start + PAGE_SIZE;
+      start +
+
+      PAGE_SIZE;
 
     const pageData =
 
@@ -1426,13 +1744,19 @@
 
     if (
 
-      pageData.length === 0
+      pageData.length ===
+
+      0
 
     ) {
 
       const tr =
 
-        document.createElement("tr");
+        document.createElement(
+
+          "tr"
+
+        );
 
       tr.innerHTML = `
 
@@ -1444,7 +1768,11 @@
 
       `;
 
-      tableBody.appendChild(tr);
+      tableBody.appendChild(
+
+        tr
+
+      );
 
       renderPagination();
 
@@ -1458,7 +1786,11 @@
 
         const tr =
 
-          document.createElement("tr");
+          document.createElement(
+
+            "tr"
+
+          );
 
         const amount =
 
@@ -1542,7 +1874,11 @@
 
           <td class="money-cell">
 
-            ${formatMoney(amount)}
+            ${formatMoney(
+
+              amount
+
+            )}
 
           </td>
 
@@ -1564,7 +1900,11 @@
 
               class="edit-btn"
 
-              data-id="${escapeAttr(row.id)}"
+              data-id="${escapeAttr(
+
+                row.id
+
+              )}"
 
               title="Chỉnh sửa">
 
@@ -1578,7 +1918,11 @@
 
               class="delete-btn"
 
-              data-id="${escapeAttr(row.id)}"
+              data-id="${escapeAttr(
+
+                row.id
+
+              )}"
 
               title="Xóa">
 
@@ -1592,17 +1936,31 @@
 
         const editButton =
 
-          tr.querySelector(".edit-btn");
+          tr.querySelector(
+
+            ".edit-btn"
+
+          );
 
         const deleteButton =
 
-          tr.querySelector(".delete-btn");
+          tr.querySelector(
+
+            ".delete-btn"
+
+          );
 
         editButton?.addEventListener(
 
           "click",
 
-          () => editReport(row.id)
+          () =>
+
+            editReport(
+
+              row.id
+
+            )
 
         );
 
@@ -1610,11 +1968,21 @@
 
           "click",
 
-          () => deleteReport(row.id)
+          () =>
+
+            deleteReport(
+
+              row.id
+
+            )
 
         );
 
-        tableBody.appendChild(tr);
+        tableBody.appendChild(
+
+          tr
+
+        );
 
       }
 
@@ -1634,7 +2002,9 @@
 
     if (!pagination) return;
 
-    pagination.innerHTML = "";
+    pagination.innerHTML =
+
+      "";
 
     const totalPages =
 
@@ -1646,7 +2016,11 @@
 
       );
 
-    if (totalPages <= 1) {
+    if (
+
+      totalPages <= 1
+
+    ) {
 
       return;
 
@@ -1654,7 +2028,11 @@
 
     const wrapper =
 
-      document.createElement("div");
+      document.createElement(
+
+        "div"
+
+      );
 
     wrapper.className =
 
@@ -1668,9 +2046,15 @@
 
     const prev =
 
-      document.createElement("button");
+      document.createElement(
 
-    prev.type = "button";
+        "button"
+
+      );
+
+    prev.type =
+
+      "button";
 
     prev.textContent =
 
@@ -1686,7 +2070,11 @@
 
       () => {
 
-        if (currentPage > 1) {
+        if (
+
+          currentPage > 1
+
+        ) {
 
           currentPage--;
 
@@ -1706,7 +2094,11 @@
 
     );
 
-    wrapper.appendChild(prev);
+    wrapper.appendChild(
+
+      prev
+
+    );
 
     // ----------------------------------------------------------
 
@@ -1716,7 +2108,11 @@
 
     const info =
 
-      document.createElement("span");
+      document.createElement(
+
+        "span"
+
+      );
 
     info.className =
 
@@ -1726,7 +2122,11 @@
 
       `Trang ${currentPage} / ${totalPages}`;
 
-    wrapper.appendChild(info);
+    wrapper.appendChild(
+
+      info
+
+    );
 
     // ----------------------------------------------------------
 
@@ -1736,9 +2136,15 @@
 
     const next =
 
-      document.createElement("button");
+      document.createElement(
 
-    next.type = "button";
+        "button"
+
+      );
+
+    next.type =
+
+      "button";
 
     next.textContent =
 
@@ -1746,7 +2152,9 @@
 
     next.disabled =
 
-      currentPage === totalPages;
+      currentPage ===
+
+      totalPages;
 
     next.addEventListener(
 
@@ -1780,9 +2188,17 @@
 
     );
 
-    wrapper.appendChild(next);
+    wrapper.appendChild(
 
-    pagination.appendChild(wrapper);
+      next
+
+    );
+
+    pagination.appendChild(
+
+      wrapper
+
+    );
 
   }
 
@@ -1800,7 +2216,11 @@
 
         (item) =>
 
-          String(item.id) ===
+          String(
+
+            item.id
+
+          ) ===
 
           String(id)
 
@@ -1818,7 +2238,11 @@
 
     }
 
-    createEditModal(row);
+    createEditModal(
+
+      row
+
+    );
 
   }
 
@@ -1828,13 +2252,21 @@
 
   // ============================================================
 
-  function createEditModal(row) {
+  function createEditModal(
+
+    row
+
+  ) {
 
     removeEditModal();
 
     const modal =
 
-      document.createElement("div");
+      document.createElement(
+
+        "div"
+
+      );
 
     modal.id =
 
@@ -1896,7 +2328,9 @@
 
                 row.user_name || ""
 
-              )}">
+              )}"
+
+            >
 
           </label>
 
@@ -1912,13 +2346,15 @@
 
               value="${escapeAttr(
 
-                formatDateForInput(
+                getRowDate(
 
                   row.field_date
 
                 )
 
-              )}">
+              )}"
+
+            >
 
           </label>
 
@@ -1936,7 +2372,9 @@
 
                 row.cif || ""
 
-              )}">
+              )}"
+
+            >
 
           </label>
 
@@ -1952,9 +2390,13 @@
 
               value="${escapeAttr(
 
-                row.customer_name || ""
+                row.customer_name ||
 
-              )}">
+                ""
+
+              )}"
+
+            >
 
           </label>
 
@@ -1982,7 +2424,9 @@
 
                     : ""
 
-                }>
+                }
+
+              >
 
                 Sống
 
@@ -2000,7 +2444,9 @@
 
                     : ""
 
-                }>
+                }
+
+              >
 
                 Chết
 
@@ -2114,11 +2560,13 @@
 
               id="editDetail"
 
-              rows="4">${escapeHtml(
+              rows="4"
 
-                row.detail || ""
+            >${escapeHtml(
 
-              )}</textarea>
+              row.detail || ""
+
+            )}</textarea>
 
           </label>
 
@@ -2142,7 +2590,9 @@
 
                 )
 
-              )}">
+              )}"
+
+            >
 
           </label>
 
@@ -2154,11 +2604,13 @@
 
               id="editNextAction"
 
-              rows="4">${escapeHtml(
+              rows="4"
 
-                row.next_action || ""
+            >${escapeHtml(
 
-              )}</textarea>
+              row.next_action || ""
+
+            )}</textarea>
 
           </label>
 
@@ -2196,11 +2648,19 @@
 
     `;
 
-    document.body.appendChild(modal);
+    document.body.appendChild(
+
+      modal
+
+    );
 
     document
 
-      .getElementById("editModalClose")
+      .getElementById(
+
+        "editModalClose"
+
+      )
 
       ?.addEventListener(
 
@@ -2212,7 +2672,11 @@
 
     document
 
-      .getElementById("editCancelBtn")
+      .getElementById(
+
+        "editCancelBtn"
+
+      )
 
       ?.addEventListener(
 
@@ -2224,7 +2688,11 @@
 
     document
 
-      .getElementById("saveEditBtn")
+      .getElementById(
+
+        "saveEditBtn"
+
+      )
 
       ?.addEventListener(
 
@@ -2232,7 +2700,11 @@
 
         () =>
 
-          saveEditReport(row.id)
+          saveEditReport(
+
+            row.id
+
+          )
 
       );
 
@@ -2264,7 +2736,11 @@
 
           value
 
-            ? Number(value).toLocaleString(
+            ? Number(
+
+                value
+
+              ).toLocaleString(
 
                 "en-US"
 
@@ -2284,7 +2760,9 @@
 
         if (
 
-          event.target === modal
+          event.target ===
+
+          modal
 
         ) {
 
@@ -2316,19 +2794,31 @@
 
       <option
 
-        value="${escapeAttr(value)}"
+        value="${escapeAttr(
+
+          value
+
+        )}"
 
         ${
 
-          value === currentValue
+          value ===
+
+          currentValue
 
             ? "selected"
 
             : ""
 
-        }>
+        }
 
-        ${escapeHtml(value)}
+      >
+
+        ${escapeHtml(
+
+          value
+
+        )}
 
       </option>
 
@@ -2342,83 +2832,145 @@
 
   // ============================================================
 
-  async function saveEditReport(id) {
+  async function saveEditReport(
+
+    id
+
+  ) {
 
     const userName =
 
       document
 
-        .getElementById("editUserName")
+        .getElementById(
 
-        ?.value.trim() || "";
+          "editUserName"
+
+        )
+
+        ?.value.trim() ||
+
+      "";
 
     const fieldDate =
 
       document
 
-        .getElementById("editFieldDate")
+        .getElementById(
 
-        ?.value || "";
+          "editFieldDate"
+
+        )
+
+        ?.value ||
+
+      "";
 
     const cif =
 
       document
 
-        .getElementById("editCif")
+        .getElementById(
 
-        ?.value.trim() || "";
+          "editCif"
+
+        )
+
+        ?.value.trim() ||
+
+      "";
 
     const customerName =
 
       document
 
-        .getElementById("editCustomerName")
+        .getElementById(
 
-        ?.value.trim() || "";
+          "editCustomerName"
+
+        )
+
+        ?.value.trim() ||
+
+      "";
 
     const result =
 
       document
 
-        .getElementById("editResult")
+        .getElementById(
 
-        ?.value || "";
+          "editResult"
+
+        )
+
+        ?.value ||
+
+      "";
 
     const connection =
 
       document
 
-        .getElementById("editConnection")
+        .getElementById(
 
-        ?.value || "";
+          "editConnection"
+
+        )
+
+        ?.value ||
+
+      "";
 
     const detail =
 
       document
 
-        .getElementById("editDetail")
+        .getElementById(
 
-        ?.value.trim() || "";
+          "editDetail"
+
+        )
+
+        ?.value.trim() ||
+
+      "";
 
     const amountText =
 
       document
 
-        .getElementById("editExpectedAmount")
+        .getElementById(
 
-        ?.value || "";
+          "editExpectedAmount"
+
+        )
+
+        ?.value ||
+
+      "";
 
     const expectedAmount =
 
-      parseAmount(amountText);
+      parseAmount(
+
+        amountText
+
+      );
 
     const nextAction =
 
       document
 
-        .getElementById("editNextAction")
+        .getElementById(
 
-        ?.value.trim() || "";
+          "editNextAction"
+
+        )
+
+        ?.value.trim() ||
+
+      "";
 
     // ----------------------------------------------------------
 
@@ -2472,7 +3024,9 @@
 
     if (saveBtn) {
 
-      saveBtn.disabled = true;
+      saveBtn.disabled =
+
+        true;
 
       saveBtn.textContent =
 
@@ -2486,33 +3040,63 @@
 
         error
 
-      } = await db
+      } =
 
-        .from("bao_cao_ngay")
+        await db
 
-        .update({
+          .from(
 
-          user_name: userName,
+            "bao_cao_ngay"
 
-          field_date: fieldDate,
+          )
 
-          cif: cif,
+          .update({
 
-          customer_name: customerName,
+            user_name:
 
-          result: result,
+              userName,
 
-          connection: connection,
+            field_date:
 
-          detail: detail,
+              fieldDate,
 
-          expected_amount: expectedAmount,
+            cif:
 
-          next_action: nextAction
+              cif,
 
-        })
+            customer_name:
 
-        .eq("id", id);
+              customerName,
+
+            result:
+
+              result,
+
+            connection:
+
+              connection,
+
+            detail:
+
+              detail,
+
+            expected_amount:
+
+              expectedAmount,
+
+            next_action:
+
+              nextAction
+
+          })
+
+          .eq(
+
+            "id",
+
+            id
+
+          );
 
       if (error) {
 
@@ -2570,7 +3154,9 @@
 
       if (saveBtn) {
 
-        saveBtn.disabled = false;
+        saveBtn.disabled =
+
+          false;
 
         saveBtn.textContent =
 
@@ -2588,7 +3174,11 @@
 
   // ============================================================
 
-  async function deleteReport(id) {
+  async function deleteReport(
+
+    id
+
+  ) {
 
     const row =
 
@@ -2596,7 +3186,11 @@
 
         (item) =>
 
-          String(item.id) ===
+          String(
+
+            item.id
+
+          ) ===
 
           String(id)
 
@@ -2604,7 +3198,9 @@
 
     const customer =
 
-      row?.customer_name || "";
+      row?.customer_name ||
+
+      "";
 
     const confirmed =
 
@@ -2644,13 +3240,25 @@
 
         error
 
-      } = await db
+      } =
 
-        .from("bao_cao_ngay")
+        await db
 
-        .delete()
+          .from(
 
-        .eq("id", id);
+            "bao_cao_ngay"
+
+          )
+
+          .delete()
+
+          .eq(
+
+            "id",
+
+            id
+
+          );
 
       if (error) {
 
@@ -2712,7 +3320,11 @@
 
   // ============================================================
 
-  function normalizeDeleteKeyword(value) {
+  function normalizeDeleteKeyword(
+
+    value
+
+  ) {
 
     if (
 
@@ -2730,8 +3342,6 @@
 
       String(value);
 
-    // Loại bỏ ký tự ẩn / zero-width
-
     text =
 
       text.replace(
@@ -2742,13 +3352,13 @@
 
       );
 
-    // Chuẩn hóa Unicode
-
     text =
 
-      text.normalize("NFD");
+      text.normalize(
 
-    // Xóa dấu
+        "NFD"
+
+      );
 
     text =
 
@@ -2760,8 +3370,6 @@
 
       );
 
-    // Đ riêng
-
     text =
 
       text.replace(
@@ -2771,8 +3379,6 @@
         "d"
 
       );
-
-    // Chuẩn hóa khoảng trắng
 
     text =
 
@@ -2784,13 +3390,9 @@
 
       );
 
-    // Xóa khoảng trắng đầu/cuối
-
     text =
 
       text.trim();
-
-    // Chuyển chữ hoa
 
     text =
 
@@ -2807,12 +3409,6 @@
   // ============================================================
 
   async function deleteAllReports() {
-
-    // ----------------------------------------------------------
-
-    // CHỐNG BẤM NHIỀU LẦN
-
-    // ----------------------------------------------------------
 
     if (
 
@@ -2876,12 +3472,6 @@
 
       );
 
-    // ----------------------------------------------------------
-
-    // DEBUG - CHUẨN HÓA
-
-    // ----------------------------------------------------------
-
     const normalizedKeyword =
 
       normalizeDeleteKeyword(
@@ -2905,12 +3495,6 @@
       normalizedKeyword
 
     );
-
-    // ----------------------------------------------------------
-
-    // KIỂM TRA
-
-    // ----------------------------------------------------------
 
     if (
 
@@ -2936,15 +3520,11 @@
 
     }
 
-    // ----------------------------------------------------------
-
-    // KHÓA NÚT
-
-    // ----------------------------------------------------------
-
     if (deleteAllBtn) {
 
-      deleteAllBtn.disabled = true;
+      deleteAllBtn.disabled =
+
+        true;
 
       deleteAllBtn.textContent =
 
@@ -2960,39 +3540,33 @@
 
     }
 
-    // ----------------------------------------------------------
-
-    // XÓA SUPABASE
-
-    // ----------------------------------------------------------
-
     try {
 
       const {
 
         error
 
-      } = await db
+      } =
 
-        .from("bao_cao_ngay")
+        await db
 
-        .delete()
+          .from(
 
-        .not(
+            "bao_cao_ngay"
 
-          "id",
+          )
 
-          "is",
+          .delete()
 
-          null
+          .not(
 
-        );
+            "id",
 
-      // --------------------------------------------------------
+            "is",
 
-      // LỖI
+            null
 
-      // --------------------------------------------------------
+          );
 
       if (error) {
 
@@ -3036,7 +3610,7 @@
 
       // --------------------------------------------------------
 
-      // RESET DỮ LIỆU
+      // RESET
 
       // --------------------------------------------------------
 
@@ -3046,73 +3620,63 @@
 
       currentPage = 1;
 
-      // --------------------------------------------------------
-
-      // RESET BỘ LỌC
-
-      // --------------------------------------------------------
-
       if (filterUser) {
 
-        filterUser.value = "";
+        filterUser.value =
+
+          "";
 
       }
 
       if (filterDate) {
 
-        filterDate.value = "";
+        filterDate.value =
+
+          "";
 
       }
 
-      // --------------------------------------------------------
-
-      // RESET THỐNG KÊ
-
-      // --------------------------------------------------------
-
       if (totalReports) {
 
-        totalReports.textContent = "0";
+        totalReports.textContent =
+
+          "0";
 
       }
 
       if (totalAmount) {
 
-        totalAmount.textContent = "0 đ";
+        totalAmount.textContent =
+
+          "0 đ";
 
       }
 
       if (submittedUserCount) {
 
-        submittedUserCount.textContent = "0";
+        submittedUserCount.textContent =
+
+          "0";
 
       }
 
-      // --------------------------------------------------------
-
-      // RESET TABLE
-
-      // --------------------------------------------------------
-
       if (tableBody) {
 
-        tableBody.innerHTML = "";
+        tableBody.innerHTML =
+
+          "";
 
       }
 
       if (pagination) {
 
-        pagination.innerHTML = "";
+        pagination.innerHTML =
+
+          "";
 
       }
 
       render();
-
-      // --------------------------------------------------------
-
-      // THÔNG BÁO
-
-      // --------------------------------------------------------
 
       if (managerMessage) {
 
@@ -3170,15 +3734,11 @@
 
     } finally {
 
-      // --------------------------------------------------------
-
-      // MỞ KHÓA NÚT
-
-      // --------------------------------------------------------
-
       if (deleteAllBtn) {
 
-        deleteAllBtn.disabled = false;
+        deleteAllBtn.disabled =
+
+          false;
 
         deleteAllBtn.textContent =
 
@@ -3194,21 +3754,21 @@
 
   // DANH SÁCH CÁN BỘ
 
-  // ============================================================
+  //
+
+  // CHỈ HIỂN THỊ CÁN BỘ CỦA HÔM NAY
 
   //
 
-  // Khi bấm xem:
+  // kietpm1
 
-  // - Chỉ lấy cán bộ của HÔM NAY
+  // Kietpm1
 
-  // - Không phụ thuộc bộ lọc ngày
-
-  // - Không phân biệt hoa/thường
-
-  // - kietpm1 / Kietpm1 / KIETPM1 = 1 cán bộ
+  // KIETPM1
 
   //
+
+  // = 1 CÁN BỘ
 
   // ============================================================
 
@@ -3234,11 +3794,11 @@
 
           );
 
-        // Chỉ lấy báo cáo của hôm nay
-
         if (
 
-          rowDate !== today
+          rowDate !==
+
+          today
 
         ) {
 
@@ -3250,9 +3810,29 @@
 
           String(
 
-            row.user_name || ""
+            row.user_name ||
 
-          ).trim();
+            ""
+
+          )
+
+            .replace(
+
+              /[\u200B-\u200D\uFEFF]/g,
+
+              ""
+
+            )
+
+            .replace(
+
+              /\s+/g,
+
+              " "
+
+            )
+
+            .trim();
 
         if (!originalUser) {
 
@@ -3336,7 +3916,11 @@
 
     const modal =
 
-      document.createElement("div");
+      document.createElement(
+
+        "div"
+
+      );
 
     modal.id =
 
@@ -3346,7 +3930,9 @@
 
       "modal-overlay";
 
-    let html = "";
+    let html =
+
+      "";
 
     // ----------------------------------------------------------
 
@@ -3356,7 +3942,9 @@
 
     if (
 
-      users.length === 0
+      users.length ===
+
+      0
 
     ) {
 
@@ -3380,7 +3968,13 @@
 
       users.forEach(
 
-        (item, index) => {
+        (
+
+          item,
+
+          index
+
+        ) => {
 
           html += `
 
@@ -3440,9 +4034,17 @@
 
             <p>
 
-              Ngày ${formatDate(today)}
+              Ngày ${formatDate(
 
-              • Tổng số: ${users.length} cán bộ
+                today
+
+              )}
+
+              • Tổng số:
+
+              ${users.length}
+
+              cán bộ
 
             </p>
 
@@ -3468,7 +4070,11 @@
 
     `;
 
-    document.body.appendChild(modal);
+    document.body.appendChild(
+
+      modal
+
+    );
 
     document
 
@@ -3494,7 +4100,9 @@
 
         if (
 
-          event.target === modal
+          event.target ===
+
+          modal
 
         ) {
 
@@ -3608,7 +4216,9 @@
 
     if (
 
-      typeof XLSX === "undefined"
+      typeof XLSX ===
+
+      "undefined"
 
     ) {
 
@@ -3652,23 +4262,37 @@
 
           String(
 
-            exportDate.getMonth() + 1
+            exportDate.getMonth() +
 
-          ).padStart(2, "0"),
+            1
+
+          ).padStart(
+
+            2,
+
+            "0"
+
+          ),
 
           String(
 
             exportDate.getDate()
 
-          ).padStart(2, "0")
+          ).padStart(
+
+            2,
+
+            "0"
+
+          )
 
         ].join("-");
 
-      // --------------------------------------------------------
+      // ========================================================
 
       // SHEET 1
 
-      // --------------------------------------------------------
+      // ========================================================
 
       const reportRows =
 
@@ -3678,7 +4302,9 @@
 
             "Cán bộ":
 
-              row.user_name || "",
+              row.user_name ||
+
+              "",
 
             "Ngày field":
 
@@ -3690,23 +4316,33 @@
 
             "Số CIF":
 
-              row.cif || "",
+              row.cif ||
+
+              "",
 
             "Tên khách hàng":
 
-              row.customer_name || "",
+              row.customer_name ||
+
+              "",
 
             "Kết quả":
 
-              row.result || "",
+              row.result ||
+
+              "",
 
             "Kết nối":
 
-              row.connection || "",
+              row.connection ||
+
+              "",
 
             "Kết quả chi tiết":
 
-              row.detail || "",
+              row.detail ||
+
+              "",
 
             "Dự thu":
 
@@ -3718,7 +4354,9 @@
 
             "Hướng tác động tiếp theo":
 
-              row.next_action || ""
+              row.next_action ||
+
+              ""
 
           })
 
@@ -3732,11 +4370,11 @@
 
         );
 
-      // --------------------------------------------------------
+      // ========================================================
 
       // STYLE
 
-      // --------------------------------------------------------
+      // ========================================================
 
       if (ws["!ref"]) {
 
@@ -3750,9 +4388,13 @@
 
         for (
 
-          let row = range.s.r;
+          let row =
 
-          row <= range.e.r;
+            range.s.r;
+
+          row <=
+
+          range.e.r;
 
           row++
 
@@ -3760,9 +4402,13 @@
 
           for (
 
-            let col = range.s.c;
+            let col =
 
-            col <= range.e.c;
+              range.s.c;
+
+            col <=
+
+            range.e.c;
 
             col++
 
@@ -3788,9 +4434,13 @@
 
               font: {
 
-                name: "Arial",
+                name:
 
-                sz: 10,
+                  "Arial",
+
+                sz:
+
+                  10,
 
                 bold:
 
@@ -3822,25 +4472,33 @@
 
                 top: {
 
-                  style: "thin"
+                  style:
+
+                    "thin"
 
                 },
 
                 bottom: {
 
-                  style: "thin"
+                  style:
+
+                    "thin"
 
                 },
 
                 left: {
 
-                  style: "thin"
+                  style:
+
+                    "thin"
 
                 },
 
                 right: {
 
-                  style: "thin"
+                  style:
+
+                    "thin"
 
                 }
 
@@ -3860,9 +4518,13 @@
 
         for (
 
-          let col = range.s.c;
+          let col =
 
-          col <= range.e.c;
+            range.s.c;
+
+          col <=
+
+          range.e.c;
 
           col++
 
@@ -3888,11 +4550,17 @@
 
             font: {
 
-              name: "Arial",
+              name:
 
-              sz: 11,
+                "Arial",
 
-              bold: true
+              sz:
+
+                11,
+
+              bold:
+
+                true
 
             },
 
@@ -3916,25 +4584,33 @@
 
               top: {
 
-                style: "thin"
+                style:
+
+                  "thin"
 
               },
 
               bottom: {
 
-                style: "thin"
+                style:
+
+                  "thin"
 
               },
 
               left: {
 
-                style: "thin"
+                style:
+
+                  "thin"
 
               },
 
               right: {
 
-                style: "thin"
+                style:
+
+                  "thin"
 
               }
 
@@ -3954,7 +4630,9 @@
 
           let row = 1;
 
-          row <= range.e.r;
+          row <=
+
+          range.e.r;
 
           row++
 
@@ -4008,59 +4686,125 @@
 
         ws["!autofilter"] = {
 
-          ref: ws["!ref"]
+          ref:
+
+            ws["!ref"]
 
         };
 
         ws["!freeze"] = {
 
-          xSplit: 0,
+          xSplit:
 
-          ySplit: 1
+            0,
+
+          ySplit:
+
+            1
 
         };
 
       }
 
-      // --------------------------------------------------------
+      // ========================================================
 
       // CỘT
 
-      // --------------------------------------------------------
+      // ========================================================
 
       ws["!cols"] = [
 
-        { wch: 18 },
+        {
 
-        { wch: 14 },
+          wch:
 
-        { wch: 16 },
+            18
 
-        { wch: 28 },
+        },
 
-        { wch: 12 },
+        {
 
-        { wch: 24 },
+          wch:
 
-        { wch: 45 },
+            14
 
-        { wch: 18 },
+        },
 
-        { wch: 45 }
+        {
+
+          wch:
+
+            16
+
+        },
+
+        {
+
+          wch:
+
+            28
+
+        },
+
+        {
+
+          wch:
+
+            12
+
+        },
+
+        {
+
+          wch:
+
+            24
+
+        },
+
+        {
+
+          wch:
+
+            45
+
+        },
+
+        {
+
+          wch:
+
+            18
+
+        },
+
+        {
+
+          wch:
+
+            45
+
+        }
 
       ];
 
-      // --------------------------------------------------------
+      // ========================================================
 
       // SHEET 2
 
-      // --------------------------------------------------------
+      // ========================================================
 
       const totalMoney =
 
         filteredData.reduce(
 
-          (sum, row) =>
+          (
+
+            sum,
+
+            row
+
+          ) =>
 
             sum +
 
@@ -4077,14 +4821,6 @@
       // --------------------------------------------------------
 
       // SỐ CÁN BỘ TRONG EXCEL
-
-      // Vẫn tính theo filteredData vì đây là thống kê
-
-      // của bộ dữ liệu đang xuất Excel.
-
-      //
-
-      // Nhưng không phân biệt hoa/thường.
 
       // --------------------------------------------------------
 
@@ -4106,7 +4842,11 @@
 
           if (user) {
 
-            uniqueUsers.add(user);
+            uniqueUsers.add(
+
+              user
+
+            );
 
           }
 
@@ -4180,9 +4920,13 @@
 
           font: {
 
-            bold: true,
+            bold:
 
-            sz: 16
+              true,
+
+            sz:
+
+              16
 
           },
 
@@ -4204,7 +4948,9 @@
 
           font: {
 
-            bold: true
+            bold:
+
+              true
 
           }
 
@@ -4218,7 +4964,9 @@
 
           font: {
 
-            bold: true
+            bold:
+
+              true
 
           }
 
@@ -4244,17 +4992,29 @@
 
       wsSummary["!cols"] = [
 
-        { wch: 30 },
+        {
 
-        { wch: 25 }
+          wch:
+
+            30
+
+        },
+
+        {
+
+          wch:
+
+            25
+
+        }
 
       ];
 
-      // --------------------------------------------------------
+      // ========================================================
 
       // WORKBOOK
 
-      // --------------------------------------------------------
+      // ========================================================
 
       const wb =
 
@@ -4280,11 +5040,11 @@
 
       );
 
-      // --------------------------------------------------------
+      // ========================================================
 
       // FILE
 
-      // --------------------------------------------------------
+      // ========================================================
 
       const fileName =
 
@@ -4334,7 +5094,11 @@
 
   // ============================================================
 
-  function formatDate(value) {
+  function formatDate(
+
+    value
+
+  ) {
 
     if (!value) {
 
@@ -4346,11 +5110,13 @@
 
       String(value);
 
-    // Tránh lỗi múi giờ với YYYY-MM-DD
-
     if (
 
-      /^\d{4}-\d{2}-\d{2}$/.test(text)
+      /^\d{4}-\d{2}-\d{2}$/.test(
+
+        text
+
+      )
 
     ) {
 
@@ -4368,13 +5134,29 @@
 
           .split("-")
 
-          .map(Number);
+          .map(
+
+            Number
+
+          );
 
       return [
 
-        String(day).padStart(2, "0"),
+        String(day).padStart(
 
-        String(month).padStart(2, "0"),
+          2,
+
+          "0"
+
+        ),
+
+        String(month).padStart(
+
+          2,
+
+          "0"
+
+        ),
 
         year
 
@@ -4406,13 +5188,25 @@
 
         date.getDate()
 
-      ).padStart(2, "0"),
+      ).padStart(
+
+        2,
+
+        "0"
+
+      ),
 
       String(
 
         date.getMonth() + 1
 
-      ).padStart(2, "0"),
+      ).padStart(
+
+        2,
+
+        "0"
+
+      ),
 
       date.getFullYear()
 
@@ -4426,7 +5220,11 @@
 
   // ============================================================
 
-  function formatDateTime(value) {
+  function formatDateTime(
+
+    value
+
+  ) {
 
     if (!value) {
 
@@ -4454,7 +5252,11 @@
 
     return (
 
-      formatDate(value) +
+      formatDate(
+
+        value
+
+      ) +
 
       " " +
 
@@ -4462,7 +5264,13 @@
 
         date.getHours()
 
-      ).padStart(2, "0") +
+      ).padStart(
+
+        2,
+
+        "0"
+
+      ) +
 
       ":" +
 
@@ -4470,7 +5278,13 @@
 
         date.getMinutes()
 
-      ).padStart(2, "0")
+      ).padStart(
+
+        2,
+
+        "0"
+
+      )
 
     );
 
@@ -4482,7 +5296,11 @@
 
   // ============================================================
 
-  function formatDateForInput(value) {
+  function formatDateForInput(
+
+    value
+
+  ) {
 
     if (!value) {
 
@@ -4496,11 +5314,33 @@
 
     if (
 
-      /^\d{4}-\d{2}-\d{2}$/.test(text)
+      /^\d{4}-\d{2}-\d{2}$/.test(
+
+        text
+
+      )
 
     ) {
 
       return text;
+
+    }
+
+    // Ưu tiên lấy trực tiếp YYYY-MM-DD
+
+    // để tránh lệch múi giờ
+
+    const match =
+
+      text.match(
+
+        /^(\d{4}-\d{2}-\d{2})/
+
+      );
+
+    if (match) {
+
+      return match[1];
 
     }
 
@@ -4530,13 +5370,25 @@
 
         date.getMonth() + 1
 
-      ).padStart(2, "0"),
+      ).padStart(
+
+        2,
+
+        "0"
+
+      ),
 
       String(
 
         date.getDate()
 
-      ).padStart(2, "0")
+      ).padStart(
+
+        2,
+
+        "0"
+
+      )
 
     ].join("-");
 
@@ -4548,7 +5400,11 @@
 
   // ============================================================
 
-  function toExcelDate(value) {
+  function toExcelDate(
+
+    value
+
+  ) {
 
     if (!value) {
 
@@ -4562,7 +5418,11 @@
 
     if (
 
-      /^\d{4}-\d{2}-\d{2}$/.test(text)
+      /^\d{4}-\d{2}-\d{2}$/.test(
+
+        text
+
+      )
 
     ) {
 
@@ -4580,7 +5440,11 @@
 
           .split("-")
 
-          .map(Number);
+          .map(
+
+            Number
+
+          );
 
       return new Date(
 
@@ -4616,7 +5480,11 @@
 
   // ============================================================
 
-  function parseAmount(value) {
+  function parseAmount(
+
+    value
+
+  ) {
 
     if (
 
@@ -4634,11 +5502,17 @@
 
     if (
 
-      typeof value === "number"
+      typeof value ===
+
+      "number"
 
     ) {
 
-      return Number.isFinite(value)
+      return Number.isFinite(
+
+        value
+
+      )
 
         ? value
 
@@ -4670,7 +5544,11 @@
 
       Number(text);
 
-    return Number.isFinite(number)
+    return Number.isFinite(
+
+      number
+
+    )
 
       ? number
 
@@ -4684,15 +5562,27 @@
 
   // ============================================================
 
-  function formatMoney(value) {
+  function formatMoney(
+
+    value
+
+  ) {
 
     const number =
 
-      parseAmount(value);
+      parseAmount(
+
+        value
+
+      );
 
     return (
 
-      number.toLocaleString("vi-VN") +
+      number.toLocaleString(
+
+        "vi-VN"
+
+      ) +
 
       " đ"
 
@@ -4706,11 +5596,19 @@
 
   // ============================================================
 
-  function formatInputMoney(value) {
+  function formatInputMoney(
+
+    value
+
+  ) {
 
     const number =
 
-      parseAmount(value);
+      parseAmount(
+
+        value
+
+      );
 
     if (!number) {
 
@@ -4732,7 +5630,11 @@
 
   // ============================================================
 
-  function escapeHtml(value) {
+  function escapeHtml(
+
+    value
+
+  ) {
 
     return String(
 
@@ -4788,9 +5690,17 @@
 
   // ============================================================
 
-  function escapeAttr(value) {
+  function escapeAttr(
 
-    return escapeHtml(value);
+    value
+
+  ) {
+
+    return escapeHtml(
+
+      value
+
+    );
 
   }
 
