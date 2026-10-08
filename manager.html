@@ -1,1339 +1,1406 @@
-<!doctype html>
 
+<!DOCTYPE html>
 <html lang="vi">
-
 <head>
-
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Quản lý Báo Cáo Ngày</title>
 
   <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
+    name="description"
+    content="Trang quản lý và xuất báo cáo ngày."
   >
-
-  <title>
-    Quản Lý Báo Cáo Ngày
-  </title>
-
-
-  <link
-    rel="stylesheet"
-    href="style.css"
-  >
-
 
   <style>
-
-    /* ========================================================
-       RESET
-    ======================================================== */
+    :root {
+      --primary: #1d4ed8;
+      --primary-dark: #1e40af;
+      --success: #15803d;
+      --success-light: #dcfce7;
+      --danger: #dc2626;
+      --danger-light: #fee2e2;
+      --background: #f1f5f9;
+      --surface: #ffffff;
+      --text: #172033;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 14px;
+      --shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    }
 
     * {
       box-sizing: border-box;
     }
 
-
     html {
       scroll-behavior: smooth;
     }
 
-
     body {
       margin: 0;
-      padding: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
     }
 
-
-    body.menu-open {
-      overflow: hidden;
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
     }
 
+    button {
+      cursor: pointer;
+      transition:
+        background 0.2s ease,
+        transform 0.15s ease,
+        opacity 0.2s ease;
+    }
 
-    /* ========================================================
-       HEADER
-    ======================================================== */
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
 
-    .manager-header {
+    button:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      min-width: 0;
+      padding: 11px 12px;
+      color: var(--text);
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      border-radius: 9px;
+      outline: none;
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);
+    }
+
+    input::placeholder {
+      color: #94a3b8;
+    }
+
+    button:focus-visible {
+      outline: 3px solid rgba(59, 130, 246, 0.3);
+      outline-offset: 2px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* =====================================================
+       ĐĂNG NHẬP
+    ===================================================== */
+
+    #loginBox {
+      min-height: 100vh;
       display: flex;
       align-items: center;
+      justify-content: center;
+      padding: 22px;
+      background:
+        radial-gradient(
+          circle at top left,
+          rgba(59, 130, 246, 0.16),
+          transparent 38%
+        ),
+        linear-gradient(135deg, #eff6ff, #f8fafc 55%, #e0f2fe);
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      padding: 30px;
+      background: var(--surface);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-radius: 22px;
+      box-shadow: 0 24px 70px rgba(30, 64, 175, 0.12);
+    }
+
+    .login-logo {
+      width: 68px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      color: #fff;
+      background: linear-gradient(135deg, #2563eb, #0f766e);
+      border-radius: 20px;
+      font-size: 28px;
+      font-weight: 800;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.22);
+    }
+
+    .login-card h1 {
+      margin: 0;
+      text-align: center;
+      font-size: 23px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+    }
+
+    .login-subtitle {
+      margin: 8px 0 25px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .login-form {
+      display: grid;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: grid;
+      gap: 7px;
+    }
+
+    .form-group label {
+      color: #334155;
+      font-weight: 650;
+    }
+
+    .login-submit {
+      width: 100%;
+      min-height: 46px;
+      margin-top: 5px;
+      color: #fff;
+      background: var(--primary);
+      border: none;
+      border-radius: 10px;
+      font-weight: 750;
+    }
+
+    .login-submit:hover {
+      background: var(--primary-dark);
+    }
+
+    .login-security {
+      margin: 20px 0 0;
+      padding-top: 15px;
+      color: #64748b;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 12px;
+    }
+
+    /* =====================================================
+       THÔNG BÁO
+    ===================================================== */
+
+    .message {
+      min-height: 20px;
+      margin: 10px 0 0;
+      overflow-wrap: anywhere;
+      font-size: 13px;
+    }
+
+    #loginMessage {
+      text-align: center;
+    }
+
+    #managerMessage {
+      margin: 14px 0 0;
+      padding: 10px 12px;
+      color: #166534;
+      background: #f0fdf4;
+      border: 1px solid #dcfce7;
+      border-radius: 9px;
+      overflow-wrap: anywhere;
+    }
+
+    /* =====================================================
+       TRANG QUẢN LÝ
+    ===================================================== */
+
+    #managerBox {
+      min-height: 100vh;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 13px 22px;
+      color: #fff;
+      background: linear-gradient(110deg, #1e3a8a, #1d4ed8 60%, #0369a1);
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.15);
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .menu-toggle {
+      flex: 0 0 auto;
+      width: 42px;
+      height: 42px;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.13);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      font-size: 22px;
+    }
+
+    .menu-toggle:hover {
+      background: rgba(255, 255, 255, 0.23);
+    }
+
+    .brand-title {
+      margin: 0;
+      overflow: hidden;
+      font-size: 18px;
+      font-weight: 800;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .brand-subtitle {
+      margin: 2px 0 0;
+      color: #dbeafe;
+      font-size: 12px;
+    }
+
+    .topbar-logout {
+      flex: 0 0 auto;
+      padding: 9px 13px;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 9px;
+      font-weight: 650;
+    }
+
+    .topbar-logout:hover {
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    .page-container {
+      width: 100%;
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .page-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
       gap: 14px;
       margin-bottom: 20px;
     }
 
-
-    .header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-
-    .header h1 {
+    .page-heading h2 {
       margin: 0;
-      font-size: 24px;
-      font-weight: 800;
-    }
-
-
-    .header p {
-      margin: 4px 0 0;
-      opacity: 0.7;
-    }
-
-
-    .logo {
-      font-size: 36px;
-    }
-
-
-    /* ========================================================
-       MENU BUTTON
-    ======================================================== */
-
-    .menu-button {
-      width: 46px;
-      height: 46px;
-
-      border: 0;
-      border-radius: 12px;
-
-      background: #111827;
-      color: white;
-
       font-size: 23px;
-
-      cursor: pointer;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-weight: 850;
+      letter-spacing: -0.4px;
     }
 
-
-    .menu-button:hover {
-      opacity: 0.85;
+    .page-heading p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
     }
 
-
-    /* ========================================================
-       SIDE MENU
-    ======================================================== */
-
-    .side-menu-overlay {
-      position: fixed;
-      inset: 0;
-
-      background: rgba(0,0,0,0.45);
-
-      opacity: 0;
-      visibility: hidden;
-
-      transition: 0.25s;
-
-      z-index: 9998;
+    .date-badge {
+      flex: 0 0 auto;
+      padding: 8px 12px;
+      color: #1d4ed8;
+      background: #dbeafe;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 750;
     }
 
+    /* =====================================================
+       THỐNG KÊ
+    ===================================================== */
 
-    .side-menu-overlay.show {
-      opacity: 1;
-      visibility: visible;
-    }
-
-
-    .side-menu {
-      position: fixed;
-
-      top: 0;
-      left: 0;
-
-      width: 310px;
-      max-width: 85vw;
-      height: 100vh;
-
-      background: white;
-
-      transform: translateX(-100%);
-
-      transition: 0.3s;
-
-      z-index: 9999;
-
-      box-shadow:
-        8px 0 30px rgba(0,0,0,0.18);
-
-      padding: 20px;
-    }
-
-
-    .side-menu.open {
-      transform: translateX(0);
-    }
-
-
-    .side-menu-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      margin-bottom: 25px;
-    }
-
-
-    .side-menu-header h2 {
-      margin: 0;
-      font-size: 20px;
-    }
-
-
-    .side-menu-close {
-      border: 0;
-      background: transparent;
-
-      font-size: 25px;
-
-      cursor: pointer;
-    }
-
-
-    .side-menu button {
-      width: 100%;
-
-      padding: 14px;
-
-      margin-bottom: 10px;
-
-      border: 0;
-      border-radius: 10px;
-
-      text-align: left;
-
-      font-size: 15px;
-      font-weight: 700;
-
-      cursor: pointer;
-    }
-
-
-    #menuReportsBtn {
-      background: #eef2ff;
-      color: #3730a3;
-    }
-
-
-    #menuLogoutBtn {
-      background: #fee2e2;
-      color: #b91c1c;
-    }
-
-
-    /* ========================================================
-       LOGIN
-    ======================================================== */
-
-    #loginBox {
-      max-width: 480px;
-      margin: 20px auto;
-    }
-
-
-    .login-form {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-
-    .login-form label {
-      font-weight: 700;
-    }
-
-
-    .login-form input {
-      width: 100%;
-
-      padding: 13px 14px;
-
-      border: 1px solid #d1d5db;
-
-      border-radius: 10px;
-
-      font-size: 16px;
-    }
-
-
-    #loginBtn {
-      width: 100%;
-
-      padding: 13px;
-
-      border: 0;
-      border-radius: 10px;
-
-      background: #2563eb;
-      color: white;
-
-      font-size: 16px;
-      font-weight: 800;
-
-      cursor: pointer;
-    }
-
-
-    #loginBtn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-
-    #loginMessage {
-      margin-top: 12px;
-      font-weight: 700;
-    }
-
-
-    /* ========================================================
-       STATS
-    ======================================================== */
-
-    .stats {
+    .stats-grid {
       display: grid;
-
-      grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-      gap: 15px;
-
-      margin-bottom: 22px;
-    }
-
-
-    .stat-box {
-      padding: 20px;
-
-      border-radius: 14px;
-
-      background: #f8fafc;
-
-      border: 1px solid #e5e7eb;
-    }
-
-
-    .stat-title {
-      font-size: 14px;
-      opacity: 0.7;
-      margin-bottom: 6px;
-    }
-
-
-    .stat-value {
-      font-size: 25px;
-      font-weight: 900;
-    }
-
-
-    /* ========================================================
-       SECTION TITLE
-    ======================================================== */
-
-    .section-title {
-      margin: 18px 0 10px;
-
-      font-size: 18px;
-      font-weight: 900;
-    }
-
-
-    /* ========================================================
-       FILTER
-    ======================================================== */
-
-    .filters {
-      display: flex;
-
-      flex-wrap: wrap;
-
-      gap: 10px;
-
-      align-items: center;
-
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
       margin-bottom: 20px;
     }
 
-
-    .filters label {
-      font-weight: 700;
+    .stat-card {
+      position: relative;
+      min-width: 0;
+      padding: 20px;
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
     }
 
-
-    .filters input {
-      min-height: 42px;
-
-      padding: 9px 11px;
-
-      border:
-        1px solid #d1d5db;
-
-      border-radius: 9px;
-
-      font-size: 14px;
+    .stat-card::after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--primary);
+      content: "";
     }
 
+    .stat-card.stat-green::after {
+      background: #16a34a;
+    }
 
-    .filters button {
-      min-height: 42px;
+    .stat-card.stat-purple::after {
+      background: #7c3aed;
+    }
 
-      padding:
-        9px 14px;
+    .stat-label {
+      margin-bottom: 9px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 650;
+    }
 
-      border: 0;
+    .stat-value {
+      overflow-wrap: anywhere;
+      color: #0f172a;
+      font-size: clamp(23px, 3vw, 31px);
+      font-weight: 850;
+      line-height: 1.2;
+    }
 
-      border-radius: 9px;
+    .stat-description {
+      margin-top: 8px;
+      color: #94a3b8;
+      font-size: 11px;
+    }
 
+    /* =====================================================
+       THẺ NỘI DUNG
+    ===================================================== */
+
+    .panel {
+      margin-bottom: 20px;
+      padding: 22px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .panel-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .panel-heading h3 {
+      margin: 0;
+      font-size: 16px;
       font-weight: 800;
-
-      cursor: pointer;
     }
 
-
-    .filters button:disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
+    .panel-heading p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 12px;
     }
 
+    /* =====================================================
+       BỘ LỌC
+    ===================================================== */
 
-    /* ========================================================
-       BUTTON COLORS
-    ======================================================== */
-
-    .danger {
-      background: #dc2626 !important;
-      color: white !important;
+    .filters-grid {
+      display: grid;
+      grid-template-columns:
+        minmax(160px, 1fr)
+        minmax(160px, 1fr)
+        auto auto;
+      gap: 12px;
+      align-items: end;
     }
 
+    .filter-field {
+      display: grid;
+      gap: 7px;
+      min-width: 0;
+    }
 
+    .filter-field label {
+      color: #334155;
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .filters-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      min-height: 40px;
+      padding: 10px 15px;
+      border: 1px solid transparent;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 750;
+      text-align: center;
+      white-space: normal;
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: var(--primary);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      color: #334155;
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    .btn-green,
     .green {
-      background: #16a34a !important;
-      color: white !important;
+      color: #fff !important;
+      background: #15803d !important;
     }
 
-
-    .gray {
-      background: #64748b !important;
-      color: white !important;
+    .btn-green:hover,
+    .green:hover {
+      background: #166534 !important;
     }
 
-
-    #exportBtn {
-      background: #2563eb;
-      color: white;
+    .btn-month {
+      color: #fff;
+      background: linear-gradient(135deg, #0f766e, #059669);
     }
 
-
-    /* ========================================================
-       DELETE ALL
-    ======================================================== */
-
-    #deleteAllBtn {
-      background: #991b1b;
-
-      color: white;
-
-      border: 0;
-
-      font-weight: 900;
-
-      box-shadow:
-        0 3px 10px rgba(153,27,27,0.25);
+    .btn-month:hover {
+      background: linear-gradient(135deg, #115e59, #047857);
     }
 
-
-    #deleteAllBtn:hover {
-      background: #7f1d1d;
+    .btn-danger {
+      color: #fff;
+      background: #dc2626;
     }
 
+    .btn-danger:hover {
+      background: #b91c1c;
+    }
 
-    /* ========================================================
-       TABLE
-    ======================================================== */
+    .btn-outline-danger {
+      color: #b91c1c;
+      background: #fff;
+      border-color: #fecaca;
+    }
 
-    .table-wrap {
-      width: 100%;
+    .btn-outline-danger:hover {
+      background: #fef2f2;
+    }
 
-      overflow-x: auto;
+    /* =====================================================
+       DANH SÁCH CÁN BỘ
+    ===================================================== */
 
-      border:
-        1px solid #e5e7eb;
-
+    .submitted-users-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 18px;
+      background: linear-gradient(110deg, #eff6ff, #f0fdf4);
+      border: 1px solid #bfdbfe;
       border-radius: 12px;
-
-      background: white;
     }
 
+    .submitted-users-title {
+      margin: 0;
+      color: #1e3a8a;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .submitted-users-subtitle {
+      margin: 4px 0 0;
+      color: #64748b;
+      font-size: 12px;
+    }
+
+    .submitted-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 34px;
+      height: 34px;
+      padding: 0 10px;
+      color: #fff;
+      background: #2563eb;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 850;
+    }
+
+    /* =====================================================
+       BẢNG
+    ===================================================== */
+
+    .table-panel {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .table-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 20px 22px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .table-panel-header h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .table-panel-header p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .table-scroll {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
 
     table {
       width: 100%;
-
-      min-width: 1450px;
-
-      border-collapse: collapse;
+      min-width: 1250px;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 12px;
     }
 
-
-    th,
-    td {
-      padding:
-        11px 10px;
-
-      border-bottom:
-        1px solid #e5e7eb;
-
-      text-align: left;
-
-      vertical-align: top;
-
-      font-size: 14px;
-    }
-
-
-    th {
-      background: #f1f5f9;
-
-      font-weight: 900;
-
-      white-space: nowrap;
-
+    thead th {
       position: sticky;
       top: 0;
-
-      z-index: 1;
+      z-index: 2;
+      padding: 13px 12px;
+      color: #334155;
+      background: #f1f5f9;
+      border-bottom: 1px solid #cbd5e1;
+      font-size: 11px;
+      font-weight: 850;
+      text-align: left;
+      white-space: nowrap;
     }
 
+    tbody td {
+      max-width: 300px;
+      padding: 12px;
+      vertical-align: top;
+      border-bottom: 1px solid #edf2f7;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+    }
 
     tbody tr:hover {
       background: #f8fafc;
     }
 
-
-    .detail-cell {
-      min-width: 220px;
-
-      white-space: pre-wrap;
-
-      word-break: break-word;
+    tbody tr:last-child td {
+      border-bottom: none;
     }
 
-
-    .money-cell {
-      text-align: right;
-
+    .action-buttons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
       white-space: nowrap;
-
-      font-weight: 700;
     }
-
-
-    .action-cell {
-      white-space: nowrap;
-
-      width: 90px;
-    }
-
-
-    /* ========================================================
-       ACTION BUTTONS
-    ======================================================== */
 
     .edit-btn,
     .delete-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       width: 34px;
       height: 34px;
-
-      padding: 0;
-
-      border: 0;
-
+      border: 1px solid transparent;
       border-radius: 8px;
-
-      cursor: pointer;
-
-      margin-right: 4px;
-
-      font-size: 16px;
+      font-size: 15px;
     }
-
 
     .edit-btn {
       background: #dbeafe;
+      border-color: #bfdbfe;
     }
 
+    .edit-btn:hover {
+      background: #bfdbfe;
+    }
 
     .delete-btn {
       background: #fee2e2;
+      border-color: #fecaca;
     }
 
-
-    .edit-btn:hover,
     .delete-btn:hover {
-      transform: scale(1.05);
+      background: #fecaca;
     }
 
-
-    /* ========================================================
-       EMPTY
-    ======================================================== */
-
-    .empty-row {
-      text-align: center;
-
-      padding: 40px !important;
-
-      color: #64748b;
-
-      font-weight: 700;
-    }
-
-
-    /* ========================================================
-       MESSAGE
-    ======================================================== */
-
-    #managerMessage {
-      margin-top: 15px;
-
-      padding: 10px;
-
-      font-weight: 700;
-    }
-
-
-    /* ========================================================
-       PAGINATION
-    ======================================================== */
+    /* =====================================================
+       PHÂN TRANG
+    ===================================================== */
 
     #pagination {
-      margin-top: 18px;
-    }
-
-
-    .pagination-wrap {
       display: flex;
-
-      justify-content: center;
-
       align-items: center;
-
-      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 18px;
+      border-top: 1px solid var(--border);
     }
 
-
-    .pagination-wrap button {
-      border: 0;
-
-      padding:
-        9px 14px;
-
+    #pagination button {
+      min-width: 82px;
+      padding: 9px 13px;
+      color: #1d4ed8;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
       border-radius: 8px;
-
-      background: #e2e8f0;
-
-      font-weight: 800;
-
-      cursor: pointer;
-    }
-
-
-    .pagination-wrap button:disabled {
-      opacity: 0.45;
-
-      cursor: not-allowed;
-    }
-
-
-    .page-info {
-      font-weight: 800;
-    }
-
-
-    /* ========================================================
-       MODAL
-    ======================================================== */
-
-    .modal-overlay {
-      position: fixed;
-
-      inset: 0;
-
-      background:
-        rgba(0,0,0,0.5);
-
-      z-index: 10000;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      padding: 20px;
-
-      overflow-y: auto;
-    }
-
-
-    .edit-modal,
-    .submitted-modal {
-      width: 100%;
-
-      max-width: 700px;
-
-      background: white;
-
-      border-radius: 16px;
-
-      box-shadow:
-        0 20px 60px
-        rgba(0,0,0,0.25);
-
-      overflow: hidden;
-    }
-
-
-    .edit-modal-header,
-    .submitted-modal-header {
-      display: flex;
-
-      justify-content: space-between;
-
-      align-items: flex-start;
-
-      padding: 18px 20px;
-
-      border-bottom:
-        1px solid #e5e7eb;
-    }
-
-
-    .edit-modal-header h2,
-    .submitted-modal-header h2 {
-      margin: 0;
-
-      font-size: 20px;
-    }
-
-
-    .edit-modal-header p,
-    .submitted-modal-header p {
-      margin: 5px 0 0;
-
-      color: #64748b;
-    }
-
-
-    .modal-close {
-      border: 0;
-
-      background: transparent;
-
-      font-size: 23px;
-
-      cursor: pointer;
-    }
-
-
-    /* ========================================================
-       EDIT FORM
-    ======================================================== */
-
-    .edit-form {
-      display: grid;
-
-      grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-      gap: 14px;
-
-      padding: 20px;
-
-      max-height: 65vh;
-
-      overflow-y: auto;
-    }
-
-
-    .edit-form label {
-      display: flex;
-
-      flex-direction: column;
-
-      gap: 6px;
-
-      font-weight: 800;
-    }
-
-
-    .edit-form input,
-    .edit-form select,
-    .edit-form textarea {
-      width: 100%;
-
-      padding: 10px 11px;
-
-      border:
-        1px solid #d1d5db;
-
-      border-radius: 9px;
-
-      font-family: inherit;
-
-      font-size: 14px;
-
-      font-weight: 400;
-    }
-
-
-    .edit-form textarea {
-      resize: vertical;
-    }
-
-
-    .edit-modal-footer {
-      display: flex;
-
-      justify-content: flex-end;
-
-      gap: 10px;
-
-      padding: 15px 20px;
-
-      border-top:
-        1px solid #e5e7eb;
-    }
-
-
-    .edit-modal-footer button {
-      border: 0;
-
-      border-radius: 9px;
-
-      padding:
-        11px 15px;
-
-      font-weight: 800;
-
-      cursor: pointer;
-    }
-
-
-    .save-edit-btn {
-      background: #16a34a;
-
-      color: white;
-    }
-
-
-    /* ========================================================
-       SUBMITTED USERS
-    ======================================================== */
-
-    .submitted-user-list {
-      max-height: 60vh;
-
-      overflow-y: auto;
-
-      padding: 15px 20px;
-    }
-
-
-    .submitted-user-item {
-      display: flex;
-
-      align-items: center;
-
-      gap: 10px;
-
-      padding: 12px 0;
-
-      border-bottom:
-        1px solid #e5e7eb;
-    }
-
-
-    .submitted-number {
-      width: 30px;
-
-      font-weight: 900;
-
-      color: #64748b;
-    }
-
-
-    .submitted-user-name {
-      flex: 1;
-
-      font-weight: 800;
-    }
-
-
-    .submitted-count {
-      font-size: 13px;
-
-      color: #64748b;
-    }
-
-
-    .submitted-empty {
-      padding: 35px;
-
-      text-align: center;
-
-      color: #64748b;
-
       font-weight: 700;
     }
 
+    #pagination button:hover:not(:disabled) {
+      background: #dbeafe;
+    }
 
-    /* ========================================================
-       MOBILE
-    ======================================================== */
+    #pagination button:disabled {
+      color: #94a3b8;
+      background: #f8fafc;
+    }
 
-    @media (max-width: 700px) {
+    #pagination span {
+      color: #475569;
+      font-size: 12px;
+      font-weight: 700;
+    }
 
-      .header h1 {
-        font-size: 18px;
+    /* =====================================================
+       MENU BÊN
+    ===================================================== */
+
+    #sideMenuOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1998;
+      visibility: hidden;
+      background: rgba(15, 23, 42, 0.45);
+      opacity: 0;
+      transition:
+        opacity 0.2s ease,
+        visibility 0.2s ease;
+    }
+
+    #sideMenuOverlay.open {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    #sideMenu {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1999;
+      display: flex;
+      flex-direction: column;
+      width: min(300px, 85vw);
+      padding: 20px;
+      background: #fff;
+      box-shadow: 12px 0 35px rgba(15, 23, 42, 0.12);
+      transform: translateX(-105%);
+      transition: transform 0.25s ease;
+    }
+
+    #sideMenu.open {
+      transform: translateX(0);
+    }
+
+    .side-menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .side-menu-header h3 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    #sideMenuClose {
+      width: 36px;
+      height: 36px;
+      color: #475569;
+      background: #f1f5f9;
+      border: none;
+      border-radius: 9px;
+      font-size: 22px;
+    }
+
+    .side-menu-content {
+      display: grid;
+      gap: 9px;
+      margin-top: 20px;
+    }
+
+    .side-menu-item {
+      width: 100%;
+      padding: 12px 14px;
+      color: #334155;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      text-align: left;
+      font-weight: 700;
+    }
+
+    .side-menu-item:hover {
+      color: #1d4ed8;
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+
+    .side-menu-item.danger {
+      margin-top: 5px;
+      color: #b91c1c;
+      background: #fef2f2;
+      border-color: #fecaca;
+    }
+
+    .side-menu-footer {
+      margin-top: auto;
+      padding-top: 20px;
+      color: #94a3b8;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    /* =====================================================
+       CHÂN TRANG
+    ===================================================== */
+
+    .page-footer {
+      padding: 18px 10px 8px;
+      color: #64748b;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .page-footer strong {
+      color: #15803d;
+    }
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media (max-width: 900px) {
+      .page-container {
+        padding: 18px;
       }
 
-
-      .header p {
-        font-size: 12px;
+      .filters-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-
-      .logo {
-        font-size: 28px;
+      .stats-grid {
+        gap: 12px;
       }
 
+      .stat-card {
+        padding: 16px;
+      }
+    }
 
-      .stats {
+    @media (max-width: 600px) {
+      body {
+        font-size: 13px;
+      }
+
+      .topbar {
+        padding: 10px 12px;
+      }
+
+      .topbar-left {
+        gap: 9px;
+      }
+
+      .menu-toggle {
+        width: 38px;
+        height: 38px;
+      }
+
+      .brand-title {
+        font-size: 14px;
+      }
+
+      .brand-subtitle {
+        font-size: 10px;
+      }
+
+      .topbar-logout {
+        padding: 8px;
+        font-size: 11px;
+      }
+
+      .page-container {
+        padding: 13px;
+      }
+
+      .page-heading {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .page-heading h2 {
+        font-size: 20px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .stat-card {
+        padding: 15px 17px;
+      }
+
+      .stat-value {
+        font-size: 25px;
+      }
+
+      .panel {
+        padding: 15px;
+      }
+
+      .filters-grid {
         grid-template-columns: 1fr;
       }
 
-
-      .filters {
-        flex-direction: column;
-
-        align-items: stretch;
-      }
-
-
-      .filters label {
-        margin-top: 5px;
-      }
-
-
-      .filters input,
-      .filters button {
-        width: 100%;
-      }
-
-
-      .edit-form {
+      .filters-buttons {
+        display: grid;
         grid-template-columns: 1fr;
       }
 
-
-      .edit-modal-footer {
-        flex-direction: column;
-      }
-
-
-      .edit-modal-footer button {
+      .filters-buttons .btn {
         width: 100%;
       }
 
-
-      .submitted-user-item {
+      .submitted-users-card {
         align-items: flex-start;
+        padding: 13px;
       }
 
+      .table-panel-header {
+        padding: 16px;
+      }
+
+      .login-card {
+        padding: 23px 19px;
+      }
+
+      .login-card h1 {
+        font-size: 20px;
+      }
     }
-
-
-    #logoutBtn {
-      display: none !important;
-    }
-
   </style>
-
 </head>
-
 
 <body>
 
+  <!-- =====================================================
+       1. ĐĂNG NHẬP
+  ====================================================== -->
+  <section id="loginBox">
+    <div class="login-card">
 
-  <!-- ======================================================
-       SIDE MENU OVERLAY
-  ======================================================= -->
+      <div class="login-logo">BC</div>
 
-  <div
-    id="sideMenuOverlay"
-    class="side-menu-overlay">
-  </div>
+      <h1>QUẢN LÝ BÁO CÁO NGÀY</h1>
 
+      <p class="login-subtitle">
+        Đăng nhập để xem và quản lý dữ liệu báo cáo
+      </p>
 
-  <!-- ======================================================
-       SIDE MENU
-  ======================================================= -->
+      <form class="login-form" id="loginForm">
 
-  <aside
-    id="sideMenu"
-    class="side-menu">
+        <div class="form-group">
+          <label for="loginId">Gmail đăng nhập</label>
+          <input
+            id="loginId"
+            name="email"
+            type="email"
+            placeholder="Nhập Gmail của bạn"
+            autocomplete="username"
+            required
+          >
+        </div>
 
-    <div class="side-menu-header">
+        <div class="form-group">
+          <label for="password">Mật khẩu</label>
 
-      <h2>
-        ☰ MENU
-      </h2>
+          <div style="position:relative;">
+            <input
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Nhập mật khẩu"
+              autocomplete="current-password"
+              required
+              style="padding-right:48px;"
+            >
 
-      <button
-        id="sideMenuClose"
-        class="side-menu-close"
-        type="button">
-        ✕
-      </button>
+            <button
+              id="togglePassword"
+              type="button"
+              aria-label="Hiện hoặc ẩn mật khẩu"
+              aria-pressed="false"
+              style="
+                position:absolute;
+                top:50%;
+                right:8px;
+                transform:translateY(-50%);
+                width:34px;
+                height:34px;
+                border:0;
+                border-radius:7px;
+                background:#f1f5f9;
+                cursor:pointer;
+              "
+            >👁</button>
+          </div>
+        </div>
+
+        <button
+          id="loginBtn"
+          class="login-submit"
+          type="submit"
+        >
+          ĐĂNG NHẬP
+        </button>
+
+      </form>
+
+      <div
+        id="loginMessage"
+        class="message"
+        role="status"
+        aria-live="polite"
+      ></div>
+
+      <p class="login-security">
+        Dữ liệu được lưu trên hệ thống và truy cập bằng tài khoản được cấp quyền.
+      </p>
 
     </div>
+  </section>
 
+  <!-- =====================================================
+       2. TRANG QUẢN LÝ
+  ====================================================== -->
+  <main id="managerBox" style="display:none;">
 
-    <button
-      id="menuReportsBtn"
-      type="button">
+    <!-- HEADER -->
+    <header class="topbar">
 
-      📊 Quản lý báo cáo
-
-    </button>
-
-
-    <button
-      id="menuLogoutBtn"
-      type="button">
-
-      🚪 Đăng xuất
-
-    </button>
-
-  </aside>
-
-
-  <!-- ======================================================
-       MAIN
-  ======================================================= -->
-
-  <main class="container manager-card">
-
-    <section class="card">
-
-
-      <!-- ==================================================
-           HEADER
-      =================================================== -->
-
-      <div class="manager-header">
+      <div class="topbar-left">
 
         <button
           id="menuBtn"
-          class="menu-button"
-          type="button">
+          class="menu-toggle"
+          type="button"
+          aria-label="Mở menu"
+          aria-controls="sideMenu"
+          aria-expanded="false"
+        >☰</button>
 
-          ☰
-
-        </button>
-
-
-        <div class="header">
-
-          <div class="logo">
-            📊
-          </div>
-
-
-          <div>
-
-            <h1>
-              QUẢN LÝ BÁO CÁO NGÀY
-            </h1>
-
-            <p>
-              Theo dõi và xuất báo cáo
-            </p>
-
-          </div>
-
+        <div style="min-width:0;">
+          <h1 class="brand-title">BÁO CÁO NGÀY</h1>
+          <p class="brand-subtitle">Trang quản lý dữ liệu</p>
         </div>
 
       </div>
 
+      <button
+        id="logoutBtn"
+        class="topbar-logout"
+        type="button"
+      >
+        Đăng xuất
+      </button>
 
-      <!-- ==================================================
-           LOGIN
-      =================================================== -->
+    </header>
 
-      <div
-        id="loginBox">
+    <!-- MENU BÊN -->
+    <div id="sideMenuOverlay"></div>
 
-        <div class="login-form">
+    <aside
+      id="sideMenu"
+      aria-label="Menu quản lý"
+    >
 
-          <label>
-            Email quản lý
-          </label>
+      <div class="side-menu-header">
+        <h3>Menu quản lý</h3>
 
-          <input
-            id="loginId"
-            type="email"
-            placeholder="Nhập email"
-            autocomplete="username"
-          >
+        <button
+          id="sideMenuClose"
+          type="button"
+          aria-label="Đóng menu"
+        >×</button>
+      </div>
 
+      <nav class="side-menu-content">
 
-          <label>
-            Mật khẩu
-          </label>
+        <button
+          id="menuReportsBtn"
+          class="side-menu-item"
+          type="button"
+        >
+          📊 Quản lý báo cáo
+        </button>
 
-          <input
-            id="password"
-            type="password"
-            placeholder="Nhập mật khẩu"
-            autocomplete="current-password"
-          >
+        <button
+          id="menuLogoutBtn"
+          class="side-menu-item danger"
+          type="button"
+        >
+          🚪 Đăng xuất
+        </button>
 
+      </nav>
 
-          <button
-            id="loginBtn"
-            type="button">
+      <div class="side-menu-footer">
+        Hệ thống quản lý báo cáo
+      </div>
 
-            🔐 ĐĂNG NHẬP
+    </aside>
 
-          </button>
+    <!-- NỘI DUNG -->
+    <div class="page-container">
 
+      <!-- TIÊU ĐỀ -->
+      <section class="page-heading">
+
+        <div>
+          <h2>Quản lý báo cáo</h2>
+
+          <p>
+            Theo dõi báo cáo field, số tiền dự kiến và hoạt động của cán bộ.
+          </p>
+        </div>
+
+        <div class="date-badge">
+          📅 Múi giờ Việt Nam
+        </div>
+
+      </section>
+
+      <!-- THỐNG KÊ -->
+      <section class="stats-grid">
+
+        <article class="stat-card">
+
+          <div class="stat-label">
+            TỔNG SỐ BÁO CÁO ĐANG XEM
+          </div>
 
           <div
-            id="loginMessage">
+            id="totalReports"
+            class="stat-value"
+          >0</div>
+
+          <div class="stat-description">
+            Theo ngày và bộ lọc hiện tại
+          </div>
+
+        </article>
+
+        <article class="stat-card stat-green">
+
+          <div class="stat-label">
+            TỔNG SỐ TIỀN DỰ KIẾN
+          </div>
+
+          <div
+            id="totalAmount"
+            class="stat-value"
+          >0</div>
+
+          <div class="stat-description">
+            Đơn vị: VNĐ
+          </div>
+
+        </article>
+
+        <article class="stat-card stat-purple">
+
+          <div class="stat-label">
+            CÁN BỘ ĐÃ NHẬP BÁO CÁO
+          </div>
+
+          <div
+            id="submittedUserCount"
+            class="stat-value"
+          >0</div>
+
+          <div class="stat-description">
+            Đếm theo ngày, không phân biệt hoa/thường
+          </div>
+
+        </article>
+
+      </section>
+
+      <!-- BỘ LỌC -->
+      <section class="panel">
+
+        <div class="panel-heading">
+
+          <div>
+            <h3>Bộ lọc dữ liệu</h3>
+
+            <p>
+              Để trống ngày sẽ xem báo cáo của hôm nay.
+            </p>
           </div>
 
         </div>
 
-      </div>
+        <div class="filters-grid">
 
+          <div class="filter-field">
 
-      <!-- ==================================================
-           MANAGER
-      =================================================== -->
+            <label for="filterUser">
+              User cán bộ
+            </label>
 
-      <div
-        id="managerBox"
-        style="display:none;">
-
-
-        <!-- Hidden logout -->
-        <button
-          id="logoutBtn"
-          class="danger"
-          type="button">
-
-          🚪 ĐĂNG XUẤT
-
-        </button>
-
-
-        <!-- ==================================================
-             STATS
-        =================================================== -->
-
-        <div class="stats">
-
-
-          <div class="stat-box">
-
-            <div class="stat-title">
-              Tổng số báo cáo
-            </div>
-
-            <div
-              id="totalReports"
-              class="stat-value">
-              0
-            </div>
+            <input
+              id="filterUser"
+              type="text"
+              placeholder="Nhập user cần tìm"
+              autocomplete="off"
+            >
 
           </div>
 
+          <div class="filter-field">
 
-          <div class="stat-box">
+            <label for="filterDate">
+              Ngày báo cáo
+            </label>
 
-            <div class="stat-title">
-              Tổng dự thu
-            </div>
-
-            <div
-              id="totalAmount"
-              class="stat-value">
-              0 đ
-            </div>
+            <input
+              id="filterDate"
+              type="date"
+            >
 
           </div>
-
-
-        </div>
-
-
-        <!-- ==================================================
-             FILTER
-        =================================================== -->
-
-        <div class="section-title">
-          🔎 BỘ LỌC
-        </div>
-
-
-        <div class="filters">
-
-
-          <label for="filterUser">
-            Lọc theo cán bộ
-          </label>
-
-
-          <input
-            id="filterUser"
-            type="text"
-            placeholder="Nhập tên user cán bộ"
-          >
-
-
-          <label for="filterDate">
-            Lọc theo ngày field
-          </label>
-
-
-          <input
-            id="filterDate"
-            type="date"
-          >
-
 
           <button
             id="filterBtn"
-            class="gray"
-            type="button">
-
+            class="btn btn-primary"
+            type="button"
+          >
             🔎 LỌC DỮ LIỆU
-
           </button>
-
 
           <button
             id="refreshBtn"
-            class="green"
-            type="button">
-
-            🔄 LÀM MỚI
-
+            class="btn btn-secondary"
+            type="button"
+          >
+            ↻ LÀM MỚI
           </button>
-
-
-          <button
-            id="exportBtn"
-            type="button">
-
-            📥 XUẤT EXCEL
-
-          </button>
-
-
-          <button
-            id="showSubmittedUsersBtn"
-            class="gray"
-            type="button">
-
-            👥 CÁN BỘ ĐÃ NHẬP BÁO CÁO
-            (<span id="submittedUserCount">0</span>)
-
-          </button>
-
-
-          <!-- =================================================
-               XÓA TOÀN BỘ
-          ================================================== -->
-
-          <button
-            id="deleteAllBtn"
-            class="danger"
-            type="button">
-
-            🗑️ XÓA TẤT CẢ
-
-          </button>
-
 
         </div>
 
+        <div class="filters-buttons">
 
-        <!-- ==================================================
-             TABLE
-        =================================================== -->
+          <button
+            id="exportBtn"
+            class="btn btn-green"
+            type="button"
+          >
+            📥 XUẤT EXCEL
+          </button>
 
-        <div class="table-wrap">
+          <button
+            id="exportMonthBtn"
+            class="btn btn-month"
+            type="button"
+          >
+            📅 XUẤT BÁO CÁO THÁNG
+          </button>
+
+          <button
+            id="showSubmittedUsersBtn"
+            class="btn btn-secondary"
+            type="button"
+          >
+            👥 DANH SÁCH CÁN BỘ
+          </button>
+
+          <button
+            id="deleteAllBtn"
+            class="btn btn-outline-danger"
+            type="button"
+          >
+            🗑️ XÓA TOÀN BỘ BÁO CÁO
+          </button>
+
+        </div>
+
+        <div
+          id="managerMessage"
+          class="message"
+          role="status"
+          aria-live="polite"
+        ></div>
+
+      </section>
+
+      <!-- DANH SÁCH CÁN BỘ -->
+      <section class="panel">
+
+        <div class="submitted-users-card">
+
+          <div>
+            <h3 class="submitted-users-title">
+              Cán bộ đã nhập báo cáo
+            </h3>
+
+            <p class="submitted-users-subtitle">
+              Xem danh sách cán bộ theo ngày đang chọn.
+            </p>
+          </div>
+
+          <button
+            id="showSubmittedUsersBtnDuplicate"
+            class="btn btn-primary"
+            type="button"
+            style="display:none;"
+            aria-hidden="true"
+            tabindex="-1"
+          >Xem danh sách</button>
+
+          <div
+            class="submitted-count"
+            id="submittedUserCountDisplay"
+            aria-hidden="true"
+          >0</div>
+
+        </div>
+
+      </section>
+
+      <!-- BẢNG BÁO CÁO -->
+      <section class="panel table-panel">
+
+        <div class="table-panel-header">
+
+          <div>
+            <h3>Danh sách báo cáo</h3>
+
+            <p>
+              Bấm biểu tượng sửa hoặc xóa tại từng dòng để thao tác.
+              Trên điện thoại có thể vuốt ngang bảng.
+            </p>
+          </div>
+
+        </div>
+
+        <div class="table-scroll">
 
           <table>
 
             <thead>
-
               <tr>
-
-                <th>
-                  Cán bộ
-                </th>
-
-                <th>
-                  Ngày field
-                </th>
-
-                <th>
-                  Số CIF
-                </th>
-
-                <th>
-                  Tên khách hàng
-                </th>
-
-                <th>
-                  Kết quả
-                </th>
-
-                <th>
-                  Kết nối
-                </th>
-
-                <th>
-                  Kết quả chi tiết
-                </th>
-
-                <th>
-                  Dự thu
-                </th>
-
-                <th>
-                  Hướng tác động tiếp theo
-                </th>
-
-                <th>
-                  Thao tác
-                </th>
-
+                <th>User cán bộ</th>
+                <th>Ngày báo cáo</th>
+                <th>CIF</th>
+                <th>Tên khách hàng</th>
+                <th>Kết quả</th>
+                <th>Kết nối</th>
+                <th>Chi tiết</th>
+                <th>Số tiền dự kiến</th>
+                <th>Hành động tiếp theo</th>
+                <th>Thao tác</th>
               </tr>
-
             </thead>
 
-
             <tbody id="tableBody">
+
+              <tr>
+                <td
+                  colspan="10"
+                  style="text-align:center;padding:30px;color:#64748b;"
+                >
+                  Vui lòng đăng nhập để xem dữ liệu.
+                </td>
+              </tr>
 
             </tbody>
 
@@ -1341,64 +1408,130 @@
 
         </div>
 
-
-        <!-- ==================================================
-             PAGINATION
-        =================================================== -->
-
         <div
-          id="pagination">
+          id="pagination"
+          aria-label="Phân trang"
+        ></div>
+
+      </section>
+
+      <!-- CHÂN TRANG -->
+      <footer class="page-footer">
+        <strong>🔒 Dữ liệu được lưu bảo mật trên hệ thống.</strong>
+        <div style="margin-top:5px;">
+          Trang quản lý Báo Cáo Ngày
         </div>
+      </footer>
 
-
-        <!-- ==================================================
-             MESSAGE
-        =================================================== -->
-
-        <div
-          id="managerMessage">
-        </div>
-
-
-      </div>
-
-    </section>
-
+    </div>
   </main>
 
+  <!-- =====================================================
+       3. THƯ VIỆN
+       Giữ config.js để lấy thông tin Supabase hiện tại.
+  ====================================================== -->
 
-  <!-- ======================================================
-       SUPABASE
-  ======================================================= -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-  </script>
-
-
-  <!-- ======================================================
-       XLSX
-  ======================================================= -->
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js">
-  </script>
-
-
-  <!-- ======================================================
-       CONFIG
-  ======================================================= -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
 
   <script src="config.js"></script>
 
-
-  <!-- ======================================================
-       MANAGER JS
-  ======================================================= -->
-
   <script src="manager.js"></script>
 
+  <!-- =====================================================
+       4. TIỆN ÍCH GIAO DIỆN
+  ====================================================== -->
+
+  <script>
+    (() => {
+      "use strict";
+
+      // Ngăn form đăng nhập tải lại trang.
+      const loginForm = document.getElementById("loginForm");
+
+      loginForm?.addEventListener("submit", event => {
+        event.preventDefault();
+
+        document.getElementById("loginBtn")?.click();
+      });
+
+      // Hiện / ẩn mật khẩu.
+      const togglePassword = document.getElementById("togglePassword");
+      const passwordInput = document.getElementById("password");
+
+      togglePassword?.addEventListener("click", () => {
+        if (!passwordInput) return;
+
+        const isHidden = passwordInput.type === "password";
+
+        passwordInput.type = isHidden ? "text" : "password";
+        togglePassword.textContent = isHidden ? "🙈" : "👁";
+        togglePassword.setAttribute(
+          "aria-pressed",
+          String(isHidden)
+        );
+        togglePassword.setAttribute(
+          "aria-label",
+          isHidden ? "Ẩn mật khẩu" : "Hiện mật khẩu"
+        );
+      });
+
+      // Đồng bộ số cán bộ hiển thị ở hai vị trí.
+      const submittedCount = document.getElementById("submittedUserCount");
+      const submittedCountDisplay =
+        document.getElementById("submittedUserCountDisplay");
+
+      if (submittedCount && submittedCountDisplay) {
+        const observer = new MutationObserver(() => {
+          submittedCountDisplay.textContent =
+            submittedCount.textContent || "0";
+        });
+
+        observer.observe(submittedCount, {
+          childList: true,
+          characterData: true,
+          subtree: true
+        });
+
+        submittedCountDisplay.textContent =
+          submittedCount.textContent || "0";
+      }
+
+      // Cập nhật trạng thái mở menu để hỗ trợ bàn phím và trình đọc màn hình.
+      const menuBtn = document.getElementById("menuBtn");
+      const sideMenu = document.getElementById("sideMenu");
+      const sideMenuClose = document.getElementById("sideMenuClose");
+      const sideMenuOverlay = document.getElementById("sideMenuOverlay");
+
+      function updateMenuState() {
+        const isOpen = sideMenu?.classList.contains("open") || false;
+
+        menuBtn?.setAttribute("aria-expanded", String(isOpen));
+        sideMenu?.setAttribute("aria-hidden", String(!isOpen));
+      }
+
+      menuBtn?.addEventListener("click", () => {
+        requestAnimationFrame(updateMenuState);
+      });
+
+      sideMenuClose?.addEventListener("click", () => {
+        requestAnimationFrame(updateMenuState);
+      });
+
+      sideMenuOverlay?.addEventListener("click", () => {
+        requestAnimationFrame(updateMenuState);
+      });
+
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && sideMenu?.classList.contains("open")) {
+          sideMenuClose?.click();
+        }
+      });
+
+      updateMenuState();
+    })();
+  </script>
 
 </body>
-
 </html>
