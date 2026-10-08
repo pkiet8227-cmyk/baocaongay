@@ -1,4977 +1,1343 @@
-(() => {
 
+(() => {
   "use strict";
 
-  /* ============================================================
-
-     QUẢN LÝ BÁO CÁO NGÀY - MANAGER.JS
-
-     
-
-     LOGIC NGÀY:
-
-     - Ô lọc ngày KHÔNG tự điền ngày hiện tại.
-
-     - Ô ngày trống = hệ thống tự hiểu là NGÀY HIỆN TẠI.
-
-     - Khi đăng nhập: chỉ hiện báo cáo ngày hiện tại.
-
-     - Chọn ngày cũ + Lọc: hiện báo cáo ngày cũ.
-
-     - Làm mới: giữ ngày đang chọn.
-
-     - Nếu ô ngày trống: Làm mới sẽ hiện ngày hiện tại.
-
-     ĐẾM CÁN BỘ:
-
-     - Theo ngày đang xem.
-
-     - Không phân biệt hoa/thường.
-
-     - Bỏ khoảng trắng.
-
-     - KIETPm1 = KIETPM1 = Kietpm1 = 1 cán bộ.
-
-  ============================================================ */
-
-  /* ============================================================
-
-     1. KHỞI ĐỘNG SAU KHI HTML ĐÃ TẢI
-
-  ============================================================ */
-
   function initManager() {
-
     /* ============================================================
-
-       2. KẾT NỐI SUPABASE
-
+       1. KẾT NỐI SUPABASE
     ============================================================ */
-
-    const SUPABASE_URL =
-
-      window.SUPABASE_URL;
-
-    const SUPABASE_ANON_KEY =
-
-      window.SUPABASE_ANON_KEY;
+    const SUPABASE_URL = window.SUPABASE_URL;
+    const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY;
 
     if (!window.supabase) {
-
-      console.error(
-
-        "Không tìm thấy thư viện Supabase."
-
-      );
-
+      console.error("Không tìm thấy thư viện Supabase.");
       return;
-
     }
 
-    if (
-
-      !SUPABASE_URL ||
-
-      !SUPABASE_ANON_KEY
-
-    ) {
-
-      console.error(
-
-        "Thiếu SUPABASE_URL hoặc SUPABASE_ANON_KEY."
-
-      );
-
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+      console.error("Thiếu SUPABASE_URL hoặc SUPABASE_ANON_KEY.");
       return;
-
     }
 
-    const supabaseClient =
-
-      window.supabase.createClient(
-
-        SUPABASE_URL,
-
-        SUPABASE_ANON_KEY
-
-      );
+    const supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY
+    );
 
     /* ============================================================
-
-       3. BIẾN TOÀN CỤC
-
+       2. BIẾN DỮ LIỆU
     ============================================================ */
-
     let allData = [];
-
     let filteredData = [];
-
     let currentPage = 1;
-
     const PAGE_SIZE = 20;
 
     /* ============================================================
-
-       4. DOM
-
+       3. DOM
     ============================================================ */
+    const loginBox = document.getElementById("loginBox");
+    const managerBox = document.getElementById("managerBox");
+    const loginId = document.getElementById("loginId");
+    const password = document.getElementById("password");
+    const loginBtn = document.getElementById("loginBtn");
+    const loginMessage = document.getElementById("loginMessage");
 
-    // LOGIN
+    const logoutBtn = document.getElementById("logoutBtn");
+    const managerMessage = document.getElementById("managerMessage");
+    const totalReports = document.getElementById("totalReports");
+    const totalAmount = document.getElementById("totalAmount");
 
-    const loginBox =
+    const filterUser = document.getElementById("filterUser");
+    const filterDate = document.getElementById("filterDate");
+    const filterBtn = document.getElementById("filterBtn");
+    const refreshBtn = document.getElementById("refreshBtn");
+    const exportBtn = document.getElementById("exportBtn");
+    const exportMonthBtn = document.getElementById("exportMonthBtn");
 
-      document.getElementById("loginBox");
+    const tableBody = document.getElementById("tableBody");
+    const pagination = document.getElementById("pagination");
 
-    const managerBox =
-
-      document.getElementById("managerBox");
-
-    const loginId =
-
-      document.getElementById("loginId");
-
-    const password =
-
-      document.getElementById("password");
-
-    const loginBtn =
-
-      document.getElementById("loginBtn");
-
-    const loginMessage =
-
-      document.getElementById("loginMessage");
-
-    // MANAGER
-
-    const logoutBtn =
-
-      document.getElementById("logoutBtn");
-
-    const managerMessage =
-
-      document.getElementById("managerMessage");
-
-    const totalReports =
-
-      document.getElementById("totalReports");
-
-    const totalAmount =
-
-      document.getElementById("totalAmount");
-
-    // FILTER
-
-    const filterUser =
-
-      document.getElementById("filterUser");
-
-    const filterDate =
-
-      document.getElementById("filterDate");
-
-    const filterBtn =
-
-      document.getElementById("filterBtn");
-
-    const refreshBtn =
-
-      document.getElementById("refreshBtn");
-
-    const exportBtn =
-
-      document.getElementById("exportBtn");
-
-    // TABLE
-
-    const tableBody =
-
-      document.getElementById("tableBody");
-
-    const pagination =
-
-      document.getElementById("pagination");
-
-    // MENU
-
-    const menuBtn =
-
-      document.getElementById("menuBtn");
-
-    const sideMenu =
-
-      document.getElementById("sideMenu");
-
-    const sideMenuOverlay =
-
-      document.getElementById(
-
-        "sideMenuOverlay"
-
-      );
-
-    const sideMenuClose =
-
-      document.getElementById(
-
-        "sideMenuClose"
-
-      );
-
-    const menuReportsBtn =
-
-      document.getElementById(
-
-        "menuReportsBtn"
-
-      );
-
-    const menuLogoutBtn =
-
-      document.getElementById(
-
-        "menuLogoutBtn"
-
-      );
-
-    // CÁN BỘ
+    const menuBtn = document.getElementById("menuBtn");
+    const sideMenu = document.getElementById("sideMenu");
+    const sideMenuOverlay = document.getElementById("sideMenuOverlay");
+    const sideMenuClose = document.getElementById("sideMenuClose");
+    const menuReportsBtn = document.getElementById("menuReportsBtn");
+    const menuLogoutBtn = document.getElementById("menuLogoutBtn");
 
     const showSubmittedUsersBtn =
-
-      document.getElementById(
-
-        "showSubmittedUsersBtn"
-
-      );
-
+      document.getElementById("showSubmittedUsersBtn");
     const submittedUserCount =
-
-      document.getElementById(
-
-        "submittedUserCount"
-
-      );
-
-    // XÓA TOÀN BỘ
-
-    const deleteAllBtn =
-
-      document.getElementById(
-
-        "deleteAllBtn"
-
-      );
+      document.getElementById("submittedUserCount");
+    const deleteAllBtn = document.getElementById("deleteAllBtn");
 
     /* ============================================================
-
-       5. EVENTS
-
+       4. EVENTS
     ============================================================ */
+    loginBtn?.addEventListener("click", login);
 
-    if (loginBtn) {
+    password?.addEventListener("keydown", event => {
+      if (event.key === "Enter") login();
+    });
 
-      loginBtn.addEventListener(
+    loginId?.addEventListener("keydown", event => {
+      if (event.key === "Enter") login();
+    });
 
-        "click",
+    logoutBtn?.addEventListener("click", logout);
+    menuLogoutBtn?.addEventListener("click", logout);
 
-        login
+    filterBtn?.addEventListener("click", () => applyFilter(true));
 
-      );
+    refreshBtn?.addEventListener("click", async () => {
+      await loadData(true);
+    });
 
-    }
+    exportBtn?.addEventListener("click", exportExcel);
 
-    if (password) {
+    // NÚT MỚI: XUẤT TOÀN BỘ BÁO CÁO THÁNG HIỆN TẠI
+    exportMonthBtn?.addEventListener("click", exportCurrentMonthExcel);
 
-      password.addEventListener(
+    showSubmittedUsersBtn?.addEventListener("click", showSubmittedUsers);
+    deleteAllBtn?.addEventListener("click", deleteAllReports);
 
-        "keydown",
+    filterDate?.addEventListener("change", updateSubmittedUserCount);
 
-        (event) => {
+    menuBtn?.addEventListener("click", openSideMenu);
+    sideMenuClose?.addEventListener("click", closeSideMenu);
+    sideMenuOverlay?.addEventListener("click", closeSideMenu);
 
-          if (event.key === "Enter") {
-
-            login();
-
-          }
-
-        }
-
-      );
-
-    }
-
-    if (loginId) {
-
-      loginId.addEventListener(
-
-        "keydown",
-
-        (event) => {
-
-          if (event.key === "Enter") {
-
-            login();
-
-          }
-
-        }
-
-      );
-
-    }
-
-    if (logoutBtn) {
-
-      logoutBtn.addEventListener(
-
-        "click",
-
-        logout
-
-      );
-
-    }
-
-    if (menuLogoutBtn) {
-
-      menuLogoutBtn.addEventListener(
-
-        "click",
-
-        logout
-
-      );
-
-    }
-
-    if (filterBtn) {
-
-      filterBtn.addEventListener(
-
-        "click",
-
-        () => {
-
-          applyFilter(true);
-
-        }
-
-      );
-
-    }
-
-    if (refreshBtn) {
-
-      refreshBtn.addEventListener(
-
-        "click",
-
-        async () => {
-
-          await loadData(true);
-
-        }
-
-      );
-
-    }
-
-    if (exportBtn) {
-
-      exportBtn.addEventListener(
-
-        "click",
-
-        exportExcel
-
-      );
-
-    }
-
-    if (showSubmittedUsersBtn) {
-
-      showSubmittedUsersBtn.addEventListener(
-
-        "click",
-
-        showSubmittedUsers
-
-      );
-
-    }
-
-    if (deleteAllBtn) {
-
-      deleteAllBtn.addEventListener(
-
-        "click",
-
-        deleteAllReports
-
-      );
-
-    }
-
-    /*
-
-       Khi thay đổi ngày:
-
-       chỉ cập nhật số cán bộ.
-
-       Bảng vẫn chờ bấm LỌC.
-
-    */
-
-    if (filterDate) {
-
-      filterDate.addEventListener(
-
-        "change",
-
-        () => {
-
-          updateSubmittedUserCount();
-
-        }
-
-      );
-
-    }
+    menuReportsBtn?.addEventListener("click", () => {
+      closeSideMenu();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
 
     /* ============================================================
-
-       6. MENU
-
+       5. SESSION
     ============================================================ */
-
-    if (menuBtn) {
-
-      menuBtn.addEventListener(
-
-        "click",
-
-        openSideMenu
-
-      );
-
-    }
-
-    if (sideMenuClose) {
-
-      sideMenuClose.addEventListener(
-
-        "click",
-
-        closeSideMenu
-
-      );
-
-    }
-
-    if (sideMenuOverlay) {
-
-      sideMenuOverlay.addEventListener(
-
-        "click",
-
-        closeSideMenu
-
-      );
-
-    }
-
-    if (menuReportsBtn) {
-
-      menuReportsBtn.addEventListener(
-
-        "click",
-
-        () => {
-
-          closeSideMenu();
-
-          window.scrollTo({
-
-            top: 0,
-
-            behavior: "smooth",
-
-          });
-
-        }
-
-      );
-
-    }
-
-    /* ============================================================
-
-       7. KHỞI ĐỘNG SESSION
-
-    ============================================================ */
-
     checkSession();
 
-    /* ============================================================
-
-       8. SESSION
-
-    ============================================================ */
-
     async function checkSession() {
-
       try {
+        const { data, error } = await supabaseClient.auth.getSession();
 
-        const {
-
-          data,
-
-          error,
-
-        } =
-
-          await supabaseClient.auth.getSession();
-
-        if (error) {
-
-          console.error(error);
-
-          showLogin();
-
-          return;
-
-        }
+        if (error) throw error;
 
         if (data?.session) {
-
           showManager();
-
-          /*
-
-             Không tự điền ngày hiện tại.
-
-             Ô ngày vẫn để trống.
-
-          */
-
           clearDateFilter();
-
           await loadData(false);
-
         } else {
-
           showLogin();
-
         }
-
       } catch (error) {
-
-        console.error(
-
-          "Lỗi kiểm tra session:",
-
-          error
-
-        );
-
+        console.error("Lỗi kiểm tra session:", error);
         showLogin();
-
       }
-
     }
 
-    /* ============================================================
-
-       9. HIỂN THỊ LOGIN / MANAGER
-
-    ============================================================ */
-
     function showLogin() {
-
-      if (loginBox) {
-
-        loginBox.style.display = "";
-
-      }
-
-      if (managerBox) {
-
-        managerBox.style.display =
-
-          "none";
-
-      }
-
+      if (loginBox) loginBox.style.display = "";
+      if (managerBox) managerBox.style.display = "none";
     }
 
     function showManager() {
-
-      if (loginBox) {
-
-        loginBox.style.display =
-
-          "none";
-
-      }
-
-      if (managerBox) {
-
-        managerBox.style.display =
-
-          "";
-
-      }
-
+      if (loginBox) loginBox.style.display = "none";
+      if (managerBox) managerBox.style.display = "";
     }
 
     /* ============================================================
-
-       10. ĐĂNG NHẬP
-
+       6. ĐĂNG NHẬP
     ============================================================ */
-
     async function login() {
-
-      const email =
-
-        loginId?.value?.trim() ||
-
-        "";
-
-      const pass =
-
-        password?.value ||
-
-        "";
+      const email = loginId?.value?.trim() || "";
+      const pass = password?.value || "";
 
       if (!email || !pass) {
-
-        setLoginMessage(
-
-          "Vui lòng nhập Gmail và mật khẩu.",
-
-          true
-
-        );
-
+        setLoginMessage("Vui lòng nhập Gmail và mật khẩu.", true);
         return;
-
       }
 
-      if (loginBtn) {
-
-        loginBtn.disabled = true;
-
-      }
-
-      setLoginMessage(
-
-        "Đang đăng nhập...",
-
-        false
-
-      );
+      if (loginBtn) loginBtn.disabled = true;
+      setLoginMessage("Đang đăng nhập...", false);
 
       try {
-
-        const {
-
-          data,
-
-          error,
-
-        } =
-
+        const { data, error } =
           await supabaseClient.auth.signInWithPassword({
-
             email,
-
-            password: pass,
-
+            password: pass
           });
 
-        if (error) {
-
-          console.error(
-
-            "Lỗi đăng nhập:",
-
-            error
-
-          );
-
-          setLoginMessage(
-
-            error.message ||
-
-              "Đăng nhập thất bại.",
-
-            true
-
-          );
-
-          return;
-
-        }
+        if (error) throw error;
 
         if (!data?.session) {
-
-          setLoginMessage(
-
-            "Đăng nhập không thành công.",
-
-            true
-
-          );
-
+          setLoginMessage("Đăng nhập không thành công.", true);
           return;
-
         }
 
-        setLoginMessage(
-
-          "",
-
-          false
-
-        );
-
+        setLoginMessage("", false);
         showManager();
-
-        /*
-
-           Không tự điền ngày.
-
-           Ô ngày trống = hôm nay.
-
-        */
-
         clearDateFilter();
-
         await loadData(false);
-
       } catch (error) {
-
-        console.error(
-
-          "Lỗi đăng nhập:",
-
-          error
-
-        );
-
+        console.error("Lỗi đăng nhập:", error);
         setLoginMessage(
-
-          error?.message ||
-
-            "Có lỗi xảy ra khi đăng nhập.",
-
+          error?.message || "Có lỗi xảy ra khi đăng nhập.",
           true
-
         );
-
       } finally {
-
-        if (loginBtn) {
-
-          loginBtn.disabled = false;
-
-        }
-
+        if (loginBtn) loginBtn.disabled = false;
       }
-
     }
 
     /* ============================================================
-
-       11. ĐĂNG XUẤT
-
+       7. ĐĂNG XUẤT
     ============================================================ */
-
     async function logout() {
-
       try {
-
         await supabaseClient.auth.signOut();
-
       } catch (error) {
-
-        console.error(
-
-          "Lỗi đăng xuất:",
-
-          error
-
-        );
-
+        console.error("Lỗi đăng xuất:", error);
       }
 
       allData = [];
-
       filteredData = [];
-
       currentPage = 1;
 
-      if (tableBody) {
+      if (tableBody) tableBody.innerHTML = "";
+      if (pagination) pagination.innerHTML = "";
+      if (totalReports) totalReports.textContent = "0";
+      if (totalAmount) totalAmount.textContent = "0";
+      if (submittedUserCount) submittedUserCount.textContent = "0";
 
-        tableBody.innerHTML = "";
-
-      }
-
-      if (pagination) {
-
-        pagination.innerHTML = "";
-
-      }
-
-      if (totalReports) {
-
-        totalReports.textContent = "0";
-
-      }
-
-      if (totalAmount) {
-
-        totalAmount.textContent = "0";
-
-      }
-
-      if (submittedUserCount) {
-
-        submittedUserCount.textContent =
-
-          "0";
-
-      }
-
-      if (filterUser) {
-
-        filterUser.value = "";
-
-      }
+      if (filterUser) filterUser.value = "";
+      if (loginId) loginId.value = "";
+      if (password) password.value = "";
 
       clearDateFilter();
-
-      if (loginId) {
-
-        loginId.value = "";
-
-      }
-
-      if (password) {
-
-        password.value = "";
-
-      }
-
       closeSideMenu();
-
       showLogin();
-
     }
-
-    /* ============================================================
-
-       12. XÓA NGÀY TRONG Ô LỌC
-
-       KHÔNG gán ngày hôm nay.
-
-    ============================================================ */
 
     function clearDateFilter() {
-
-      if (filterDate) {
-
-        filterDate.value = "";
-
-      }
-
+      if (filterDate) filterDate.value = "";
     }
 
     /* ============================================================
-
-       13. NGÀY HIỆN TẠI VIỆT NAM
-
+       8. NGÀY HIỆN TẠI THEO GIỜ VIỆT NAM
     ============================================================ */
-
     function getTodayVietnamDate() {
-
       try {
-
-        const parts =
-
-          new Intl.DateTimeFormat(
-
-            "en-CA",
-
-            {
-
-              timeZone:
-
-                "Asia/Ho_Chi_Minh",
-
-              year: "numeric",
-
-              month: "2-digit",
-
-              day: "2-digit",
-
-            }
-
-          ).formatToParts(
-
-            new Date()
-
-          );
+        const parts = new Intl.DateTimeFormat("en-CA", {
+          timeZone: "Asia/Ho_Chi_Minh",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit"
+        }).formatToParts(new Date());
 
         const map = {};
 
-        parts.forEach(
+        parts.forEach(part => {
+          if (part.type !== "literal") map[part.type] = part.value;
+        });
 
-          (part) => {
-
-            if (
-
-              part.type !==
-
-              "literal"
-
-            ) {
-
-              map[part.type] =
-
-                part.value;
-
-            }
-
-          }
-
-        );
-
-        if (
-
-          map.year &&
-
-          map.month &&
-
-          map.day
-
-        ) {
-
-          return (
-
-            `${map.year}-${map.month}-${map.day}`
-
-          );
-
+        if (map.year && map.month && map.day) {
+          return `${map.year}-${map.month}-${map.day}`;
         }
-
       } catch (error) {
-
-        console.warn(
-
-          "Không lấy được ngày Việt Nam:",
-
-          error
-
-        );
-
+        console.warn("Không lấy được ngày Việt Nam:", error);
       }
 
-      const now =
-
-        new Date();
+      const now = new Date();
 
       return [
-
         now.getFullYear(),
-
-        String(
-
-          now.getMonth() + 1
-
-        ).padStart(2, "0"),
-
-        String(
-
-          now.getDate()
-
-        ).padStart(2, "0"),
-
+        String(now.getMonth() + 1).padStart(2, "0"),
+        String(now.getDate()).padStart(2, "0")
       ].join("-");
-
     }
 
     function getTodayDateString() {
-
       return getTodayVietnamDate();
-
     }
 
-    /* ============================================================
-
-       14. LẤY NGÀY ĐANG XEM
-
-       Ô trống = hôm nay.
-
-    ============================================================ */
-
+    // Ô ngày trống vẫn được hiểu là hôm nay, không tự điền vào ô.
     function getCurrentFilterDate() {
-
-      const selectedDate =
-
-        filterDate?.value?.trim() ||
-
-        "";
-
-      if (selectedDate) {
-
-        return selectedDate;
-
-      }
-
-      return getTodayVietnamDate();
-
+      return filterDate?.value?.trim() || getTodayVietnamDate();
     }
 
     /* ============================================================
-
-       15. LOAD DATA
-
+       9. TẢI DỮ LIỆU BẢNG QUẢN LÝ
     ============================================================ */
+    async function loadData(preserveCurrentFilter = true) {
+      if (!managerBox) return;
 
-    async function loadData(
-
-      preserveCurrentFilter = true
-
-    ) {
-
-      if (!managerBox) {
-
-        return;
-
-      }
-
-      setManagerMessage(
-
-        "Đang tải dữ liệu...",
-
-        false
-
-      );
+      setManagerMessage("Đang tải dữ liệu...", false);
 
       try {
-
         const allRows = [];
-
         let from = 0;
-
         const batchSize = 1000;
 
         while (true) {
+          const { data, error } = await supabaseClient
+            .from("bao_cao_ngay")
+            .select("*")
+            .order("field_date", { ascending: false })
+            .order("created_at", { ascending: false })
+            .range(from, from + batchSize - 1);
 
-          const {
+          if (error) throw error;
+          if (!data || data.length === 0) break;
 
-            data,
+          allRows.push(...data);
 
-            error,
-
-          } =
-
-            await supabaseClient
-
-              .from("bao_cao_ngay")
-
-              .select("*")
-
-              .order(
-
-                "field_date",
-
-                {
-
-                  ascending: false,
-
-                }
-
-              )
-
-              .order(
-
-                "created_at",
-
-                {
-
-                  ascending: false,
-
-                }
-
-              )
-
-              .range(
-
-                from,
-
-                from +
-
-                  batchSize -
-
-                  1
-
-              );
-
-          if (error) {
-
-            throw error;
-
-          }
-
-          if (
-
-            !data ||
-
-            data.length === 0
-
-          ) {
-
-            break;
-
-          }
-
-          allRows.push(
-
-            ...data
-
-          );
-
-          if (
-
-            data.length <
-
-            batchSize
-
-          ) {
-
-            break;
-
-          }
-
+          if (data.length < batchSize) break;
           from += batchSize;
-
         }
 
         allData = allRows;
 
-        /*
-
-           Chỉ xóa ngày khi yêu cầu không giữ bộ lọc.
-
-           Nhưng ô ngày vẫn để trống.
-
-        */
-
-        if (
-
-          !preserveCurrentFilter
-
-        ) {
-
-          clearDateFilter();
-
-        }
+        if (!preserveCurrentFilter) clearDateFilter();
 
         currentPage = 1;
-
-        /*
-
-           applyFilter tự hiểu:
-
-           ô ngày trống = hôm nay.
-
-        */
-
         applyFilter(false);
 
-        setManagerMessage(
-
-          `Đã tải ${allData.length} báo cáo.`,
-
-          false
-
-        );
-
+        setManagerMessage(`Đã tải ${allData.length} báo cáo.`, false);
       } catch (error) {
-
-        console.error(
-
-          "Lỗi tải dữ liệu:",
-
-          error
-
-        );
-
+        console.error("Lỗi tải dữ liệu:", error);
         setManagerMessage(
-
           "Tải dữ liệu thất bại: " +
-
-            (
-
-              error?.message ||
-
-              "Lỗi không xác định"
-
-            ),
-
+            (error?.message || "Lỗi không xác định"),
           true
-
         );
-
       }
-
     }
 
     /* ============================================================
-
-       16. CHUẨN HÓA USER
-
+       10. CHUẨN HÓA USER VÀ NGÀY
     ============================================================ */
-
-    function normalizeUserName(
-
-      value
-
-    ) {
-
-      return String(
-
-        value ?? ""
-
-      )
-
-        .replace(
-
-          /[\u200B-\u200D\uFEFF]/g,
-
-          ""
-
-        )
-
-        .replace(
-
-          /\s+/g,
-
-          ""
-
-        )
-
+    function normalizeUserName(value) {
+      return String(value ?? "")
+        .replace(/[\u200B-\u200D\uFEFF]/g, "")
+        .replace(/\s+/g, "")
         .toLowerCase()
-
         .trim();
-
     }
 
-    /* ============================================================
+    function getFieldDateKey(value) {
+      if (!value) return "";
 
-       17. LẤY KEY NGÀY
+      const text = String(value).trim();
+      const direct = text.match(/^(\d{4}-\d{2}-\d{2})/);
 
-       Ưu tiên lấy trực tiếp YYYY-MM-DD.
+      if (direct) return direct[1];
 
-       Tránh lệch ngày timezone.
+      const date = new Date(value);
 
-    ============================================================ */
-
-    function getFieldDateKey(
-
-      value
-
-    ) {
-
-      if (!value) {
-
-        return "";
-
-      }
-
-      const text =
-
-        String(value).trim();
-
-      const direct =
-
-        text.match(
-
-          /^(\d{4}-\d{2}-\d{2})/
-
-        );
-
-      if (direct) {
-
-        return direct[1];
-
-      }
-
-      const date =
-
-        new Date(value);
-
-      if (
-
-        Number.isNaN(
-
-          date.getTime()
-
-        )
-
-      ) {
-
-        return "";
-
-      }
+      if (Number.isNaN(date.getTime())) return "";
 
       return [
-
         date.getFullYear(),
-
-        String(
-
-          date.getMonth() + 1
-
-        ).padStart(2, "0"),
-
-        String(
-
-          date.getDate()
-
-        ).padStart(2, "0"),
-
+        String(date.getMonth() + 1).padStart(2, "0"),
+        String(date.getDate()).padStart(2, "0")
       ].join("-");
-
     }
-
-    /* ============================================================
-
-       18. NGÀY DÙNG CHO ĐẾM CÁN BỘ
-
-    ============================================================ */
 
     function getSubmittedUserDate() {
-
       return getCurrentFilterDate();
-
     }
 
     /* ============================================================
-
-       19. ĐẾM CÁN BỘ ĐÃ NHẬP
-
+       11. ĐẾM CÁN BỘ ĐÃ NHẬP BÁO CÁO
     ============================================================ */
-
     function updateSubmittedUserCount() {
+      if (!submittedUserCount) return;
 
-      if (!submittedUserCount) {
+      const targetDate = getSubmittedUserDate();
+      const uniqueUsers = new Set();
 
-        return;
+      allData.forEach(row => {
+        if (getFieldDateKey(row.field_date) !== targetDate) return;
 
-      }
+        const userKey = normalizeUserName(row.user_name);
+        if (userKey) uniqueUsers.add(userKey);
+      });
 
-      const targetDate =
+      submittedUserCount.textContent = String(uniqueUsers.size);
+    }
 
-        getSubmittedUserDate();
+    /* ============================================================
+       12. LỌC DỮ LIỆU
+    ============================================================ */
+    function applyFilter(showMessage = true) {
+      const userKeyword = filterUser?.value?.trim() || "";
+      const selectedDate = getCurrentFilterDate();
+      const normalizedKeyword = normalizeUserName(userKeyword);
 
-      const uniqueUsers =
-
-        new Set();
-
-      allData.forEach(
-
-        (row) => {
-
-          const rowDate =
-
-            getFieldDateKey(
-
-              row.field_date
-
-            );
-
-          if (
-
-            rowDate !==
-
-            targetDate
-
-          ) {
-
-            return;
-
-          }
-
-          const userKey =
-
-            normalizeUserName(
-
-              row.user_name
-
-            );
-
-          if (userKey) {
-
-            uniqueUsers.add(
-
-              userKey
-
-            );
-
-          }
-
+      filteredData = allData.filter(row => {
+        if (normalizedKeyword) {
+          const rowUser = normalizeUserName(row.user_name);
+          if (!rowUser.includes(normalizedKeyword)) return false;
         }
 
-      );
-
-      submittedUserCount.textContent =
-
-        String(
-
-          uniqueUsers.size
-
-        );
-
-    }
-
-    /* ============================================================
-
-       20. LỌC DỮ LIỆU
-
-    ============================================================ */
-
-    function applyFilter(
-
-      showMessage = true
-
-    ) {
-
-      const userKeyword =
-
-        filterUser?.value?.trim() ||
-
-        "";
-
-      /*
-
-         QUAN TRỌNG:
-
-         Nếu ô ngày trống:
-
-         selectedDate = hôm nay.
-
-         Nhưng KHÔNG ghi hôm nay
-
-         vào ô input.
-
-      */
-
-      const selectedDate =
-
-        getCurrentFilterDate();
-
-      const normalizedKeyword =
-
-        normalizeUserName(
-
-          userKeyword
-
-        );
-
-      filteredData =
-
-        allData.filter(
-
-          (row) => {
-
-            /*
-
-               LỌC USER
-
-            */
-
-            if (
-
-              normalizedKeyword
-
-            ) {
-
-              const rowUser =
-
-                normalizeUserName(
-
-                  row.user_name
-
-                );
-
-              if (
-
-                !rowUser.includes(
-
-                  normalizedKeyword
-
-                )
-
-              ) {
-
-                return false;
-
-              }
-
-            }
-
-            /*
-
-               LỌC NGÀY
-
-            */
-
-            const rowDate =
-
-              getFieldDateKey(
-
-                row.field_date
-
-              );
-
-            if (
-
-              rowDate !==
-
-              selectedDate
-
-            ) {
-
-              return false;
-
-            }
-
-            return true;
-
-          }
-
-        );
+        if (getFieldDateKey(row.field_date) !== selectedDate) {
+          return false;
+        }
+
+        return true;
+      });
 
       currentPage = 1;
-
       updateStats();
-
       render();
 
       if (showMessage) {
-
         setManagerMessage(
-
           `Đang hiển thị ${filteredData.length} báo cáo ngày ${formatDate(selectedDate)}.`,
-
           false
-
         );
-
       }
-
     }
 
     /* ============================================================
-
-       21. THỐNG KÊ
-
+       13. THỐNG KÊ
     ============================================================ */
-
     function updateStats() {
-
       if (totalReports) {
-
         totalReports.textContent =
-
-          filteredData.length.toLocaleString(
-
-            "vi-VN"
-
-          );
-
+          filteredData.length.toLocaleString("vi-VN");
       }
 
       let total = 0;
 
-      filteredData.forEach(
+      filteredData.forEach(row => {
+        total += parseAmount(row.expected_amount);
+      });
 
-        (row) => {
-
-          total += parseAmount(
-
-            row.expected_amount
-
-          );
-
-        }
-
-      );
-
-      if (totalAmount) {
-
-        totalAmount.textContent =
-
-          formatMoney(total);
-
-      }
+      if (totalAmount) totalAmount.textContent = formatMoney(total);
 
       updateSubmittedUserCount();
-
     }
 
     /* ============================================================
-
-       22. RENDER BẢNG
-
+       14. HIỂN THỊ BẢNG
     ============================================================ */
-
     function render() {
-
-      if (!tableBody) {
-
-        return;
-
-      }
+      if (!tableBody) return;
 
       tableBody.innerHTML = "";
 
-      const totalPages =
-
-        Math.max(
-
-          1,
-
-          Math.ceil(
-
-            filteredData.length /
-
-              PAGE_SIZE
-
-          )
-
-        );
-
-      if (
-
-        currentPage >
-
-        totalPages
-
-      ) {
-
-        currentPage =
-
-          totalPages;
-
-      }
-
-      const start =
-
-        (currentPage - 1) *
-
-        PAGE_SIZE;
-
-      const end =
-
-        start + PAGE_SIZE;
-
-      const pageData =
-
-        filteredData.slice(
-
-          start,
-
-          end
-
-        );
-
-      if (
-
-        pageData.length ===
-
-        0
-
-      ) {
-
-        const tr =
-
-          document.createElement(
-
-            "tr"
-
-          );
-
-        tr.innerHTML = `
-
-          <td
-
-            colspan="10"
-
-            style="
-
-              text-align:center;
-
-              padding:30px;
-
-            "
-
-          >
-
-            Không có dữ liệu trong ngày này.
-
-          </td>
-
-        `;
-
-        tableBody.appendChild(
-
-          tr
-
-        );
-
-        renderPagination();
-
-        return;
-
-      }
-
-      pageData.forEach(
-
-        (row) => {
-
-          const tr =
-
-            document.createElement(
-
-              "tr"
-
-            );
-
-          tr.innerHTML = `
-
-            <td>
-
-              ${escapeHtml(
-
-                row.user_name
-
-              )}
-
-            </td>
-
-            <td>
-
-              ${escapeHtml(
-
-                formatDate(
-
-                  row.field_date
-
-                )
-
-              )}
-
-            </td>
-
-            <td>
-
-              ${escapeHtml(
-
-                row.cif
-
-              )}
-
-            </td>
-
-            <td>
-
-              ${escapeHtml(
-
-                row.customer_name
-
-              )}
-
-            </td>
-
-            <td>
-
-              ${escapeHtml(
-
-                row.result
-
-              )}
-
-            </td>
-
-            <td>
-
-              ${escapeHtml(
-
-                row.connection
-
-              )}
-
-            </td>
-
-            <td>
-
-              ${escapeHtml(
-
-                row.detail
-
-              )}
-
-            </td>
-
-            <td style="text-align:right;">
-
-              ${formatMoney(
-
-                row.expected_amount
-
-              )}
-
-            </td>
-
-            <td>
-
-              ${escapeHtml(
-
-                row.next_action
-
-              )}
-
-            </td>
-
-            <td>
-
-              <div class="action-buttons">
-
-                <button
-
-                  type="button"
-
-                  class="edit-btn"
-
-                  onclick="editReport('${escapeJs(
-
-                    row.id
-
-                  )}')"
-
-                  title="Sửa"
-
-                >
-
-                  ✏️
-
-                </button>
-
-                <button
-
-                  type="button"
-
-                  class="delete-btn"
-
-                  onclick="deleteReport('${escapeJs(
-
-                    row.id
-
-                  )}')"
-
-                  title="Xóa"
-
-                >
-
-                  🗑️
-
-                </button>
-
-              </div>
-
-            </td>
-
-          `;
-
-          tableBody.appendChild(
-
-            tr
-
-          );
-
-        }
-
+      const totalPages = Math.max(
+        1,
+        Math.ceil(filteredData.length / PAGE_SIZE)
       );
 
-      renderPagination();
+      if (currentPage > totalPages) currentPage = totalPages;
 
+      const start = (currentPage - 1) * PAGE_SIZE;
+      const pageData = filteredData.slice(start, start + PAGE_SIZE);
+
+      if (pageData.length === 0) {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+          <td colspan="10" style="text-align:center;padding:30px;">
+            Không có dữ liệu trong ngày này.
+          </td>
+        `;
+
+        tableBody.appendChild(tr);
+        renderPagination();
+        return;
+      }
+
+      pageData.forEach(row => {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+          <td>${escapeHtml(row.user_name)}</td>
+          <td>${escapeHtml(formatDate(row.field_date))}</td>
+          <td>${escapeHtml(row.cif)}</td>
+          <td>${escapeHtml(row.customer_name)}</td>
+          <td>${escapeHtml(row.result)}</td>
+          <td>${escapeHtml(row.connection)}</td>
+          <td>${escapeHtml(row.detail)}</td>
+          <td style="text-align:right;">${formatMoney(row.expected_amount)}</td>
+          <td>${escapeHtml(row.next_action)}</td>
+          <td>
+            <div class="action-buttons">
+              <button type="button" class="edit-btn"
+                onclick="editReport('${escapeJs(row.id)}')" title="Sửa">✏️</button>
+              <button type="button" class="delete-btn"
+                onclick="deleteReport('${escapeJs(row.id)}')" title="Xóa">🗑️</button>
+            </div>
+          </td>
+        `;
+
+        tableBody.appendChild(tr);
+      });
+
+      renderPagination();
     }
 
     /* ============================================================
-
-       23. PHÂN TRANG
-
+       15. PHÂN TRANG
     ============================================================ */
-
     function renderPagination() {
-
-      if (!pagination) {
-
-        return;
-
-      }
+      if (!pagination) return;
 
       pagination.innerHTML = "";
 
-      const totalPages =
+      const totalPages = Math.max(
+        1,
+        Math.ceil(filteredData.length / PAGE_SIZE)
+      );
 
-        Math.max(
+      if (totalPages <= 1) return;
 
-          1,
-
-          Math.ceil(
-
-            filteredData.length /
-
-              PAGE_SIZE
-
-          )
-
-        );
-
-      if (
-
-        totalPages <= 1
-
-      ) {
-
-        return;
-
-      }
-
-      const prevBtn =
-
-        document.createElement(
-
-          "button"
-
-        );
-
+      const prevBtn = document.createElement("button");
       prevBtn.type = "button";
+      prevBtn.textContent = "‹ Trước";
+      prevBtn.disabled = currentPage <= 1;
 
-      prevBtn.textContent =
-
-        "‹ Trước";
-
-      prevBtn.disabled =
-
-        currentPage <= 1;
-
-      prevBtn.addEventListener(
-
-        "click",
-
-        () => {
-
-          if (
-
-            currentPage > 1
-
-          ) {
-
-            currentPage--;
-
-            render();
-
-          }
-
+      prevBtn.addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          render();
         }
+      });
 
-      );
+      pagination.appendChild(prevBtn);
 
-      pagination.appendChild(
+      const pageInfo = document.createElement("span");
+      pageInfo.textContent = ` Trang ${currentPage} / ${totalPages} `;
+      pagination.appendChild(pageInfo);
 
-        prevBtn
-
-      );
-
-      const pageInfo =
-
-        document.createElement(
-
-          "span"
-
-        );
-
-      pageInfo.textContent =
-
-        ` Trang ${currentPage} / ${totalPages} `;
-
-      pagination.appendChild(
-
-        pageInfo
-
-      );
-
-      const nextBtn =
-
-        document.createElement(
-
-          "button"
-
-        );
-
+      const nextBtn = document.createElement("button");
       nextBtn.type = "button";
+      nextBtn.textContent = "Sau ›";
+      nextBtn.disabled = currentPage >= totalPages;
 
-      nextBtn.textContent =
-
-        "Sau ›";
-
-      nextBtn.disabled =
-
-        currentPage >=
-
-        totalPages;
-
-      nextBtn.addEventListener(
-
-        "click",
-
-        () => {
-
-          if (
-
-            currentPage <
-
-            totalPages
-
-          ) {
-
-            currentPage++;
-
-            render();
-
-          }
-
+      nextBtn.addEventListener("click", () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          render();
         }
+      });
 
-      );
-
-      pagination.appendChild(
-
-        nextBtn
-
-      );
-
+      pagination.appendChild(nextBtn);
     }
 
     /* ============================================================
-
-       24. SỬA BÁO CÁO
-
+       16. SỬA BÁO CÁO
     ============================================================ */
+    window.editReport = async function(id) {
+      const row = allData.find(item => String(item.id) === String(id));
 
-    window.editReport =
+      if (!row) {
+        alert("Không tìm thấy báo cáo.");
+        return;
+      }
 
-      async function (id) {
+      openEditModal(row);
+    };
 
-        const row =
+    function openEditModal(row) {
+      document.getElementById("editReportModal")?.remove();
 
-          allData.find(
-
-            (item) =>
-
-              String(item.id) ===
-
-              String(id)
-
-          );
-
-        if (!row) {
-
-          alert(
-
-            "Không tìm thấy báo cáo."
-
-          );
-
-          return;
-
-        }
-
-        openEditModal(row);
-
-      };
-
-    /* ============================================================
-
-       25. POPUP SỬA
-
-    ============================================================ */
-
-    function openEditModal(
-
-      row
-
-    ) {
-
-      document
-
-        .getElementById(
-
-          "editReportModal"
-
-        )
-
-        ?.remove();
-
-      const modal =
-
-        document.createElement(
-
-          "div"
-
-        );
-
-      modal.id =
-
-        "editReportModal";
-
+      const modal = document.createElement("div");
+      modal.id = "editReportModal";
       modal.style.cssText = `
-
-        position:fixed;
-
-        inset:0;
-
-        background:rgba(0,0,0,.55);
-
-        display:flex;
-
-        align-items:center;
-
-        justify-content:center;
-
-        z-index:99999;
-
-        padding:15px;
-
+        position:fixed;inset:0;background:rgba(0,0,0,.55);
+        display:flex;align-items:center;justify-content:center;
+        z-index:99999;padding:15px;
       `;
 
-      const box =
-
-        document.createElement(
-
-          "div"
-
-        );
-
+      const box = document.createElement("div");
       box.style.cssText = `
-
-        width:min(650px,100%);
-
-        max-height:90vh;
-
-        overflow-y:auto;
-
-        background:#fff;
-
-        border-radius:16px;
-
-        padding:20px;
-
+        width:min(650px,100%);max-height:90vh;overflow-y:auto;
+        background:#fff;border-radius:16px;padding:20px;
         box-shadow:0 20px 60px rgba(0,0,0,.25);
-
       `;
 
       box.innerHTML = `
-
-        <div style="
-
-          display:flex;
-
-          justify-content:space-between;
-
-          align-items:center;
-
-          margin-bottom:15px;
-
-        ">
-
-          <h3 style="margin:0;">
-
-            Sửa báo cáo
-
-          </h3>
-
-          <button
-
-            type="button"
-
-            id="closeEditModal"
-
-            style="
-
-              border:0;
-
-              background:none;
-
-              font-size:24px;
-
-              cursor:pointer;
-
-            "
-
-          >
-
-            ×
-
-          </button>
-
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
+          <h3 style="margin:0;">Sửa báo cáo</h3>
+          <button type="button" id="closeEditModal"
+            style="border:0;background:none;font-size:24px;cursor:pointer;">×</button>
         </div>
 
-        <div style="
-
-          display:grid;
-
-          gap:12px;
-
-        ">
-
-          <label>
-
-            <div>User cán bộ</div>
-
-            <input
-
-              id="editUserName"
-
-              type="text"
-
-              value="${escapeAttribute(
-
-                row.user_name
-
-              )}"
-
-              style="
-
-                width:100%;
-
-                padding:10px;
-
-              "
-
-            >
-
+        <div style="display:grid;gap:12px;">
+          <label><div>User cán bộ</div>
+            <input id="editUserName" type="text" value="${escapeAttribute(row.user_name)}"
+              style="width:100%;padding:10px;">
           </label>
 
-          <label>
-
-            <div>Ngày báo cáo</div>
-
-            <input
-
-              id="editFieldDate"
-
-              type="date"
-
-              value="${escapeAttribute(
-
-                formatDateForInput(
-
-                  row.field_date
-
-                )
-
-              )}"
-
-              style="
-
-                width:100%;
-
-                padding:10px;
-
-              "
-
-            >
-
+          <label><div>Ngày báo cáo</div>
+            <input id="editFieldDate" type="date"
+              value="${escapeAttribute(formatDateForInput(row.field_date))}"
+              style="width:100%;padding:10px;">
           </label>
 
-          <label>
-
-            <div>CIF</div>
-
-            <input
-
-              id="editCif"
-
-              type="text"
-
-              value="${escapeAttribute(
-
-                row.cif
-
-              )}"
-
-              style="
-
-                width:100%;
-
-                padding:10px;
-
-              "
-
-            >
-
+          <label><div>CIF</div>
+            <input id="editCif" type="text" value="${escapeAttribute(row.cif)}"
+              style="width:100%;padding:10px;">
           </label>
 
-          <label>
-
-            <div>Tên khách hàng</div>
-
-            <input
-
-              id="editCustomerName"
-
-              type="text"
-
-              value="${escapeAttribute(
-
-                row.customer_name
-
-              )}"
-
-              style="
-
-                width:100%;
-
-                padding:10px;
-
-              "
-
-            >
-
+          <label><div>Tên khách hàng</div>
+            <input id="editCustomerName" type="text"
+              value="${escapeAttribute(row.customer_name)}"
+              style="width:100%;padding:10px;">
           </label>
 
-          <label>
-
-            <div>Kết quả</div>
-
-            <select
-
-              id="editResult"
-
-              style="
-
-                width:100%;
-
-                padding:10px;
-
-              "
-
-            ></select>
-
+          <label><div>Kết quả</div>
+            <select id="editResult" style="width:100%;padding:10px;"></select>
           </label>
 
-          <label>
-
-            <div>Quan hệ / Kết nối</div>
-
-            <select
-
-              id="editConnection"
-
-              style="
-
-                width:100%;
-
-                padding:10px;
-
-              "
-
-            ></select>
-
+          <label><div>Quan hệ / Kết nối</div>
+            <select id="editConnection" style="width:100%;padding:10px;"></select>
           </label>
 
-          <label>
-
-            <div>Chi tiết</div>
-
-            <textarea
-
-              id="editDetail"
-
-              rows="4"
-
-              style="
-
-                width:100%;
-
-                padding:10px;
-
-              "
-
-            >${escapeHtml(
-
-              row.detail || ""
-
-            )}</textarea>
-
+          <label><div>Chi tiết</div>
+            <textarea id="editDetail" rows="4"
+              style="width:100%;padding:10px;">${escapeHtml(row.detail || "")}</textarea>
           </label>
 
-          <label>
-
-            <div>Số tiền dự kiến</div>
-
-            <input
-
-              id="editExpectedAmount"
-
-              type="text"
-
-              value="${escapeAttribute(
-
-                formatMoney(
-
-                  row.expected_amount
-
-                )
-
-              )}"
-
-              style="
-
-                width:100%;
-
-                padding:10px;
-
-              "
-
-            >
-
+          <label><div>Số tiền dự kiến</div>
+            <input id="editExpectedAmount" type="text"
+              value="${escapeAttribute(formatMoney(row.expected_amount))}"
+              style="width:100%;padding:10px;">
           </label>
 
-          <label>
-
-            <div>Hành động tiếp theo</div>
-
-            <textarea
-
-              id="editNextAction"
-
-              rows="3"
-
-              style="
-
-                width:100%;
-
-                padding:10px;
-
-              "
-
-            >${escapeHtml(
-
-              row.next_action || ""
-
-            )}</textarea>
-
+          <label><div>Hành động tiếp theo</div>
+            <textarea id="editNextAction" rows="3"
+              style="width:100%;padding:10px;">${escapeHtml(row.next_action || "")}</textarea>
           </label>
 
-          <div style="
-
-            display:flex;
-
-            justify-content:flex-end;
-
-            gap:10px;
-
-            margin-top:5px;
-
-          ">
-
-            <button
-
-              type="button"
-
-              id="cancelEditBtn"
-
-              style="
-
-                padding:10px 18px;
-
-                border:1px solid #ccc;
-
-                border-radius:8px;
-
-                background:#fff;
-
-                cursor:pointer;
-
-              "
-
-            >
-
+          <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:5px;">
+            <button type="button" id="cancelEditBtn"
+              style="padding:10px 18px;border:1px solid #ccc;border-radius:8px;background:#fff;cursor:pointer;">
               Hủy
-
             </button>
-
-            <button
-
-              type="button"
-
-              id="saveEditBtn"
-
-              style="
-
-                padding:10px 18px;
-
-                border:0;
-
-                border-radius:8px;
-
-                background:#2563eb;
-
-                color:#fff;
-
-                cursor:pointer;
-
-              "
-
-            >
-
+            <button type="button" id="saveEditBtn"
+              style="padding:10px 18px;border:0;border-radius:8px;background:#2563eb;color:#fff;cursor:pointer;">
               Lưu
-
             </button>
-
           </div>
-
         </div>
-
       `;
 
       modal.appendChild(box);
+      document.body.appendChild(modal);
 
-      document.body.appendChild(
+      const resultSelect = document.getElementById("editResult");
+      const connectionSelect = document.getElementById("editConnection");
 
-        modal
+      ["Sống", "Chết"].forEach(option => {
+        resultSelect.appendChild(createOption(option, row.result));
+      });
 
-      );
-
-      const resultSelect =
-
-        document.getElementById(
-
-          "editResult"
-
-        );
-
-      const connectionSelect =
-
-        document.getElementById(
-
-          "editConnection"
-
-        );
-
-      const resultOptions = [
-
-        "Sống",
-
-        "Chết",
-
-      ];
-
-      const connectionOptions = [
-
+      [
         "KH",
-
         "Vợ-Chồng",
-
         "Ba-Mẹ",
-
         "Con",
-
         "Anh-Chị",
-
         "Hàng xóm",
-
         "Chính quyền địa phương",
-
         "Không gặp ai",
-
         "Bán nhà",
-
-        "Chưa tìm được nhà",
-
-      ];
-
-      resultOptions.forEach(
-
-        (option) => {
-
-          resultSelect.appendChild(
-
-            createOption(
-
-              option,
-
-              row.result
-
-            )
-
-          );
-
-        }
-
-      );
-
-      connectionOptions.forEach(
-
-        (option) => {
-
-          connectionSelect.appendChild(
-
-            createOption(
-
-              option,
-
-              row.connection
-
-            )
-
-          );
-
-        }
-
-      );
-
-      const amountInput =
-
-        document.getElementById(
-
-          "editExpectedAmount"
-
+        "Chưa tìm được nhà"
+      ].forEach(option => {
+        connectionSelect.appendChild(
+          createOption(option, row.connection)
         );
+      });
 
-      amountInput?.addEventListener(
+      const amountInput = document.getElementById("editExpectedAmount");
 
-        "input",
+      amountInput?.addEventListener("input", () => {
+        const raw = amountInput.value.replace(/\D/g, "");
 
-        () => {
+        amountInput.value = raw
+          ? Number(raw).toLocaleString("vi-VN")
+          : "";
+      });
 
-          const raw =
-
-            amountInput.value.replace(
-
-              /\D/g,
-
-              ""
-
-            );
-
-          if (!raw) {
-
-            amountInput.value =
-
-              "";
-
-            return;
-
-          }
-
-          amountInput.value =
-
-            Number(
-
-              raw
-
-            ).toLocaleString(
-
-              "vi-VN"
-
-            );
-
-        }
-
-      );
-
-      document
-
-        .getElementById(
-
-          "closeEditModal"
-
-        )
-
-        ?.addEventListener(
-
-          "click",
-
-          () => {
-
-            modal.remove();
-
-          }
-
-        );
-
-      document
-
-        .getElementById(
-
-          "cancelEditBtn"
-
-        )
-
-        ?.addEventListener(
-
-          "click",
-
-          () => {
-
-            modal.remove();
-
-          }
-
-        );
-
-      modal.addEventListener(
-
+      document.getElementById("closeEditModal")?.addEventListener(
         "click",
-
-        (event) => {
-
-          if (
-
-            event.target ===
-
-            modal
-
-          ) {
-
-            modal.remove();
-
-          }
-
-        }
-
+        () => modal.remove()
       );
 
-      document
+      document.getElementById("cancelEditBtn")?.addEventListener(
+        "click",
+        () => modal.remove()
+      );
 
-        .getElementById(
+      modal.addEventListener("click", event => {
+        if (event.target === modal) modal.remove();
+      });
 
-          "saveEditBtn"
-
-        )
-
-        ?.addEventListener(
-
-          "click",
-
-          () => {
-
-            saveEditReport(
-
-              row.id,
-
-              modal
-
-            );
-
-          }
-
-        );
-
+      document.getElementById("saveEditBtn")?.addEventListener(
+        "click",
+        () => saveEditReport(row.id, modal)
+      );
     }
 
-    /* ============================================================
+    function createOption(value, selectedValue) {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = value;
 
-       26. OPTION
-
-    ============================================================ */
-
-    function createOption(
-
-      value,
-
-      selectedValue
-
-    ) {
-
-      const option =
-
-        document.createElement(
-
-          "option"
-
-        );
-
-      option.value =
-
-        value;
-
-      option.textContent =
-
-        value;
-
-      if (
-
-        String(value) ===
-
-        String(
-
-          selectedValue ?? ""
-
-        )
-
-      ) {
-
-        option.selected =
-
-          true;
-
+      if (String(value) === String(selectedValue ?? "")) {
+        option.selected = true;
       }
 
       return option;
-
     }
 
     /* ============================================================
-
-       27. LƯU SỬA
-
+       17. LƯU SỬA BÁO CÁO
     ============================================================ */
-
-    async function saveEditReport(
-
-      id,
-
-      modal
-
-    ) {
-
+    async function saveEditReport(id, modal) {
       const userName =
-
-        document.getElementById(
-
-          "editUserName"
-
-        )?.value?.trim() ||
-
-        "";
-
+        document.getElementById("editUserName")?.value?.trim() || "";
       const fieldDate =
-
-        document.getElementById(
-
-          "editFieldDate"
-
-        )?.value?.trim() ||
-
-        "";
-
+        document.getElementById("editFieldDate")?.value?.trim() || "";
       const cif =
-
-        document.getElementById(
-
-          "editCif"
-
-        )?.value?.trim() ||
-
-        "";
-
+        document.getElementById("editCif")?.value?.trim() || "";
       const customerName =
-
-        document.getElementById(
-
-          "editCustomerName"
-
-        )?.value?.trim() ||
-
-        "";
-
-      const result =
-
-        document.getElementById(
-
-          "editResult"
-
-        )?.value ||
-
-        "";
-
+        document.getElementById("editCustomerName")?.value?.trim() || "";
+      const result = document.getElementById("editResult")?.value || "";
       const connection =
-
-        document.getElementById(
-
-          "editConnection"
-
-        )?.value ||
-
-        "";
-
+        document.getElementById("editConnection")?.value || "";
       const detail =
-
-        document.getElementById(
-
-          "editDetail"
-
-        )?.value?.trim() ||
-
-        "";
-
+        document.getElementById("editDetail")?.value?.trim() || "";
       const amountText =
-
-        document.getElementById(
-
-          "editExpectedAmount"
-
-        )?.value ||
-
-        "";
-
+        document.getElementById("editExpectedAmount")?.value || "";
       const nextAction =
-
-        document.getElementById(
-
-          "editNextAction"
-
-        )?.value?.trim() ||
-
-        "";
+        document.getElementById("editNextAction")?.value?.trim() || "";
 
       if (!userName) {
-
-        alert(
-
-          "Vui lòng nhập User cán bộ."
-
-        );
-
+        alert("Vui lòng nhập User cán bộ.");
         return;
-
       }
 
       if (!fieldDate) {
-
-        alert(
-
-          "Vui lòng chọn ngày báo cáo."
-
-        );
-
+        alert("Vui lòng chọn ngày báo cáo.");
         return;
-
       }
 
       if (!cif) {
-
-        alert(
-
-          "Vui lòng nhập CIF."
-
-        );
-
+        alert("Vui lòng nhập CIF.");
         return;
-
       }
 
-      const expectedAmount =
-
-        parseAmount(
-
-          amountText
-
-        );
-
-      const saveBtn =
-
-        document.getElementById(
-
-          "saveEditBtn"
-
-        );
+      const saveBtn = document.getElementById("saveEditBtn");
 
       if (saveBtn) {
-
         saveBtn.disabled = true;
-
-        saveBtn.textContent =
-
-          "Đang lưu...";
-
+        saveBtn.textContent = "Đang lưu...";
       }
 
       try {
+        const { error } = await supabaseClient
+          .from("bao_cao_ngay")
+          .update({
+            user_name: userName,
+            field_date: fieldDate,
+            cif,
+            customer_name: customerName,
+            result,
+            connection,
+            detail,
+            expected_amount: parseAmount(amountText),
+            next_action: nextAction
+          })
+          .eq("id", id);
 
-        const {
-
-          error,
-
-        } =
-
-          await supabaseClient
-
-            .from("bao_cao_ngay")
-
-            .update({
-
-              user_name:
-
-                userName,
-
-              field_date:
-
-                fieldDate,
-
-              cif:
-
-                cif,
-
-              customer_name:
-
-                customerName,
-
-              result:
-
-                result,
-
-              connection:
-
-                connection,
-
-              detail:
-
-                detail,
-
-              expected_amount:
-
-                expectedAmount,
-
-              next_action:
-
-                nextAction,
-
-            })
-
-            .eq(
-
-              "id",
-
-              id
-
-            );
-
-        if (error) {
-
-          throw error;
-
-        }
+        if (error) throw error;
 
         modal?.remove();
-
-        setManagerMessage(
-
-          "Đã cập nhật báo cáo.",
-
-          false
-
-        );
-
+        setManagerMessage("Đã cập nhật báo cáo.", false);
         await loadData(true);
-
       } catch (error) {
-
-        console.error(
-
-          "Lỗi cập nhật:",
-
-          error
-
-        );
-
+        console.error("Lỗi cập nhật:", error);
         alert(
-
           "Cập nhật thất bại:\n" +
-
-            (
-
-              error?.message ||
-
-              "Lỗi không xác định"
-
-            )
-
+            (error?.message || "Lỗi không xác định")
         );
-
       } finally {
-
         if (saveBtn) {
-
-          saveBtn.disabled =
-
-            false;
-
-          saveBtn.textContent =
-
-            "Lưu";
-
+          saveBtn.disabled = false;
+          saveBtn.textContent = "Lưu";
         }
-
       }
-
     }
 
     /* ============================================================
-
-       28. XÓA MỘT BÁO CÁO
-
+       18. XÓA MỘT BÁO CÁO
     ============================================================ */
+    window.deleteReport = async function(id) {
+      const row = allData.find(item => String(item.id) === String(id));
 
-    window.deleteReport =
+      const customer = row?.customer_name
+        ? `\nKhách hàng: ${row.customer_name}`
+        : "";
 
-      async function (id) {
-
-        const row =
-
-          allData.find(
-
-            (item) =>
-
-              String(item.id) ===
-
-              String(id)
-
-          );
-
-        const customer =
-
-          row?.customer_name
-
-            ? `\nKhách hàng: ${row.customer_name}`
-
-            : "";
-
-        const confirmed =
-
-          confirm(
-
-            "Bạn có chắc muốn xóa báo cáo này?" +
-
-              customer
-
-          );
-
-        if (!confirmed) {
-
-          return;
-
-        }
-
-        try {
-
-          const {
-
-            error,
-
-          } =
-
-            await supabaseClient
-
-              .from("bao_cao_ngay")
-
-              .delete()
-
-              .eq(
-
-                "id",
-
-                id
-
-              );
-
-          if (error) {
-
-            throw error;
-
-          }
-
-          setManagerMessage(
-
-            "Đã xóa báo cáo.",
-
-            false
-
-          );
-
-          await loadData(true);
-
-        } catch (error) {
-
-          console.error(
-
-            "Lỗi xóa báo cáo:",
-
-            error
-
-          );
-
-          alert(
-
-            "Xóa thất bại:\n" +
-
-              (
-
-                error?.message ||
-
-                "Lỗi không xác định"
-
-              )
-
-          );
-
-        }
-
-      };
-
-    /* ============================================================
-
-       29. XÓA TOÀN BỘ
-
-    ============================================================ */
-
-    async function deleteAllReports() {
-
-      const firstConfirm =
-
-        confirm(
-
-          "Bạn có chắc chắn muốn XÓA TOÀN BỘ BÁO CÁO không?"
-
-        );
-
-      if (!firstConfirm) {
-
+      if (!confirm("Bạn có chắc muốn xóa báo cáo này?" + customer)) {
         return;
-
-      }
-
-      const secondConfirm =
-
-        prompt(
-
-          "Để xác nhận xóa toàn bộ, hãy nhập:\n\nXOA TAT CA"
-
-        );
-
-      if (
-
-        normalizeDeleteConfirm(
-
-          secondConfirm
-
-        ) !==
-
-        "XOATATCA"
-
-      ) {
-
-        alert(
-
-          "Xác nhận không chính xác. Đã hủy."
-
-        );
-
-        return;
-
-      }
-
-      if (deleteAllBtn) {
-
-        deleteAllBtn.disabled =
-
-          true;
-
       }
 
       try {
+        const { error } = await supabaseClient
+          .from("bao_cao_ngay")
+          .delete()
+          .eq("id", id);
 
-        const {
+        if (error) throw error;
 
-          error,
-
-        } =
-
-          await supabaseClient
-
-            .from("bao_cao_ngay")
-
-            .delete()
-
-            .not(
-
-              "id",
-
-              "is",
-
-              null
-
-            );
-
-        if (error) {
-
-          throw error;
-
-        }
-
-        allData = [];
-
-        filteredData = [];
-
-        currentPage = 1;
-
-        if (tableBody) {
-
-          tableBody.innerHTML =
-
-            "";
-
-        }
-
-        if (pagination) {
-
-          pagination.innerHTML =
-
-            "";
-
-        }
-
-        if (totalReports) {
-
-          totalReports.textContent =
-
-            "0";
-
-        }
-
-        if (totalAmount) {
-
-          totalAmount.textContent =
-
-            "0";
-
-        }
-
-        if (submittedUserCount) {
-
-          submittedUserCount.textContent =
-
-            "0";
-
-        }
-
-        clearDateFilter();
-
-        setManagerMessage(
-
-          "Đã xóa toàn bộ báo cáo.",
-
-          false
-
-        );
-
+        setManagerMessage("Đã xóa báo cáo.", false);
+        await loadData(true);
       } catch (error) {
-
-        console.error(
-
-          "Lỗi xóa toàn bộ:",
-
-          error
-
-        );
-
+        console.error("Lỗi xóa báo cáo:", error);
         alert(
-
-          "Xóa toàn bộ thất bại:\n" +
-
-            (
-
-              error?.message ||
-
-              "Lỗi không xác định"
-
-            )
-
+          "Xóa thất bại:\n" +
+            (error?.message || "Lỗi không xác định")
         );
+      }
+    };
 
-      } finally {
-
-        if (deleteAllBtn) {
-
-          deleteAllBtn.disabled =
-
-            false;
-
-        }
-
+    /* ============================================================
+       19. XÓA TOÀN BỘ BÁO CÁO
+    ============================================================ */
+    async function deleteAllReports() {
+      if (!confirm("Bạn có chắc chắn muốn XÓA TOÀN BỘ BÁO CÁO không?")) {
+        return;
       }
 
-    }
-
-    /* ============================================================
-
-       30. XÁC NHẬN XÓA
-
-    ============================================================ */
-
-    function normalizeDeleteConfirm(
-
-      value
-
-    ) {
-
-      return String(
-
-        value ?? ""
-
-      )
-
-        .normalize("NFD")
-
-        .replace(
-
-          /[\u0300-\u036f]/g,
-
-          ""
-
-        )
-
-        .replace(
-
-          /\s+/g,
-
-          ""
-
-        )
-
-        .toUpperCase();
-
-    }
-
-    /* ============================================================
-
-       31. DANH SÁCH CÁN BỘ
-
-    ============================================================ */
-
-    function showSubmittedUsers() {
-
-      const targetDate =
-
-        getSubmittedUserDate();
-
-      const usersMap =
-
-        new Map();
-
-      allData.forEach(
-
-        (row) => {
-
-          const rowDate =
-
-            getFieldDateKey(
-
-              row.field_date
-
-            );
-
-          if (
-
-            rowDate !==
-
-            targetDate
-
-          ) {
-
-            return;
-
-          }
-
-          const key =
-
-            normalizeUserName(
-
-              row.user_name
-
-            );
-
-          if (!key) {
-
-            return;
-
-          }
-
-          if (
-
-            !usersMap.has(key)
-
-          ) {
-
-            usersMap.set(
-
-              key,
-
-              {
-
-                displayName:
-
-                  String(
-
-                    row.user_name ??
-
-                      ""
-
-                  ).trim() ||
-
-                  key,
-
-                count: 1,
-
-              }
-
-            );
-
-          } else {
-
-            const item =
-
-              usersMap.get(key);
-
-            item.count++;
-
-            usersMap.set(
-
-              key,
-
-              item
-
-            );
-
-          }
-
-        }
-
+      const answer = prompt(
+        "Để xác nhận xóa toàn bộ, hãy nhập:\n\nXOA TAT CA"
       );
 
-      const users =
+      if (normalizeDeleteConfirm(answer) !== "XOATATCA") {
+        alert("Xác nhận không chính xác. Đã hủy.");
+        return;
+      }
 
-        Array.from(
+      if (deleteAllBtn) deleteAllBtn.disabled = true;
 
-          usersMap.values()
+      try {
+        const { error } = await supabaseClient
+          .from("bao_cao_ngay")
+          .delete()
+          .not("id", "is", null);
 
-        ).sort(
+        if (error) throw error;
 
-          (a, b) =>
+        allData = [];
+        filteredData = [];
+        currentPage = 1;
 
-            a.displayName.localeCompare(
+        if (tableBody) tableBody.innerHTML = "";
+        if (pagination) pagination.innerHTML = "";
+        if (totalReports) totalReports.textContent = "0";
+        if (totalAmount) totalAmount.textContent = "0";
+        if (submittedUserCount) submittedUserCount.textContent = "0";
 
-              b.displayName,
-
-              "vi"
-
-            )
-
+        clearDateFilter();
+        setManagerMessage("Đã xóa toàn bộ báo cáo.", false);
+      } catch (error) {
+        console.error("Lỗi xóa toàn bộ:", error);
+        alert(
+          "Xóa toàn bộ thất bại:\n" +
+            (error?.message || "Lỗi không xác định")
         );
+      } finally {
+        if (deleteAllBtn) deleteAllBtn.disabled = false;
+      }
+    }
 
-      const modal =
+    function normalizeDeleteConfirm(value) {
+      return String(value ?? "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, "")
+        .toUpperCase();
+    }
 
-        document.createElement(
+    /* ============================================================
+       20. DANH SÁCH CÁN BỘ ĐÃ NHẬP
+    ============================================================ */
+    function showSubmittedUsers() {
+      const targetDate = getSubmittedUserDate();
+      const usersMap = new Map();
 
-          "div"
+      allData.forEach(row => {
+        if (getFieldDateKey(row.field_date) !== targetDate) return;
 
-        );
+        const key = normalizeUserName(row.user_name);
+        if (!key) return;
 
+        if (!usersMap.has(key)) {
+          usersMap.set(key, {
+            displayName: String(row.user_name ?? "").trim() || key,
+            count: 1
+          });
+        } else {
+          usersMap.get(key).count++;
+        }
+      });
+
+      const users = Array.from(usersMap.values()).sort((a, b) =>
+        a.displayName.localeCompare(b.displayName, "vi")
+      );
+
+      const modal = document.createElement("div");
       modal.style.cssText = `
-
-        position:fixed;
-
-        inset:0;
-
-        background:rgba(0,0,0,.55);
-
-        display:flex;
-
-        align-items:center;
-
-        justify-content:center;
-
-        z-index:99999;
-
-        padding:15px;
-
+        position:fixed;inset:0;background:rgba(0,0,0,.55);
+        display:flex;align-items:center;justify-content:center;
+        z-index:99999;padding:15px;
       `;
 
-      const box =
-
-        document.createElement(
-
-          "div"
-
-        );
-
+      const box = document.createElement("div");
       box.style.cssText = `
-
-        width:min(500px,100%);
-
-        max-height:85vh;
-
-        overflow-y:auto;
-
-        background:#fff;
-
-        border-radius:16px;
-
-        padding:20px;
-
+        width:min(500px,100%);max-height:85vh;overflow-y:auto;
+        background:#fff;border-radius:16px;padding:20px;
         box-shadow:0 20px 60px rgba(0,0,0,.25);
-
       `;
 
-      const dateDisplay =
-
-        formatDate(
-
-          targetDate
-
-        );
+      const dateDisplay = formatDate(targetDate);
 
       let listHtml = "";
 
-      if (
-
-        users.length ===
-
-        0
-
-      ) {
-
+      if (users.length === 0) {
         listHtml = `
-
-          <div style="
-
-            text-align:center;
-
-            padding:25px;
-
-            color:#666;
-
-          ">
-
-            Không có cán bộ nào nhập báo cáo
-
-            trong ngày ${escapeHtml(
-
-              dateDisplay
-
-            )}.
-
+          <div style="text-align:center;padding:25px;color:#666;">
+            Không có cán bộ nào nhập báo cáo trong ngày
+            ${escapeHtml(dateDisplay)}.
           </div>
-
         `;
-
       } else {
-
-        listHtml =
-
-          users
-
-            .map(
-
-              (
-
-                item,
-
-                index
-
-              ) => `
-
-                <div style="
-
-                  display:flex;
-
-                  align-items:center;
-
-                  justify-content:space-between;
-
-                  gap:10px;
-
-                  padding:10px 0;
-
-                  border-bottom:1px solid #eee;
-
-                ">
-
-                  <div>
-
-                    <strong>
-
-                      ${index + 1}.
-
-                      ${escapeHtml(
-
-                        item.displayName
-
-                      )}
-
-                    </strong>
-
-                  </div>
-
-                  <div style="
-
-                    font-size:13px;
-
-                    color:#666;
-
-                    white-space:nowrap;
-
-                  ">
-
-                    ${item.count}
-
-                    báo cáo
-
-                  </div>
-
-                </div>
-
-              `
-
-            )
-
-            .join("");
-
+        listHtml = users.map((item, index) => `
+          <div style="
+            display:flex;align-items:center;justify-content:space-between;
+            gap:10px;padding:10px 0;border-bottom:1px solid #eee;
+          ">
+            <div>
+              <strong>${index + 1}. ${escapeHtml(item.displayName)}</strong>
+            </div>
+            <div style="font-size:13px;color:#666;white-space:nowrap;">
+              ${item.count} báo cáo
+            </div>
+          </div>
+        `).join("");
       }
 
       box.innerHTML = `
-
         <div style="
-
-          display:flex;
-
-          justify-content:space-between;
-
-          align-items:center;
-
-          gap:10px;
-
-          margin-bottom:10px;
-
+          display:flex;justify-content:space-between;align-items:center;
+          gap:10px;margin-bottom:10px;
         ">
-
           <div>
-
-            <h3 style="
-
-              margin:0 0 5px 0;
-
-            ">
-
-              Cán bộ đã nhập báo cáo
-
-            </h3>
-
-            <div style="
-
-              font-size:14px;
-
-              color:#666;
-
-            ">
-
-              Ngày ${escapeHtml(
-
-                dateDisplay
-
-              )}
-
+            <h3 style="margin:0 0 5px 0;">Cán bộ đã nhập báo cáo</h3>
+            <div style="font-size:14px;color:#666;">
+              Ngày ${escapeHtml(dateDisplay)}
             </div>
-
           </div>
-
-          <button
-
-            type="button"
-
-            id="closeSubmittedUsers"
-
-            style="
-
-              border:0;
-
-              background:none;
-
-              font-size:25px;
-
-              cursor:pointer;
-
-            "
-
-          >
-
-            ×
-
-          </button>
-
+          <button type="button" id="closeSubmittedUsers"
+            style="border:0;background:none;font-size:25px;cursor:pointer;">×</button>
         </div>
 
         <div style="
-
-          margin:12px 0;
-
-          padding:10px 12px;
-
-          background:#f3f4f6;
-
-          border-radius:10px;
-
-          font-weight:600;
-
+          margin:12px 0;padding:10px 12px;background:#f3f4f6;
+          border-radius:10px;font-weight:600;
         ">
-
-          Tổng số:
-
-          ${users.length}
-
-          cán bộ
-
+          Tổng số: ${users.length} cán bộ
         </div>
 
-        <div>
-
-          ${listHtml}
-
-        </div>
-
+        <div>${listHtml}</div>
       `;
 
       modal.appendChild(box);
+      document.body.appendChild(modal);
 
-      document.body.appendChild(
-
-        modal
-
-      );
-
-      document
-
-        .getElementById(
-
-          "closeSubmittedUsers"
-
-        )
-
-        ?.addEventListener(
-
-          "click",
-
-          () => {
-
-            modal.remove();
-
-          }
-
-        );
-
-      modal.addEventListener(
-
+      document.getElementById("closeSubmittedUsers")?.addEventListener(
         "click",
-
-        (event) => {
-
-          if (
-
-            event.target ===
-
-            modal
-
-          ) {
-
-            modal.remove();
-
-          }
-
-        }
-
+        () => modal.remove()
       );
 
+      modal.addEventListener("click", event => {
+        if (event.target === modal) modal.remove();
+      });
     }
 
     /* ============================================================
-
-       32. MENU
-
+       21. MENU
     ============================================================ */
-
     function openSideMenu() {
-
-      sideMenu?.classList.add(
-
-        "open"
-
-      );
-
-      sideMenuOverlay?.classList.add(
-
-        "open"
-
-      );
-
+      sideMenu?.classList.add("open");
+      sideMenuOverlay?.classList.add("open");
     }
 
     function closeSideMenu() {
-
-      sideMenu?.classList.remove(
-
-        "open"
-
-      );
-
-      sideMenuOverlay?.classList.remove(
-
-        "open"
-
-      );
-
+      sideMenu?.classList.remove("open");
+      sideMenuOverlay?.classList.remove("open");
     }
 
     /* ============================================================
-
-       33. EXPORT EXCEL
-
+       22. XUẤT EXCEL THEO BỘ LỌC HIỆN TẠI
+       GIỮ NGUYÊN CHỨC NĂNG CŨ
     ============================================================ */
-
     function exportExcel() {
-
-      if (
-
-        typeof XLSX ===
-
-        "undefined"
-
-      ) {
-
-        alert(
-
-          "Không tìm thấy thư viện XLSX."
-
-        );
-
+      if (typeof XLSX === "undefined") {
+        alert("Không tìm thấy thư viện XLSX.");
         return;
-
       }
 
-      if (
-
-        filteredData.length ===
-
-        0
-
-      ) {
-
-        alert(
-
-          "Không có dữ liệu để xuất Excel."
-
-        );
-
+      if (filteredData.length === 0) {
+        alert("Không có dữ liệu để xuất Excel.");
         return;
-
       }
 
       try {
-
-        const exportRows =
-
-          filteredData.map(
-
-            (row) => ({
-
-              "User cán bộ":
-
-                row.user_name ||
-
-                "",
-
-              "Ngày":
-
-                toExcelDate(
-
-                  row.field_date
-
-                ),
-
-              "CIF":
-
-                row.cif ||
-
-                "",
-
-              "Tên khách hàng":
-
-                row.customer_name ||
-
-                "",
-
-              "Kết quả":
-
-                row.result ||
-
-                "",
-
-              "Kết nối":
-
-                row.connection ||
-
-                "",
-
-              "Chi tiết":
-
-                row.detail ||
-
-                "",
-
-              "Số tiền dự kiến":
-
-                parseAmount(
-
-                  row.expected_amount
-
-                ),
-
-              "Hành động tiếp theo":
-
-                row.next_action ||
-
-                "",
-
-            })
-
-          );
-
-        const ws =
-
-          XLSX.utils.json_to_sheet(
-
-            exportRows
-
-          );
-
-        if (ws["!ref"]) {
-
-          const range =
-
-            XLSX.utils.decode_range(
-
-              ws["!ref"]
-
-            );
-
-          // FORMAT NGÀY
-
-          for (
-
-            let r =
-
-              range.s.r + 1;
-
-            r <= range.e.r;
-
-            r++
-
-          ) {
-
-            const cell =
-
-              ws[
-
-                XLSX.utils.encode_cell({
-
-                  r,
-
-                  c: 1,
-
-                })
-
-              ];
-
-            if (
-
-              cell &&
-
-              cell.v instanceof Date
-
-            ) {
-
-              cell.t = "d";
-
-              cell.z =
-
-                "dd/mm/yyyy";
-
-            }
-
-          }
-
-          // FORMAT TIỀN
-
-          for (
-
-            let r =
-
-              range.s.r + 1;
-
-            r <= range.e.r;
-
-            r++
-
-          ) {
-
-            const cell =
-
-              ws[
-
-                XLSX.utils.encode_cell({
-
-                  r,
-
-                  c: 7,
-
-                })
-
-              ];
-
-            if (cell) {
-
-              cell.z =
-
-                "#,##0";
-
-            }
-
-          }
-
+        const exportDate = getCurrentFilterDate();
+
+        exportRowsToExcel(
+          filteredData,
+          "BaoCaoNgay",
+          `Bao_Cao_Ngay_${exportDate}.xlsx`,
+          "Đã xuất Excel thành công."
+        );
+      } catch (error) {
+        console.error("Lỗi xuất Excel:", error);
+        alert(
+          "Xuất Excel thất bại:\n" +
+            (error?.message || "Lỗi không xác định")
+        );
+      }
+    }
+
+    /* ============================================================
+       23. XUẤT TOÀN BỘ BÁO CÁO THÁNG HIỆN TẠI
+       LẤY TRỰC TIẾP TỪ SUPABASE, KHÔNG PHỤ THUỘC BỘ LỌC
+    ============================================================ */
+    async function exportCurrentMonthExcel() {
+      if (typeof XLSX === "undefined") {
+        alert("Không tìm thấy thư viện XLSX.");
+        return;
+      }
+
+      if (exportMonthBtn) {
+        exportMonthBtn.disabled = true;
+        exportMonthBtn.textContent = "ĐANG LẤY DỮ LIỆU...";
+      }
+
+      setManagerMessage("Đang tải toàn bộ báo cáo tháng...", false);
+
+      try {
+        // Lấy tháng hiện tại theo giờ Việt Nam.
+        const today = getTodayVietnamDate();
+        const [year, month] = today.split("-").map(Number);
+
+        const monthKey = `${year}-${String(month).padStart(2, "0")}`;
+        const monthStart = `${monthKey}-01`;
+
+        // Ngày đầu tháng kế tiếp, dùng làm mốc kết thúc không bao gồm.
+        const nextYear = month === 12 ? year + 1 : year;
+        const nextMonth = month === 12 ? 1 : month + 1;
+
+        const nextMonthStart =
+          `${nextYear}-${String(nextMonth).padStart(2, "0")}-01`;
+
+        const monthlyRows = [];
+        let from = 0;
+        const batchSize = 1000;
+
+        // Tải theo từng đợt, không giới hạn ở 1.000 dòng đầu.
+        while (true) {
+          const { data, error } = await supabaseClient
+            .from("bao_cao_ngay")
+            .select("*")
+            .gte("field_date", monthStart)
+            .lt("field_date", nextMonthStart)
+            .order("field_date", { ascending: false })
+            .order("created_at", { ascending: false })
+            .range(from, from + batchSize - 1);
+
+          if (error) throw error;
+          if (!data || data.length === 0) break;
+
+          monthlyRows.push(...data);
+
+          if (data.length < batchSize) break;
+          from += batchSize;
         }
 
-        ws["!cols"] = [
-
-          { wch: 18 },
-
-          { wch: 13 },
-
-          { wch: 15 },
-
-          { wch: 25 },
-
-          { wch: 12 },
-
-          { wch: 24 },
-
-          { wch: 45 },
-
-          { wch: 20 },
-
-          { wch: 35 },
-
-        ];
-
-        if (ws["!ref"]) {
-
-          ws["!autofilter"] = {
-
-            ref: ws["!ref"],
-
-          };
-
-        }
-
-        ws["!freeze"] = {
-
-          xSplit: 0,
-
-          ySplit: 1,
-
-        };
-
-        /* ========================================================
-
-           TỔNG QUAN
-
-        ======================================================== */
-
-        const uniqueUsers =
-
-          new Set();
-
-        filteredData.forEach(
-
-          (row) => {
-
-            const key =
-
-              normalizeUserName(
-
-                row.user_name
-
-              );
-
-            if (key) {
-
-              uniqueUsers.add(
-
-                key
-
-              );
-
-            }
-
-          }
-
-        );
-
-        let exportTotal = 0;
-
-        filteredData.forEach(
-
-          (row) => {
-
-            exportTotal +=
-
-              parseAmount(
-
-                row.expected_amount
-
-              );
-
-          }
-
-        );
-
-        const summaryRows = [
-
-          {
-
-            "Nội dung":
-
-              "Tổng số báo cáo",
-
-            "Giá trị":
-
-              filteredData.length,
-
-          },
-
-          {
-
-            "Nội dung":
-
-              "Số cán bộ",
-
-            "Giá trị":
-
-              uniqueUsers.size,
-
-          },
-
-          {
-
-            "Nội dung":
-
-              "Tổng số tiền dự kiến",
-
-            "Giá trị":
-
-              exportTotal,
-
-          },
-
-        ];
-
-        const wsSummary =
-
-          XLSX.utils.json_to_sheet(
-
-            summaryRows
-
+        if (monthlyRows.length === 0) {
+          setManagerMessage(
+            `Không có báo cáo trong tháng ${monthKey}.`,
+            true
           );
-
-        wsSummary["!cols"] = [
-
-          { wch: 30 },
-
-          { wch: 25 },
-
-        ];
-
-        if (
-
-          wsSummary["B4"]
-
-        ) {
-
-          wsSummary["B4"].z =
-
-            "#,##0";
-
+          alert(`Không có báo cáo trong tháng ${monthKey}.`);
+          return;
         }
 
-        /* ========================================================
-
-           WORKBOOK
-
-        ======================================================== */
-
-        const workbook =
-
-          XLSX.utils.book_new();
-
-        XLSX.utils.book_append_sheet(
-
-          workbook,
-
-          ws,
-
-          "BaoCaoNgay"
-
+        exportRowsToExcel(
+          monthlyRows,
+          "BaoCaoThang",
+          `Bao_Cao_Thang_${monthKey}.xlsx`,
+          `Đã xuất ${monthlyRows.length} báo cáo tháng ${monthKey}.`
         );
-
-        XLSX.utils.book_append_sheet(
-
-          workbook,
-
-          wsSummary,
-
-          "TongQuan"
-
-        );
-
-        /*
-
-           Ô ngày trống:
-
-           tên file = ngày hôm nay.
-
-        */
-
-        const exportDate =
-
-          getCurrentFilterDate();
-
-        const fileName =
-
-          `Bao_Cao_Ngay_${exportDate}.xlsx`;
-
-        XLSX.writeFile(
-
-          workbook,
-
-          fileName
-
-        );
+      } catch (error) {
+        console.error("Lỗi xuất báo cáo tháng:", error);
 
         setManagerMessage(
-
-          "Đã xuất Excel thành công.",
-
-          false
-
-        );
-
-      } catch (error) {
-
-        console.error(
-
-          "Lỗi xuất Excel:",
-
-          error
-
+          "Xuất báo cáo tháng thất bại: " +
+            (error?.message || "Lỗi không xác định"),
+          true
         );
 
         alert(
-
-          "Xuất Excel thất bại:\n" +
-
-            (
-
-              error?.message ||
-
-              "Lỗi không xác định"
-
-            )
-
+          "Xuất báo cáo tháng thất bại:\n" +
+            (error?.message || "Lỗi không xác định")
         );
-
+      } finally {
+        if (exportMonthBtn) {
+          exportMonthBtn.disabled = false;
+          exportMonthBtn.textContent = "📅 XUẤT BÁO CÁO THÁNG";
+        }
       }
-
     }
 
     /* ============================================================
-
-       34. FORMAT DATE
-
+       24. HÀM TẠO FILE EXCEL DÙNG CHUNG
+       ÁP DỤNG CHO XUẤT NGÀY VÀ XUẤT THÁNG
     ============================================================ */
-
-    function formatDate(
-
-      value
-
-    ) {
-
-      if (!value) {
-
-        return "";
-
+    function exportRowsToExcel(rows, sheetName, fileName, successMessage) {
+      if (typeof XLSX === "undefined") {
+        throw new Error("Không tìm thấy thư viện XLSX.");
       }
 
-      const key =
+      const exportRows = rows.map(row => ({
+        "User cán bộ": row.user_name || "",
+        "Ngày": toExcelDate(row.field_date),
+        "CIF": row.cif || "",
+        "Tên khách hàng": row.customer_name || "",
+        "Kết quả": row.result || "",
+        "Kết nối": row.connection || "",
+        "Chi tiết": row.detail || "",
+        "Số tiền dự kiến": parseAmount(row.expected_amount),
+        "Hành động tiếp theo": row.next_action || ""
+      }));
 
-        getFieldDateKey(value);
+      const ws = XLSX.utils.json_to_sheet(exportRows);
 
-      if (!key) {
+      if (ws["!ref"]) {
+        const range = XLSX.utils.decode_range(ws["!ref"]);
 
-        return "";
+        // Định dạng cột ngày.
+        for (let r = range.s.r + 1; r <= range.e.r; r++) {
+          const cell = ws[XLSX.utils.encode_cell({ r, c: 1 })];
 
+          if (cell && cell.v instanceof Date) {
+            cell.t = "d";
+            cell.z = "dd/mm/yyyy";
+          }
+        }
+
+        // Định dạng cột số tiền.
+        for (let r = range.s.r + 1; r <= range.e.r; r++) {
+          const cell = ws[XLSX.utils.encode_cell({ r, c: 7 })];
+
+          if (cell) cell.z = "#,##0";
+        }
+
+        ws["!autofilter"] = { ref: ws["!ref"] };
       }
 
-      const parts =
+      ws["!cols"] = [
+        { wch: 18 },
+        { wch: 13 },
+        { wch: 15 },
+        { wch: 25 },
+        { wch: 12 },
+        { wch: 24 },
+        { wch: 45 },
+        { wch: 20 },
+        { wch: 35 }
+      ];
 
-        key.split("-");
+      ws["!freeze"] = { xSplit: 0, ySplit: 1 };
 
-      if (
+      // Tổng hợp số cán bộ duy nhất, không phân biệt hoa/thường.
+      const uniqueUsers = new Set();
 
-        parts.length !== 3
+      rows.forEach(row => {
+        const key = normalizeUserName(row.user_name);
+        if (key) uniqueUsers.add(key);
+      });
 
-      ) {
+      let exportTotal = 0;
 
-        return key;
+      rows.forEach(row => {
+        exportTotal += parseAmount(row.expected_amount);
+      });
 
+      const summaryRows = [
+        {
+          "Nội dung": "Tổng số báo cáo",
+          "Giá trị": rows.length
+        },
+        {
+          "Nội dung": "Số cán bộ",
+          "Giá trị": uniqueUsers.size
+        },
+        {
+          "Nội dung": "Tổng số tiền dự kiến",
+          "Giá trị": exportTotal
+        }
+      ];
+
+      const wsSummary = XLSX.utils.json_to_sheet(summaryRows);
+      wsSummary["!cols"] = [
+        { wch: 30 },
+        { wch: 25 }
+      ];
+
+      if (wsSummary["B4"]) {
+        wsSummary["B4"].z = "#,##0";
       }
 
-      return (
+      const workbook = XLSX.utils.book_new();
 
-        `${parts[2]}/${parts[1]}/${parts[0]}`
+      XLSX.utils.book_append_sheet(workbook, ws, sheetName);
+      XLSX.utils.book_append_sheet(workbook, wsSummary, "TongQuan");
 
-      );
+      XLSX.writeFile(workbook, fileName);
 
+      setManagerMessage(successMessage, false);
     }
 
     /* ============================================================
-
-       35. FORMAT DATE INPUT
-
+       25. FORMAT NGÀY
     ============================================================ */
+    function formatDate(value) {
+      if (!value) return "";
 
-    function formatDateForInput(
+      const key = getFieldDateKey(value);
+      if (!key) return "";
 
-      value
+      const parts = key.split("-");
+      if (parts.length !== 3) return key;
 
-    ) {
+      return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
 
-      if (!value) {
+    function formatDateForInput(value) {
+      if (!value) return "";
+      return getFieldDateKey(value) || "";
+    }
 
-        return "";
+    function formatDateTime(value) {
+      if (!value) return "";
 
-      }
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "";
 
-      const key =
-
-        getFieldDateKey(value);
-
-      return key || "";
-
+      return date.toLocaleString("vi-VN");
     }
 
     /* ============================================================
-
-       36. FORMAT DATETIME
-
+       26. XỬ LÝ SỐ TIỀN
     ============================================================ */
-
-    function formatDateTime(
-
-      value
-
-    ) {
-
-      if (!value) {
-
-        return "";
-
-      }
-
-      const date =
-
-        new Date(value);
-
-      if (
-
-        Number.isNaN(
-
-          date.getTime()
-
-        )
-
-      ) {
-
-        return "";
-
-      }
-
-      return date.toLocaleString(
-
-        "vi-VN"
-
-      );
-
-    }
-
-    /* ============================================================
-
-       37. PARSE MONEY
-
-    ============================================================ */
-
-    function parseAmount(
-
-      value
-
-    ) {
-
-      if (
-
-        value === null ||
-
-        value === undefined ||
-
-        value === ""
-
-      ) {
-
+    function parseAmount(value) {
+      if (value === null || value === undefined || value === "") {
         return 0;
-
       }
 
-      if (
-
-        typeof value ===
-
-        "number"
-
-      ) {
-
-        return Number.isFinite(
-
-          value
-
-        )
-
-          ? value
-
-          : 0;
-
+      if (typeof value === "number") {
+        return Number.isFinite(value) ? value : 0;
       }
 
-      const text =
+      const text = String(value).replace(/[^\d-]/g, "");
+      if (!text) return 0;
 
-        String(value)
-
-          .replace(
-
-            /[^\d-]/g,
-
-            ""
-
-          );
-
-      if (!text) {
-
-        return 0;
-
-      }
-
-      const number =
-
-        Number(text);
-
-      return Number.isFinite(
-
-        number
-
-      )
-
-        ? number
-
-        : 0;
-
+      const number = Number(text);
+      return Number.isFinite(number) ? number : 0;
     }
 
-    /* ============================================================
-
-       38. FORMAT MONEY
-
-    ============================================================ */
-
-    function formatMoney(
-
-      value
-
-    ) {
-
-      return parseAmount(
-
-        value
-
-      ).toLocaleString(
-
-        "vi-VN"
-
-      );
-
+    function formatMoney(value) {
+      return parseAmount(value).toLocaleString("vi-VN");
     }
 
-    /* ============================================================
+    function toExcelDate(value) {
+      if (!value) return "";
 
-       39. EXCEL DATE
-
-    ============================================================ */
-
-    function toExcelDate(
-
-      value
-
-    ) {
-
-      if (!value) {
-
-        return "";
-
-      }
-
-      const key =
-
-        getFieldDateKey(value);
+      const key = getFieldDateKey(value);
 
       if (key) {
-
-        const [
-
-          year,
-
-          month,
-
-          day,
-
-        ] =
-
-          key
-
-            .split("-")
-
-            .map(Number);
-
-        return new Date(
-
-          year,
-
-          month - 1,
-
-          day
-
-        );
-
+        const [year, month, day] = key.split("-").map(Number);
+        return new Date(year, month - 1, day);
       }
 
-      const date =
-
-        new Date(value);
-
-      if (
-
-        Number.isNaN(
-
-          date.getTime()
-
-        )
-
-      ) {
-
-        return "";
-
-      }
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "";
 
       return date;
-
     }
 
     /* ============================================================
-
-       40. ESCAPE HTML
-
+       27. ESCAPE HTML / ATTRIBUTE / JAVASCRIPT
     ============================================================ */
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
 
-    function escapeHtml(
+    function escapeAttribute(value) {
+      return escapeHtml(value);
+    }
 
-      value
-
-    ) {
-
-      return String(
-
-        value ?? ""
-
-      )
-
-        .replace(
-
-          /&/g,
-
-          "&amp;"
-
-        )
-
-        .replace(
-
-          /</g,
-
-          "&lt;"
-
-        )
-
-        .replace(
-
-          />/g,
-
-          "&gt;"
-
-        )
-
-        .replace(
-
-          /"/g,
-
-          "&quot;"
-
-        )
-
-        .replace(
-
-          /'/g,
-
-          "&#039;"
-
-        );
-
+    function escapeJs(value) {
+      return String(value ?? "")
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'")
+        .replace(/"/g, '\\"')
+        .replace(/\r/g, "\\r")
+        .replace(/\n/g, "\\n");
     }
 
     /* ============================================================
-
-       41. ESCAPE ATTRIBUTE
-
+       28. THÔNG BÁO
     ============================================================ */
+    function setLoginMessage(message, isError) {
+      if (!loginMessage) return;
 
-    function escapeAttribute(
-
-      value
-
-    ) {
-
-      return escapeHtml(
-
-        value
-
-      );
-
+      loginMessage.textContent = message || "";
+      loginMessage.style.color = isError ? "#dc2626" : "#16a34a";
     }
 
-    /* ============================================================
+    function setManagerMessage(message, isError) {
+      if (!managerMessage) return;
 
-       42. ESCAPE JAVASCRIPT
-
-    ============================================================ */
-
-    function escapeJs(
-
-      value
-
-    ) {
-
-      return String(
-
-        value ?? ""
-
-      )
-
-        .replace(
-
-          /\\/g,
-
-          "\\\\"
-
-        )
-
-        .replace(
-
-          /'/g,
-
-          "\\'"
-
-        )
-
-        .replace(
-
-          /"/g,
-
-          '\\"'
-
-        )
-
-        .replace(
-
-          /\r/g,
-
-          "\\r"
-
-        )
-
-        .replace(
-
-          /\n/g,
-
-          "\\n"
-
-        );
-
+      managerMessage.textContent = message || "";
+      managerMessage.style.color = isError ? "#dc2626" : "#16a34a";
     }
-
-    /* ============================================================
-
-       43. LOGIN MESSAGE
-
-    ============================================================ */
-
-    function setLoginMessage(
-
-      message,
-
-      isError
-
-    ) {
-
-      if (!loginMessage) {
-
-        return;
-
-      }
-
-      loginMessage.textContent =
-
-        message || "";
-
-      loginMessage.style.color =
-
-        isError
-
-          ? "#dc2626"
-
-          : "#16a34a";
-
-    }
-
-    /* ============================================================
-
-       44. MANAGER MESSAGE
-
-    ============================================================ */
-
-    function setManagerMessage(
-
-      message,
-
-      isError
-
-    ) {
-
-      if (!managerMessage) {
-
-        return;
-
-      }
-
-      managerMessage.textContent =
-
-        message || "";
-
-      managerMessage.style.color =
-
-        isError
-
-          ? "#dc2626"
-
-          : "#16a34a";
-
-    }
-
   }
 
   /* ============================================================
-
-     45. CHỜ DOM SẴN SÀNG
-
-     
-
-     Đây là phần sửa lỗi đăng nhập.
-
-     
-
-     Nếu manager.js nằm trong <head> hoặc tải trước HTML,
-
-     vẫn đảm bảo các nút đăng nhập được tìm thấy.
-
+     29. CHỜ HTML TẢI XONG
   ============================================================ */
-
-  if (
-
-    document.readyState ===
-
-    "loading"
-
-  ) {
-
-    document.addEventListener(
-
-      "DOMContentLoaded",
-
-      initManager,
-
-      {
-
-        once: true,
-
-      }
-
-    );
-
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initManager, {
+      once: true
+    });
   } else {
-
     initManager();
-
   }
-
 })();
